@@ -3,8 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { ArrowRight, CheckCircle2, AlertCircle, Sparkles } from "lucide-react";
 import { SOLUTIONS, SolutionSpace } from "../data/solutions";
-import { CurtainReveal } from "../components/animations/CurtainReveal";
-import { SpacesShowcase } from "../components/solutions/SpacesShowcase";
+import { CURTAIN_TIMING, CurtainReveal } from "../components/animations/CurtainReveal";
+import { SHOWCASE_TIMING, SpacesShowcase } from "../components/solutions/SpacesShowcase";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback";
 import { Button } from "../components/ui/Button";
 
@@ -71,6 +71,9 @@ const SolutionPhoto: React.FC<{ sol: SolutionSpace; eager: boolean }> = ({ sol, 
 };
 
 const HIGHLIGHT_MS = 1200;
+
+/** The curtain music fades to silence as the showcase finishes its first full cycle (ms from mount). */
+const MUSIC_ENDS_AT = CURTAIN_TIMING.revealAt + SOLUTIONS.length * SHOWCASE_TIMING.slideMs;
 
 /** Space slug from a deep link like /solutions#auditoriums, or null if it matches no space. */
 const getDeepLinkSlug = (hash: string) => {
@@ -158,7 +161,7 @@ export const SolutionsPage: React.FC = () => {
     <div className="space-y-24 sm:space-y-32 pb-24">
       {/* 1. CURTAIN REVEAL HEADER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <CurtainReveal skip={targetSlug !== null} onReveal={() => setShowcaseActive(true)}>
+        <CurtainReveal skip={targetSlug !== null} onReveal={() => setShowcaseActive(true)} soundEndsAt={MUSIC_ENDS_AT}>
           {/* Stacked + centred below lg; two columns from lg (text 40% left, showcase 60% right).
               The text items stay direct children so the curtain can stagger them in. */}
           <div className="px-6 py-8 md:px-10 md:py-10 lg:px-12 lg:py-14 rounded-3xl bg-surface-warm border border-line text-center flex flex-col items-center gap-5 md:gap-6 lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:grid-rows-[1fr_auto_auto_auto_1fr] lg:gap-x-12 lg:gap-y-5 lg:text-left">

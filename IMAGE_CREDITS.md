@@ -60,7 +60,10 @@ Download date: 2026-10-12.
 
 | Use | File | Asset page | Composer | Performer | Source | License | Date |
 |---|---|---|---|---|---|---|---|
-| Solutions curtain music | `public/audio/curtain-classical.mp3` | https://commons.wikimedia.org/wiki/File:Erik_Satie_-_gymnopedies_-_la_1_ere._lent_et_douloureux.ogg | Erik Satie — Gymnopédie No. 1 ("Lent et douloureux") | Robin Alciatore | Musopen, via Wikimedia Commons | Public domain (released by the author; Musopen requests attribution) | 2026-10-12 |
+| Solutions curtain music | `public/audio/curtain-classical.webm`, `public/audio/curtain-classical.mp3` | https://commons.wikimedia.org/wiki/File:Erik_Satie_-_gymnopedies_-_la_1_ere._lent_et_douloureux.ogg | Erik Satie — Gymnopédie No. 1 ("Lent et douloureux") | Robin Alciatore | Musopen, via Wikimedia Commons | Public domain (released by the author; Musopen requests attribution) | 2026-10-12 |
 
-Excerpt 0:07.5–0:21.5 (14.0 s), cut losslessly (whole MP3 frames) from Wikimedia Commons' MP3 transcode of the original Ogg Vorbis.
-Stereo, ~189 kbps VBR, 331 KB. Level, fades and volume are applied at playback (`src/lib/sound.ts`, `CURTAIN_TIMING.sound`).
+Excerpt 0:07.5–0:44.0 (36.5 s) of the same recording — long enough for one full cycle of the Solutions spaces showcase.
+- `curtain-classical.webm`: primary — mono Opus, ~64 kbps, 289 KB, with a 1 s fade baked into the end (encoded in Chrome from the excerpt below).
+- `curtain-classical.mp3`: fallback for browsers that can't decode Opus — cut losslessly (whole MP3 frames) from Wikimedia Commons' MP3 transcode; stereo, ~189 kbps VBR, 838 KB. Only downloaded if the WebM fails to decode.
+
+Level, fades and volume are applied at playback (`src/lib/sound.ts`, `CURTAIN_TIMING.sound`).

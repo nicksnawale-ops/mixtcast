@@ -18,6 +18,8 @@ interface CurtainRevealProps {
   skip?: boolean;
   /** Called once when the hero content starts to reveal (immediately when the curtain is skipped). */
   onReveal?: () => void;
+  /** When the music should reach silence, in ms from mount (e.g. the end of the showcase's first cycle). */
+  soundEndsAt?: number;
 }
 
 // One-time cleanup: the curtain used to play once per session behind this flag.
@@ -42,9 +44,9 @@ export const CURTAIN_TIMING = {
   sound: {
     at: 1100, // starts with the panels parting
     offset: 0, // s into the excerpt
-    duration: 14, // s — the whole excerpt, never looped
+    duration: 14, // s — fallback length when the page doesn't pass `soundEndsAt`; never looped
     fadeIn: 1.2, // s
-    fadeOut: 2.5, // s
+    fadeOut: 3, // s — ends exactly at the stop time
     volume: 0.3,
     stopFadeMs: 400, // when the visitor skips, scrolls past the hero or leaves
   },
@@ -68,7 +70,12 @@ const innerFold = (side: "left" | "right") =>
 
 const T = CURTAIN_TIMING;
 
-export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children, skip: skipCurtain = false, onReveal }) => {
+export const CurtainReveal: React.FC<CurtainRevealProps> = ({
+  children,
+  skip: skipCurtain = false,
+  onReveal,
+  soundEndsAt,
+}) => {
   const [reducedMotion] = useState(prefersReducedMotion);
   // Plays on every mount (every visit to the Solutions page).
   const [shouldPlay] = useState(() => !reducedMotion && !skipCurtain);
@@ -98,6 +105,9 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children, skip: sk
   const revealed = useRef(false);
   const onRevealRef = useRef(onReveal);
   onRevealRef.current = onReveal;
+  // Total music length (s): from the sound cue until the page's stop time.
+  const soundLengthRef = useRef(T.sound.duration);
+  soundLengthRef.current = soundEndsAt !== undefined ? (soundEndsAt - T.sound.at) / 1000 : T.sound.duration;
 
   // The hero's own elements (eyebrow, headline, paragraph, showcase) are the card's direct children.
   const getHeroItems = () => {
@@ -150,12 +160,13 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children, skip: sk
       setSoundBlocked(true);
       return;
     }
+    const total = soundLengthRef.current;
     const elapsed = (performance.now() - startedAt.current - T.sound.at) / 1000;
-    if (elapsed > T.sound.duration - 0.4) return; // too late to be worth it
+    if (elapsed > total - 0.4) return; // too late to be worth it
     const late = Math.max(0, elapsed);
     const handle = await play("curtain-classical", {
       offset: T.sound.offset + late,
-      duration: T.sound.duration - late,
+      duration: total - late,
       fadeIn: T.sound.fadeIn,
       fadeOut: T.sound.fadeOut,
       volume: T.sound.volume,
@@ -167,7 +178,7 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children, skip: sk
     }
     soundRef.current = handle;
     setSoundPlaying(true);
-    timers.current.push(window.setTimeout(() => setSoundPlaying(false), (T.sound.duration - late) * 1000));
+    timers.current.push(window.setTimeout(() => setSoundPlaying(false), (total - late) * 1000));
   }, []);
 
   // Hide hero items before first paint so the entrance never flashes.

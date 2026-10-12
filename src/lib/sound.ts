@@ -5,8 +5,9 @@
 export const SOUND_PREF_KEY = "mixtcast_sound";
 export const DEFAULT_VOLUME = 0.35;
 
+/** Sources in order of preference; the first one the browser can decode is used. */
 export const SOUNDS = {
-  "curtain-classical": "/audio/curtain-classical.mp3",
+  "curtain-classical": ["/audio/curtain-classical.webm", "/audio/curtain-classical.mp3"],
 } as const;
 
 export type SoundName = keyof typeof SOUNDS;
@@ -94,12 +95,16 @@ export function preload(name: SoundName): Promise<AudioBuffer | null> {
     pending = (async () => {
       const ctx = getContext();
       if (!ctx) return null;
-      try {
-        const response = await fetch(SOUNDS[name]);
-        return await ctx.decodeAudioData(await response.arrayBuffer());
-      } catch {
-        return null;
+      for (const src of SOUNDS[name]) {
+        try {
+          const response = await fetch(src);
+          if (!response.ok) continue;
+          return await ctx.decodeAudioData(await response.arrayBuffer());
+        } catch {
+          // Format not supported here — try the next source.
+        }
       }
+      return null;
     })();
     buffers.set(name, pending);
   }

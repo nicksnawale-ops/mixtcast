@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { motion, animate, useMotionValue, useReducedMotion, type AnimationPlaybackControls } from "motion/react";
 import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import type { SolutionSpace } from "../../data/solutions";
+import { fadeOutAll } from "../../lib/sound";
 
 interface SpacesShowcaseProps {
   spaces: SolutionSpace[];
@@ -9,6 +10,8 @@ interface SpacesShowcaseProps {
   active: boolean;
   /** Scroll to a space's section on the page. */
   onExplore: (slug: string) => void;
+  /** Placement classes from the parent layout. */
+  className?: string;
 }
 
 export const SHOWCASE_TIMING = {
@@ -18,10 +21,10 @@ export const SHOWCASE_TIMING = {
 };
 
 const srcSetFor = (photo: string) => `${photo.replace(".webp", "-800.webp")} 800w, ${photo} 1600w`;
-const SIZES = "(min-width: 1280px) 1100px, 92vw";
+const SIZES = "(min-width: 1024px) 680px, 92vw";
 
 /** Cinematic "screen" on the Solutions stage: an auto-playing carousel of every space. */
-export const SpacesShowcase: React.FC<SpacesShowcaseProps> = ({ spaces, active, onExplore }) => {
+export const SpacesShowcase: React.FC<SpacesShowcaseProps> = ({ spaces, active, onExplore, className = "" }) => {
   const total = spaces.length;
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
@@ -121,7 +124,7 @@ export const SpacesShowcase: React.FC<SpacesShowcaseProps> = ({ spaces, active, 
       onBlur={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setFocused(false);
       }}
-      className="relative mt-10 sm:mt-12 text-left"
+      className={`relative w-full text-left ${className}`}
     >
       {/* Ambient stage glow behind the screen */}
       <div
@@ -133,7 +136,7 @@ export const SpacesShowcase: React.FC<SpacesShowcaseProps> = ({ spaces, active, 
       {/* Screen with a thin navy → orange frame */}
       <div className="relative rounded-[20px] p-[1.5px] bg-gradient-to-r from-brand-navy via-brand-navy/70 to-brand-orange shadow-[0_24px_60px_-28px_rgba(14,59,140,0.45)]">
         <div
-          className="relative overflow-hidden rounded-[18.5px] bg-[#0A2A63] aspect-video md:aspect-[21/9] touch-pan-y select-none"
+          className="relative overflow-hidden rounded-[18.5px] bg-[#0A2A63] aspect-[4/3] md:aspect-video lg:aspect-[16/10] lg:max-h-[min(62vh,560px)] touch-pan-y select-none"
           onPointerDown={onPointerDown}
           onPointerUp={onPointerUp}
           onPointerCancel={() => (swipeStart.current = null)}
@@ -227,7 +230,11 @@ export const SpacesShowcase: React.FC<SpacesShowcaseProps> = ({ spaces, active, 
       <div className="mt-4 flex items-center gap-3">
         <button
           type="button"
-          onClick={() => setUserPaused((p) => !p)}
+          onClick={() => {
+            // Pausing the slideshow also fades out the curtain music.
+            if (!userPaused) fadeOutAll(600);
+            setUserPaused((p) => !p);
+          }}
           disabled={!!reduceMotion}
           aria-label={autoplay ? "Pause showcase" : "Play showcase"}
           className="shrink-0 w-8 h-8 rounded-full border border-line bg-white text-brand-navy inline-flex items-center justify-center hover:border-brand-navy disabled:opacity-40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A1F]"

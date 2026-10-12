@@ -40,12 +40,13 @@ export const CURTAIN_TIMING = {
   beamsDuration: 2800,
   skipOpenDuration: 600, // when the visitor clicks / presses Escape
   sound: {
-    at: 1100, // in sync with the panels starting to part
-    offset: 0.3, // s into the file
-    duration: 2.9, // s
-    fadeIn: 0.3, // s
-    fadeOut: 0.6, // s
-    volume: 0.35,
+    at: 1100, // starts with the panels parting
+    offset: 0, // s into the excerpt
+    duration: 14, // s — the whole excerpt, never looped
+    fadeIn: 1.2, // s
+    fadeOut: 2.5, // s
+    volume: 0.3,
+    stopFadeMs: 400, // when the visitor skips, scrolls past the hero or leaves
   },
 };
 
@@ -74,6 +75,8 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children, skip: sk
   const [phase, setPhase] = useState<Phase>(shouldPlay ? "closed" : "done");
   const [skipped, setSkipped] = useState(false);
   const [beams, setBeams] = useState(false);
+  // Final beam angles (deg), aimed at the showcase screen wherever the layout puts it.
+  const [beamAim, setBeamAim] = useState({ left: -22, right: 22 });
 
   // Sound: preference "off" never plays; without a prior interaction the browser blocks audio,
   // so we show a small "Sound" pill instead of trying.
@@ -115,12 +118,26 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children, skip: sk
     animations.current.push(controls);
   }, []);
 
+  /** Point each spotlight from its top anchor towards the centre of the showcase screen. */
+  const aimBeams = () => {
+    const root = rootRef.current;
+    const screen = contentRef.current?.querySelector('[aria-roledescription="carousel"]');
+    if (!root || !screen) return;
+    const r = root.getBoundingClientRect();
+    const s = screen.getBoundingClientRect();
+    const target = { x: s.left + s.width / 2 - r.left, y: s.top + s.height / 2 - r.top };
+    const top = -0.1 * r.height; // beams hang from 10% above the card
+    const angle = (originX: number) => (Math.atan2(target.x - originX, target.y - top) * -180) / Math.PI;
+    const clamp = (v: number) => Math.max(-62, Math.min(62, v));
+    setBeamAim({ left: clamp(angle(r.width * 0.19)), right: clamp(angle(r.width * 0.81)) });
+  };
+
   const clearTimers = () => {
     timers.current.forEach((t) => window.clearTimeout(t));
     timers.current = [];
   };
 
-  const stopSound = (fadeMs = 150) => {
+  const stopSound = (fadeMs = T.sound.stopFadeMs) => {
     soundRef.current?.stop(fadeMs);
     soundRef.current = null;
     setSoundPlaying(false);
@@ -129,19 +146,20 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children, skip: sk
   /** Start the curtain sound, joining mid-way if the curtain is already opening. */
   const startSound = useCallback(async () => {
     // Unlock + decode first, then work out where the curtain is, so the sound stays in sync.
-    if (!(await unlockAudio()) || !(await preload("curtain-open"))) {
+    if (!(await unlockAudio()) || !(await preload("curtain-classical"))) {
       setSoundBlocked(true);
       return;
     }
     const elapsed = (performance.now() - startedAt.current - T.sound.at) / 1000;
     if (elapsed > T.sound.duration - 0.4) return; // too late to be worth it
     const late = Math.max(0, elapsed);
-    const handle = await play("curtain-open", {
+    const handle = await play("curtain-classical", {
       offset: T.sound.offset + late,
       duration: T.sound.duration - late,
       fadeIn: T.sound.fadeIn,
       fadeOut: T.sound.fadeOut,
       volume: T.sound.volume,
+      normalize: true,
     });
     if (!handle) {
       setSoundBlocked(true);
@@ -179,7 +197,7 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children, skip: sk
   useEffect(() => {
     if (!shouldPlay) return;
     startedAt.current = performance.now();
-    if (getSoundPreference() !== "off") preload("curtain-open");
+    if (getSoundPreference() !== "off") preload("curtain-classical");
 
     const bars = logoRef.current?.querySelectorAll<SVGGElement>(".waveform-left, .waveform-right");
     if (bars?.length) {
@@ -191,7 +209,10 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children, skip: sk
     timers.current.push(
       window.setTimeout(() => setPhase("cue"), T.cueAt),
       window.setTimeout(() => setPhase("opening"), T.openAt),
-      window.setTimeout(() => setBeams(true), T.beamsAt),
+      window.setTimeout(() => {
+        aimBeams();
+        setBeams(true);
+      }, T.beamsAt),
       window.setTimeout(() => setBeams(false), T.beamsAt + T.beamsDuration),
       window.setTimeout(revealHero, T.revealAt),
       window.setTimeout(() => setPhase("done"), T.openAt + T.openDuration),
@@ -207,11 +228,25 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children, skip: sk
     () => () => {
       animations.current.forEach((a) => a.stop());
       animations.current = [];
-      soundRef.current?.stop(100);
+      soundRef.current?.stop(T.sound.stopFadeMs);
       soundRef.current = null;
     },
     []
   );
+
+  // Fade the music out once the visitor scrolls down past the hero.
+  const rootRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!soundPlaying || !rootRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting && entry.boundingClientRect.top < 0) stopSound();
+      },
+      { rootMargin: "-80px 0px 0px 0px" }
+    );
+    observer.observe(rootRef.current);
+    return () => observer.disconnect();
+  }, [soundPlaying]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const skip = useCallback(() => {
     if (phase === "done" || skipped) return;
@@ -261,7 +296,7 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children, skip: sk
   const showSoundPill = shouldPlay && phase !== "done" && !skipped && pillVisible;
 
   return (
-    <div className="relative overflow-hidden w-full rounded-3xl">
+    <div ref={rootRef} className="relative overflow-hidden w-full rounded-3xl">
       {/* Underlying Content — always in the DOM */}
       <div ref={contentRef} className="w-full">
         {children}
@@ -280,8 +315,8 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children, skip: sk
                   "linear-gradient(180deg, rgba(255,186,120,0.38) 0%, rgba(255,214,170,0.18) 45%, rgba(255,214,170,0) 85%)",
                 clipPath: "polygon(42% 0, 58% 0, 100% 100%, 0 100%)",
               }}
-              initial={{ opacity: 0, rotate: side === "left" ? -48 : 48 }}
-              animate={{ opacity: [0, 0.9, 0.55, 0], rotate: side === "left" ? -22 : 22 }}
+              initial={{ opacity: 0, rotate: beamAim[side] + (side === "left" ? -26 : 26) }}
+              animate={{ opacity: [0, 0.9, 0.55, 0], rotate: beamAim[side] }}
               transition={{
                 opacity: { duration: T.beamsDuration / 1000, times: [0, 0.3, 0.7, 1], ease: "easeInOut" },
                 rotate: { duration: (T.beamsDuration / 1000) * 0.6, ease: [0.22, 1, 0.36, 1] },

@@ -58,9 +58,9 @@ Download date: 2026-10-12.
 
 ## Audio
 
-| Use | File | Asset page | Author | Source | License | Date |
-|---|---|---|---|---|---|---|
-| Solutions curtain opening swell | `public/audio/curtain-open.mp3` | https://freesound.org/people/jordivburgel/sounds/218354/ | jordivburgel ("Movie Short Swell") | Freesound | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) | 2026-10-12 |
+| Use | File | Asset page | Composer | Performer | Source | License | Date |
+|---|---|---|---|---|---|---|---|
+| Solutions curtain music | `public/audio/curtain-classical.mp3` | https://commons.wikimedia.org/wiki/File:Erik_Satie_-_gymnopedies_-_la_1_ere._lent_et_douloureux.ogg | Erik Satie — Gymnopédie No. 1 ("Lent et douloureux") | Robin Alciatore | Musopen, via Wikimedia Commons | Public domain (released by the author; Musopen requests attribution) | 2026-10-12 |
 
-Trimmed losslessly (whole MP3 frames) from the 8 s preview to the first 3.4 s, which contains the whole swell; the rest was silence.
-Stereo, 192 kbps, 82 KB. Fades and volume are applied at playback (`src/lib/sound.ts`, `CURTAIN_TIMING.sound`).
+Excerpt 0:07.5–0:21.5 (14.0 s), cut losslessly (whole MP3 frames) from Wikimedia Commons' MP3 transcode of the original Ogg Vorbis.
+Stereo, ~189 kbps VBR, 331 KB. Level, fades and volume are applied at playback (`src/lib/sound.ts`, `CURTAIN_TIMING.sound`).

@@ -159,8 +159,10 @@ export const SolutionsPage: React.FC = () => {
       {/* 1. CURTAIN REVEAL HEADER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <CurtainReveal skip={targetSlug !== null} onReveal={() => setShowcaseActive(true)}>
-          <div className="py-16 sm:py-24 px-8 sm:px-16 rounded-3xl bg-surface-warm border border-line text-center space-y-6">
-            <div className="inline-flex items-center gap-2">
+          {/* Stacked + centred below lg; two columns from lg (text 40% left, showcase 60% right).
+              The text items stay direct children so the curtain can stagger them in. */}
+          <div className="px-6 py-8 md:px-10 md:py-10 lg:px-12 lg:py-14 rounded-3xl bg-surface-warm border border-line text-center flex flex-col items-center gap-5 md:gap-6 lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:grid-rows-[1fr_auto_auto_auto_1fr] lg:gap-x-12 lg:gap-y-5 lg:text-left">
+            <div className="inline-flex items-center gap-2 lg:col-start-1 lg:row-start-2 lg:justify-self-start">
               <span className="h-[2px] w-4 bg-brand-orange" />
               <span className="text-xs font-bold uppercase tracking-widest text-brand-orange">
                 Engineered Solutions by Space
@@ -168,16 +170,21 @@ export const SolutionsPage: React.FC = () => {
               <span className="h-[2px] w-4 bg-brand-orange" />
             </div>
 
-            <h1 className="text-4xl sm:text-6xl font-extrabold text-ink font-heading tracking-tight max-w-4xl mx-auto leading-tight">
+            <h1 className="text-[clamp(1.75rem,7.5vw,2.25rem)] md:text-[clamp(2rem,5vw,2.75rem)] lg:text-[clamp(2.25rem,3.2vw,3.5rem)] font-extrabold text-ink font-heading tracking-tight max-w-4xl leading-[1.12] lg:leading-[1.08] lg:col-start-1 lg:row-start-3">
               Architectural AV Environments Calibrated for Peak Performance
             </h1>
 
-            <p className="text-base sm:text-lg text-ink-muted max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg text-ink-muted max-w-2xl lg:max-w-[34rem] leading-relaxed lg:col-start-1 lg:row-start-4">
               Every room has unique physics. We resolve acoustic reflections, sightline constraints,
               and operational complexity with tailored hardware and automation architecture.
             </p>
 
-            <SpacesShowcase spaces={SOLUTIONS} active={showcaseActive} onExplore={exploreSpace} />
+            <SpacesShowcase
+              spaces={SOLUTIONS}
+              active={showcaseActive}
+              onExplore={exploreSpace}
+              className="mt-2 md:mt-4 lg:mt-0 lg:col-start-2 lg:row-start-1 lg:row-span-5 lg:self-center"
+            />
           </div>
         </CurtainReveal>
       </section>

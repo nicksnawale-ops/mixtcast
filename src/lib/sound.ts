@@ -6,7 +6,7 @@ export const SOUND_PREF_KEY = "mixtcast_sound";
 export const DEFAULT_VOLUME = 0.35;
 
 export const SOUNDS = {
-  "curtain-open": "/audio/curtain-open.mp3",
+  "curtain-classical": "/audio/curtain-classical.mp3",
 } as const;
 
 export type SoundName = keyof typeof SOUNDS;
@@ -21,6 +21,8 @@ export interface PlayOptions {
   /** Fade-in / fade-out lengths, in seconds. */
   fadeIn?: number;
   fadeOut?: number;
+  /** Raise quiet recordings so their peak sits near full scale before `volume` is applied. */
+  normalize?: boolean;
 }
 
 export interface SoundHandle {
@@ -29,6 +31,26 @@ export interface SoundHandle {
 
 let context: AudioContext | null = null;
 const buffers = new Map<SoundName, Promise<AudioBuffer | null>>();
+const peaks = new WeakMap<AudioBuffer, number>();
+const active = new Set<SoundHandle>();
+
+const peakOf = (buffer: AudioBuffer) => {
+  let peak = peaks.get(buffer);
+  if (peak === undefined) {
+    peak = 0;
+    for (let c = 0; c < buffer.numberOfChannels; c++) {
+      const data = buffer.getChannelData(c);
+      for (let i = 0; i < data.length; i += 4) peak = Math.max(peak, Math.abs(data[i]));
+    }
+    peaks.set(buffer, peak);
+  }
+  return peak;
+};
+
+/** Fade out everything that is currently playing (e.g. when the visitor pauses or leaves). */
+export function fadeOutAll(fadeMs = 600) {
+  active.forEach((handle) => handle.stop(fadeMs));
+}
 
 export function getSoundPreference(): SoundPreference | null {
   try {
@@ -108,7 +130,9 @@ export async function play(name: SoundName, options: PlayOptions = {}): Promise<
     const ctx = getContext();
     if (!buffer || !ctx) return null;
 
-    const { offset = 0, volume = DEFAULT_VOLUME, fadeIn = 0.3, fadeOut = 0.6 } = options;
+    const { offset = 0, fadeIn = 0.3, fadeOut = 0.6, normalize = false } = options;
+    const makeup = normalize ? Math.min(6, 0.9 / Math.max(peakOf(buffer), 0.01)) : 1;
+    const volume = (options.volume ?? DEFAULT_VOLUME) * makeup;
     const length = Math.min(options.duration ?? buffer.duration - offset, buffer.duration - offset);
     if (length <= 0.05) return null;
 
@@ -128,10 +152,11 @@ export async function play(name: SoundName, options: PlayOptions = {}): Promise<
     source.start(start, offset, length);
 
     let stopped = false;
-    return {
+    const handle: SoundHandle = {
       stop(fadeMs = 150) {
         if (stopped) return;
         stopped = true;
+        active.delete(handle);
         try {
           const now = ctx.currentTime;
           gain.gain.cancelScheduledValues(now);
@@ -143,6 +168,9 @@ export async function play(name: SoundName, options: PlayOptions = {}): Promise<
         }
       },
     };
+    active.add(handle);
+    source.onended = () => active.delete(handle);
+    return handle;
   } catch {
     return null;
   }

@@ -1,5 +1,17 @@
 # Image Credits
 
+## Home & About pages
+
+Self-hosted in `public/images/home/` and `public/images/about/` as WebP (full size plus an `-800` mobile variant).
+Download date: 2026-10-12. Stock photos — not MixtCast installations.
+
+| Section | Files | Photo page | Photographer | Source | License |
+|---|---|---|---|---|---|
+| Home — "Who We Are" featured image | `home/who-we-are.webp`, `home/who-we-are-800.webp` | https://www.pexels.com/photo/modern-podcast-studio-with-equipment-setup-37033702/ | Jakub Zerdzicki (@jakubzerdzicki) | Pexels | [Pexels License](https://www.pexels.com/license/) |
+| About — hero image | `about/about-hero.webp`, `about/about-hero-800.webp` | https://unsplash.com/photos/kFCor16bqq4 | ARTO SURAJ (@artosuraj) | Unsplash | [Unsplash License](https://unsplash.com/license) |
+
+## Solutions page
+
 Photographs used on the **Solutions** page (`/solutions`) to illustrate each space type.
 They are generic stock photos of the space type — **not** MixtCast installations or client
 projects — and must not be used on the Projects page or presented as MixtCast work.

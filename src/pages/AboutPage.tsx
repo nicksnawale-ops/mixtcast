@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ShieldCheck, Cpu, Users, Headphones, ArrowRight, UserCheck } from "lucide-react";
 import { COMPANY_INFO } from "../data/company";
-import { IMAGES } from "../data/images";
 import { Button } from "../components/ui/Button";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback";
 import { WaveformDivider } from "../components/ui/WaveformDivider";
@@ -39,8 +38,12 @@ export const AboutPage: React.FC = () => {
         {/* Cinematic Letterbox Auditorium Image Frame */}
         <div className="rounded-3xl overflow-hidden shadow-2xl border border-line">
           <ImageWithFallback
-            src={IMAGES.spaces.auditorium}
-            alt="Auditorium Engineering by MixtCast Visual Solutions"
+            src="/images/about/about-hero.webp"
+            srcSet="/images/about/about-hero-800.webp 800w, /images/about/about-hero.webp 2000w"
+            sizes="(min-width: 1280px) 1216px, calc(100vw - 2rem)"
+            width={2000}
+            height={1333}
+            alt="Modern auditorium with a lit stage, lighting rig and tiered seating"
             fallbackTitle="Tiered Commercial Auditorium & Cinema Engineering"
             category="Master Installation"
             aspectRatioClass="aspect-21/9"

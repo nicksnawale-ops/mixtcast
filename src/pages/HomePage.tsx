@@ -32,7 +32,6 @@ import { SERVICES } from "../data/services";
 import { SOLUTIONS } from "../data/solutions";
 import { CLIENT_PROJECTS } from "../data/clients";
 import { TECHNOLOGY_PARTNERS } from "../data/partners";
-import { IMAGES } from "../data/images";
 import { Button } from "../components/ui/Button";
 import { SpotlightCard } from "../components/ui/Card";
 import { WaveformDivider } from "../components/ui/WaveformDivider";
@@ -231,8 +230,12 @@ export const HomePage: React.FC = () => {
           <div className="lg:col-span-6">
             <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-line group">
               <ImageWithFallback
-                src={IMAGES.spaces.studioPodcast}
-                alt="MixtCast Podcast and Broadcast Studio Installation"
+                src="/images/home/who-we-are.webp"
+                srcSet="/images/home/who-we-are-800.webp 800w, /images/home/who-we-are.webp 1400w"
+                sizes="(min-width: 1024px) 600px, calc(100vw - 2rem)"
+                width={1400}
+                height={998}
+                alt="Professional podcast studio with a boom-arm microphone, headphones and acoustic wall panels"
                 fallbackTitle="Broadcast Recording & Chroma Studio Setup"
                 category="Sound & Vision"
                 aspectRatioClass="aspect-4/3"

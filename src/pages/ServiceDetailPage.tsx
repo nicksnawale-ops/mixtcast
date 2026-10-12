@@ -253,7 +253,7 @@ export const ServiceDetailPage: React.FC = () => {
               Contact our engineering consultants in Pune for architectural blueprints, electro-acoustic modeling, and equipment specs.
             </p>
           </div>
-          <Button to="/contact" variant="cta" size="lg" className="bg-white text-brand-navy hover:bg-surface-warm font-bold">
+          <Button to="/contact" variant="cta" size="lg" className="!bg-white !text-brand-navy font-semibold hover:!bg-brand-navy hover:!text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A1F] focus-visible:ring-offset-2">
             Get Technical Estimate
           </Button>
         </div>

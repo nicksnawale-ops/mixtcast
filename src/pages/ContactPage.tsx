@@ -108,9 +108,9 @@ export const ContactPage: React.FC = () => {
 
       {/* Main Form & Information Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start lg:items-stretch">
           {/* Left: Contact Info & Map (5 cols) */}
-          <div className="lg:col-span-5 space-y-8">
+          <div className="lg:col-span-5 space-y-8 lg:flex lg:flex-col">
             <div className="p-8 rounded-3xl bg-surface-warm border border-line shadow-sm space-y-6">
               <span className="text-xs font-bold uppercase tracking-widest text-brand-orange block">
                 Direct Contact
@@ -212,8 +212,8 @@ export const ContactPage: React.FC = () => {
             </div>
 
             {/* Embedded Google Maps Placeholder */}
-            <div className="rounded-3xl overflow-hidden border border-line shadow-sm bg-surface-cool p-2">
-              <div className="aspect-16/9 w-full rounded-2xl overflow-hidden relative">
+            <div className="rounded-3xl overflow-hidden border border-line shadow-sm bg-surface-cool p-2 lg:flex-1 lg:flex lg:flex-col">
+              <div className="aspect-16/9 w-full rounded-2xl overflow-hidden relative lg:flex-1">
                 <iframe
                   title="MixtCast Visual Solutions Pune Location"
                   src="https://maps.google.com/maps?q=Pune,%20Maharashtra,%20India&t=&z=12&ie=UTF8&iwloc=&output=embed"

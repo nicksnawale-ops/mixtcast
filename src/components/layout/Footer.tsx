@@ -13,7 +13,7 @@ export const Footer: React.FC = () => {
     <footer className="relative bg-surface-warm border-t border-line overflow-hidden pt-20 pb-12 select-none">
       {/* Large Faded MIXTCAST Wordmark Watermark */}
       <div
-        className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 text-[14vw] font-heading font-extrabold text-brand-navy/[0.03] tracking-tighter whitespace-nowrap select-none"
+        className="pointer-events-none absolute -bottom-[0.3em] md:-bottom-10 left-1/2 -translate-x-1/2 text-[18vw] md:text-[14vw] font-heading font-extrabold text-brand-navy/[0.03] tracking-tighter whitespace-nowrap select-none"
         aria-hidden="true"
       >
         MIXTCAST

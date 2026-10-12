@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { ArrowRight, CheckCircle2, AlertCircle, Sparkles } from "lucide-react";
 import { SOLUTIONS, SolutionSpace } from "../data/solutions";
 import { CurtainReveal } from "../components/animations/CurtainReveal";
+import { SpacesShowcase } from "../components/solutions/SpacesShowcase";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback";
 import { Button } from "../components/ui/Button";
 
@@ -82,6 +83,30 @@ export const SolutionsPage: React.FC = () => {
   // Read once on mount: a valid deep link skips the curtain and scrolls to that space.
   const [targetSlug] = useState(() => getDeepLinkSlug(hash));
   const [highlightSlug, setHighlightSlug] = useState<string | null>(null);
+  const [showcaseActive, setShowcaseActive] = useState(false);
+  const highlightTimers = useRef<number[]>([]);
+
+  /** Briefly ring a space's card so the visitor sees where they landed. */
+  const flashHighlight = useCallback((slug: string, delayMs: number) => {
+    highlightTimers.current.forEach((t) => window.clearTimeout(t));
+    highlightTimers.current = [
+      window.setTimeout(() => setHighlightSlug(slug), delayMs),
+      window.setTimeout(() => setHighlightSlug(null), delayMs + HIGHLIGHT_MS + 200),
+    ];
+  }, []);
+  useEffect(() => () => highlightTimers.current.forEach((t) => window.clearTimeout(t)), []);
+
+  /** "Explore this space" in the showcase: same section scroll + highlight as deep links. */
+  const exploreSpace = useCallback(
+    (slug: string) => {
+      const el = document.getElementById(slug);
+      if (!el) return;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      flashHighlight(slug, reduceMotion ? 100 : 700);
+    },
+    [flashHighlight]
+  );
 
   useEffect(() => {
     if (!targetSlug) return;
@@ -108,11 +133,7 @@ export const SolutionsPage: React.FC = () => {
     // Deferred so it runs after the layout's scroll-to-top on route change.
     timers.push(window.setTimeout(scrollToTarget, 50));
 
-    const highlightAt = reduceMotion ? 100 : 700;
-    timers.push(
-      window.setTimeout(() => setHighlightSlug(targetSlug), highlightAt),
-      window.setTimeout(() => setHighlightSlug(null), highlightAt + HIGHLIGHT_MS + 200)
-    );
+    flashHighlight(targetSlug, reduceMotion ? 100 : 700);
 
     // Re-check once after images have loaded, in case layout shifted.
     if (document.readyState === "complete") {
@@ -131,13 +152,13 @@ export const SolutionsPage: React.FC = () => {
       window.removeEventListener("touchstart", onUserScroll);
       window.removeEventListener("keydown", onUserScroll);
     };
-  }, [targetSlug]);
+  }, [targetSlug, flashHighlight]);
 
   return (
     <div className="space-y-24 sm:space-y-32 pb-24">
       {/* 1. CURTAIN REVEAL HEADER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <CurtainReveal skip={targetSlug !== null}>
+        <CurtainReveal skip={targetSlug !== null} onReveal={() => setShowcaseActive(true)}>
           <div className="py-16 sm:py-24 px-8 sm:px-16 rounded-3xl bg-surface-warm border border-line text-center space-y-6">
             <div className="inline-flex items-center gap-2">
               <span className="h-[2px] w-4 bg-brand-orange" />
@@ -155,6 +176,8 @@ export const SolutionsPage: React.FC = () => {
               Every room has unique physics. We resolve acoustic reflections, sightline constraints,
               and operational complexity with tailored hardware and automation architecture.
             </p>
+
+            <SpacesShowcase spaces={SOLUTIONS} active={showcaseActive} onExplore={exploreSpace} />
           </div>
         </CurtainReveal>
       </section>

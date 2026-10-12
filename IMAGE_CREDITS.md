@@ -55,3 +55,12 @@ Download date: 2026-10-12.
 | Customized Home Theatre | `customized-home-theatre.webp`, `customized-home-theatre-800.webp` | https://unsplash.com/photos/RBWK3YcwIOQ | IRa Kang (@lifeinkorea) | Unsplash | [Unsplash License](https://unsplash.com/license) |
 | Customized Chroma Studio | `customized-chroma-studio.webp`, `customized-chroma-studio-800.webp` | https://www.pexels.com/photo/6794933/ | Max Vakhtbovych (@artbovich) | Pexels | [Pexels License](https://www.pexels.com/license/) |
 | Podcasting Studio | `podcasting-studio.webp`, `podcasting-studio-800.webp` | https://www.pexels.com/photo/10321163/ | Ludvig Hedenborg (@ludvighedenborg) | Pexels | [Pexels License](https://www.pexels.com/license/) |
+
+## Audio
+
+| Use | File | Asset page | Author | Source | License | Date |
+|---|---|---|---|---|---|---|
+| Solutions curtain opening swell | `public/audio/curtain-open.mp3` | https://freesound.org/people/jordivburgel/sounds/218354/ | jordivburgel ("Movie Short Swell") | Freesound | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) | 2026-10-12 |
+
+Trimmed losslessly (whole MP3 frames) from the 8 s preview to the first 3.4 s, which contains the whole swell; the rest was silence.
+Stereo, 192 kbps, 82 KB. Fades and volume are applied at playback (`src/lib/sound.ts`, `CURTAIN_TIMING.sound`).

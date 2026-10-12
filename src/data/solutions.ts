@@ -7,6 +7,9 @@ export interface SolutionSpace {
   solution: string;
   keySystems: { label: string; serviceSlug: string }[];
   image: string;
+  /** Licensed photo for the Solutions page panel (1600w WebP; an "-800" variant sits alongside). See IMAGE_CREDITS.md. */
+  photo: string;
+  photoAlt: string;
   outcomes: string[];
 }
 
@@ -27,6 +30,8 @@ export const SOLUTIONS: SolutionSpace[] = [
       { label: "Lighting Solutions", serviceSlug: "lighting-solutions" },
     ],
     image: "/images/solutions/auditorium.jpg",
+    photo: "/images/solutions/auditoriums.webp",
+    photoAlt: "Modern auditorium with tiered seating, a wide stage and warm wood acoustic finishes",
     outcomes: [
       "100% speech intelligibility across all seating tiers",
       "Seamless single-operator touch controls for complex lighting and audio scenes",
@@ -49,6 +54,8 @@ export const SOLUTIONS: SolutionSpace[] = [
       { label: "Audio Designing", serviceSlug: "audio-designing" },
     ],
     image: "/images/solutions/commercial-theatre.jpg",
+    photo: "/images/solutions/commercial-theatres.webp",
+    photoAlt: "Empty cinema hall with a large screen, stage and rows of red seats",
     outcomes: [
       "Cinema-grade color reproduction and HDR contrast compliance",
       "Uniform bass response without standing-wave distortions",
@@ -71,6 +78,8 @@ export const SOLUTIONS: SolutionSpace[] = [
       { label: "Audio Designing", serviceSlug: "audio-designing" },
     ],
     image: "/images/solutions/boardroom.jpg",
+    photo: "/images/solutions/conference-boardrooms.webp",
+    photoAlt: "Bright boardroom with a white conference table and a wall-mounted display screen",
     outcomes: [
       "Zero-setup meeting launches via automated calendar synchronization",
       "Crystal-clear speech pickup regardless of where participants sit",
@@ -93,6 +102,8 @@ export const SOLUTIONS: SolutionSpace[] = [
       { label: "Acoustic Solutions", serviceSlug: "acoustic-solutions" },
     ],
     image: "/images/solutions/smart-classroom.jpg",
+    photo: "/images/solutions/educational-institutions.webp",
+    photoAlt: "Modern university lecture hall with rows of wooden desks",
     outcomes: [
       "Intuitive digital whiteboarding and wireless device mirroring",
       "Equal auditory clarity for students seated anywhere in the room",
@@ -114,6 +125,8 @@ export const SOLUTIONS: SolutionSpace[] = [
       { label: "Digital Signage Solutions", serviceSlug: "digital-signage-solutions" },
     ],
     image: "/images/solutions/training-center.jpg",
+    photo: "/images/solutions/training-centers.webp",
+    photoAlt: "Training room with rows of computer workstations facing a projection screen",
     outcomes: [
       "Swift room reconfiguration with saved software presets",
       "Independent breakout pod collaboration and master instructor takeover",
@@ -135,6 +148,8 @@ export const SOLUTIONS: SolutionSpace[] = [
       { label: "Lighting Solutions", serviceSlug: "lighting-solutions" },
     ],
     image: "/images/solutions/home-theatre.jpg",
+    photo: "/images/solutions/residential-home-theatres.webp",
+    photoAlt: "Residential home theatre with a large projection screen and leather recliners",
     outcomes: [
       "Pure reference-level cinema sound tailored to the listener's seating",
       "Room soundproofing preventing leakage to the rest of the residence",
@@ -157,6 +172,8 @@ export const SOLUTIONS: SolutionSpace[] = [
       { label: "Lighting Solutions", serviceSlug: "lighting-solutions" },
     ],
     image: "/images/solutions/podcast-studio.jpg",
+    photo: "/images/solutions/podcast-chroma-studios.webp",
+    photoAlt: "Podcast studio with two microphones, headphones and backlit acoustic panels",
     outcomes: [
       "Broadcast-fidelity vocals with zero background noise",
       "Shadowless even illumination for instant green-screen compositing",

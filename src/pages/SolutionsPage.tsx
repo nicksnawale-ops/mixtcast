@@ -1,10 +1,73 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion, useInView, useReducedMotion } from "motion/react";
 import { ArrowRight, CheckCircle2, AlertCircle, Sparkles } from "lucide-react";
-import { SOLUTIONS } from "../data/solutions";
+import { SOLUTIONS, SolutionSpace } from "../data/solutions";
 import { CurtainReveal } from "../components/animations/CurtainReveal";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback";
 import { Button } from "../components/ui/Button";
+
+/**
+ * Space photo panel: same frame as the ImageWithFallback cinema panel (4:3, navy top/bottom
+ * border), with a caption overlay. Falls back to the original placeholder if the photo fails.
+ */
+const SolutionPhoto: React.FC<{ sol: SolutionSpace; eager: boolean }> = ({ sol, eager }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.25 });
+  const reduceMotion = useReducedMotion();
+  const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  if (failed) {
+    return (
+      <ImageWithFallback
+        alt={sol.title}
+        fallbackTitle={sol.title}
+        category="Space Integration"
+        aspectRatioClass="aspect-4/3"
+        cinemaFrame={true}
+      />
+    );
+  }
+
+  const show = inView && loaded;
+
+  return (
+    <div
+      ref={ref}
+      className="group relative overflow-hidden bg-surface-warm select-none aspect-4/3 border-y-[3px] border-brand-navy"
+    >
+      <div className="absolute inset-0 transition-transform duration-700 ease-out [@media(hover:hover)]:group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+        <motion.img
+          src={sol.photo}
+          srcSet={`${sol.photo.replace(".webp", "-800.webp")} 800w, ${sol.photo} 1600w`}
+          sizes="(min-width: 1024px) 480px, calc(100vw - 6rem)"
+          alt={sol.photoAlt}
+          width={1600}
+          height={1200}
+          loading={eager ? "eager" : "lazy"}
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+          onError={() => setFailed(true)}
+          initial={{ opacity: 0, scale: reduceMotion ? 1 : 1.05 }}
+          animate={show ? { opacity: 1, scale: 1 } : undefined}
+          transition={{ duration: reduceMotion ? 0.3 : 0.9, ease: [0.22, 1, 0.36, 1] }}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Caption: same label and space name as the placeholder */}
+      <div className="absolute inset-x-0 bottom-0 px-5 pt-12 pb-4 bg-gradient-to-t from-brand-navy/85 via-brand-navy/40 to-transparent pointer-events-none">
+        <span className="block text-[11px] font-semibold uppercase tracking-wider text-brand-orange-soft mb-0.5">
+          Space Integration
+        </span>
+        <h4 className="text-sm font-semibold text-white font-heading line-clamp-1">
+          {sol.title}
+        </h4>
+      </div>
+    </div>
+  );
+};
 
 export const SolutionsPage: React.FC = () => {
   return (
@@ -131,14 +194,7 @@ export const SolutionsPage: React.FC = () => {
                 {/* Image (5 cols) */}
                 <div className={`${isReversed ? "lg:col-span-5 lg:order-1" : "lg:col-span-5"}`}>
                   <div className="rounded-2xl overflow-hidden shadow-lg border border-line">
-                    <ImageWithFallback
-                      src={sol.image}
-                      alt={sol.title}
-                      fallbackTitle={sol.title}
-                      category="Space Integration"
-                      aspectRatioClass="aspect-4/3"
-                      cinemaFrame={true}
-                    />
+                    <SolutionPhoto sol={sol} eager={index === 0} />
                   </div>
                 </div>
               </div>

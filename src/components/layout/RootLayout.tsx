@@ -1,14 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Outlet, useLocation, useNavigationType } from "react-router-dom";
 import Lenis from "lenis";
 import { MessageSquare, ArrowUp } from "lucide-react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { CinematicIntroLoader } from "../animations/CinematicIntroLoader";
 import { COMPANY_INFO } from "../../data/company";
+import { SOLUTIONS } from "../../data/solutions";
+
+/** /solutions#<slug> deep links scroll to their own section (handled by the Solutions page). */
+const isSolutionsDeepLink = (pathname: string, hash: string) =>
+  pathname === "/solutions" && SOLUTIONS.some((s) => s.slug === decodeURIComponent(hash.replace(/^#/, "")));
 
 export const RootLayout: React.FC = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
+  const navigationType = useNavigationType();
+  const lenisRef = useRef<Lenis | null>(null);
+  const isFirstRender = useRef(true);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
@@ -30,6 +38,8 @@ export const RootLayout: React.FC = () => {
       smoothWheel: true,
     });
 
+    lenisRef.current = lenis;
+
     let animationFrameId: number;
     function raf(time: number) {
       lenis.raf(time);
@@ -40,12 +50,34 @@ export const RootLayout: React.FC = () => {
     return () => {
       cancelAnimationFrame(animationFrameId);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 
-  // Scroll to top on pathname change
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
+  // Scroll to top on new page navigations (and on first load). Back/Forward (POP) keep the
+  // browser's behaviour. Runs before paint so the new page never shows at the old position.
+  useLayoutEffect(() => {
+    const isFirst = isFirstRender.current;
+    isFirstRender.current = false;
+    if (navigationType === "POP" && !isFirst) return;
+
+    // Lenis ignores native scrolls while its smooth-scroll inertia is running, then drags the
+    // page back to its old target — so reset Lenis itself, not just the window.
+    const lenis = lenisRef.current;
+    if (isSolutionsDeepLink(pathname, hash)) {
+      // The Solutions page scrolls to the section; just stop any inertia so it can't fight it.
+      lenis?.scrollTo(window.scrollY, { immediate: true, force: true });
+      return;
+    }
+
+    const toTop = () => {
+      lenis?.scrollTo(0, { immediate: true, force: true });
+      if (window.scrollY !== 0) window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    };
+    toTop();
+    // Once more after the next frame, to catch late layout shifts or a final Lenis tick.
+    const frame = requestAnimationFrame(toTop);
+    return () => cancelAnimationFrame(frame);
   }, [pathname]);
 
   // Track scroll progress for back-to-top button

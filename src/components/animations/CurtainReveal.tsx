@@ -1,13 +1,17 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { motion, animate, stagger } from "motion/react";
+import { motion, animate, stagger, type AnimationPlaybackControls } from "motion/react";
 import { LogoMark } from "../brand/Logo";
 
 interface CurtainRevealProps {
   children: React.ReactNode;
 }
 
-/** sessionStorage key: the curtain plays once per browser session. */
-export const CURTAIN_PLAYED_KEY = "mixtcast_solutions_curtain_played";
+// One-time cleanup: the curtain used to play once per session behind this flag.
+try {
+  sessionStorage.removeItem("mixtcast_solutions_curtain_played");
+} catch {
+  // Storage unavailable — nothing to clean up.
+}
 
 // Timeline (ms from mount)
 const CUE_AT = 400; // logo fades out, seam brightens
@@ -22,22 +26,6 @@ type Phase = "closed" | "cue" | "opening" | "done";
 const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const hasPlayed = () => {
-  try {
-    return sessionStorage.getItem(CURTAIN_PLAYED_KEY) === "1";
-  } catch {
-    return false;
-  }
-};
-
-const markPlayed = () => {
-  try {
-    sessionStorage.setItem(CURTAIN_PLAYED_KEY, "1");
-  } catch {
-    // Storage unavailable (private mode etc.) — curtain simply replays.
-  }
-};
-
 // Velvet: pleated folds + top-to-bottom shading + diagonal sheen.
 const velvetBackground = [
   "linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.07) 45%, transparent 60%)",
@@ -47,13 +35,15 @@ const velvetBackground = [
 
 export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children }) => {
   const [reducedMotion] = useState(prefersReducedMotion);
-  const [shouldPlay] = useState(() => !reducedMotion && !hasPlayed());
+  // Plays on every mount (every visit to the Solutions page).
+  const [shouldPlay] = useState(() => !reducedMotion);
   const [phase, setPhase] = useState<Phase>(shouldPlay ? "closed" : "done");
   const [openDuration, setOpenDuration] = useState(OPEN_DURATION);
 
   const contentRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
   const timers = useRef<number[]>([]);
+  const animations = useRef<AnimationPlaybackControls[]>([]);
   const revealed = useRef(false);
 
   // The hero's own elements (eyebrow, headline, paragraph) are the card's direct children.
@@ -66,11 +56,12 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children }) => {
   const revealHero = useCallback(() => {
     if (revealed.current) return;
     revealed.current = true;
-    animate(
+    const controls = animate(
       getHeroItems(),
       { opacity: [0, 1], y: [20, 0] },
       { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: stagger(0.12) }
     );
+    animations.current.push(controls);
   }, []);
 
   const clearTimers = () => {
@@ -84,8 +75,8 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children }) => {
       const wrapper = contentRef.current;
       if (!wrapper) return;
       wrapper.style.opacity = "0";
-      animate(wrapper, { opacity: [0, 1] }, { duration: 0.5, ease: "easeOut" });
-      return;
+      const controls = animate(wrapper, { opacity: [0, 1] }, { duration: 0.5, ease: "easeOut" });
+      return () => controls.stop();
     }
     getHeroItems().forEach((el) => {
       el.style.opacity = "0";
@@ -99,11 +90,12 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children }) => {
   // Automatic timeline.
   useEffect(() => {
     if (!shouldPlay) return;
-    markPlayed();
 
     const bars = logoRef.current?.querySelectorAll<SVGGElement>(".waveform-left, .waveform-right");
     if (bars?.length) {
-      animate(bars, { scaleY: [1, 0.5, 1.15, 0.85, 1] }, { duration: 0.65, delay: 0.1, ease: "easeInOut" });
+      animations.current.push(
+        animate(bars, { scaleY: [1, 0.5, 1.15, 0.85, 1] }, { duration: 0.65, delay: 0.1, ease: "easeInOut" })
+      );
     }
 
     timers.current.push(
@@ -114,6 +106,15 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children }) => {
     );
     return clearTimers;
   }, [shouldPlay, revealHero]);
+
+  // Stop any in-flight animations if the page is left mid-sequence.
+  useEffect(
+    () => () => {
+      animations.current.forEach((a) => a.stop());
+      animations.current = [];
+    },
+    []
+  );
 
   const skip = useCallback(() => {
     if (phase !== "closed" && phase !== "cue") return;

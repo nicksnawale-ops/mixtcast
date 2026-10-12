@@ -16,6 +16,14 @@ import { SOLUTIONS } from "../data/solutions";
 import { SERVICES } from "../data/services";
 import { submitEnquiry, EnquiryPayload } from "../lib/api";
 import { Button } from "../components/ui/Button";
+import { PremiumSelect } from "../components/forms/PremiumSelect";
+
+const TIMELINE_OPTIONS = [
+  { value: "Immediate (< 1 month)", label: "Immediate (< 1 month)" },
+  { value: "1-3 months", label: "1 to 3 months" },
+  { value: "3-6 months", label: "3 to 6 months" },
+  { value: "Planning & Architectural Stage", label: "Planning & Architectural Stage" },
+];
 
 export const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState<EnquiryPayload>({
@@ -301,7 +309,7 @@ export const ContactPage: React.FC = () => {
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="e.g. Yogesh Chaudhari"
+                        placeholder="e.g. Rajveer Sharma"
                         className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none transition-colors ${
                           errors.name
                             ? "border-red-500 focus:border-red-600 bg-red-50/20"
@@ -353,7 +361,7 @@ export const ContactPage: React.FC = () => {
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="+91 99607 61772"
+                        placeholder="+91 90123 45678"
                         className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none transition-colors ${
                           errors.phone
                             ? "border-red-500 focus:border-red-600 bg-red-50/20"
@@ -380,20 +388,15 @@ export const ContactPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-ink mb-1.5">
+                      <label id="enquiry-space-type-label" className="block text-xs font-semibold text-ink mb-1.5">
                         Space Type
                       </label>
-                      <select
+                      <PremiumSelect
+                        labelId="enquiry-space-type-label"
                         value={formData.spaceType}
-                        onChange={(e) => setFormData({ ...formData, spaceType: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl border border-line focus:border-brand-navy bg-surface-warm/40 text-sm outline-none"
-                      >
-                        {SOLUTIONS.map((sol) => (
-                          <option key={sol.id} value={sol.title}>
-                            {sol.title}
-                          </option>
-                        ))}
-                      </select>
+                        onChange={(spaceType) => setFormData({ ...formData, spaceType })}
+                        options={SOLUTIONS.map((sol) => ({ value: sol.title, label: sol.title }))}
+                      />
                     </div>
                   </div>
 
@@ -426,19 +429,15 @@ export const ContactPage: React.FC = () => {
 
                   {/* Approximate Timeline */}
                   <div>
-                    <label className="block text-xs font-semibold text-ink mb-1.5">
+                    <label id="enquiry-timeline-label" className="block text-xs font-semibold text-ink mb-1.5">
                       Approximate Project Timeline
                     </label>
-                    <select
+                    <PremiumSelect
+                      labelId="enquiry-timeline-label"
                       value={formData.timeline}
-                      onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-line focus:border-brand-navy bg-surface-warm/40 text-sm outline-none"
-                    >
-                      <option value="Immediate (< 1 month)">Immediate (&lt; 1 month)</option>
-                      <option value="1-3 months">1 to 3 months</option>
-                      <option value="3-6 months">3 to 6 months</option>
-                      <option value="Planning & Architectural Stage">Planning & Architectural Stage</option>
-                    </select>
+                      onChange={(timeline) => setFormData({ ...formData, timeline })}
+                      options={TIMELINE_OPTIONS}
+                    />
                   </div>
 
                   {/* Message */}

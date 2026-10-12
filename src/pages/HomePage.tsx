@@ -73,7 +73,7 @@ const PartnerMarqueeCard: React.FC<{ partner: (typeof TECHNOLOGY_PARTNERS)[numbe
             alt={`${partner.name} logo`}
             loading="lazy"
             onError={() => setImgError(true)}
-            className="h-9 w-auto max-w-[140px] object-contain transition-transform duration-200 group-hover:scale-105"
+            className={`h-9 w-auto max-w-[140px] object-contain transition-transform duration-200 group-hover:scale-105${partner.logoBg === "dark" ? " bg-black rounded-[10px] p-1.5" : ""}`}
           />
           <span className="text-[10px] text-ink-muted uppercase tracking-wider block mt-1.5 whitespace-nowrap">
             {partner.category}

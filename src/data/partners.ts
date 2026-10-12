@@ -5,6 +5,8 @@ export interface PartnerItem {
   specialty: string;
   imageSlot: string;
   logo: string;
+  /** Set to "dark" for white/light logos that need a black tile behind them. */
+  logoBg?: "dark";
 }
 
 export const TECHNOLOGY_PARTNERS: PartnerItem[] = [
@@ -95,6 +97,7 @@ export const TECHNOLOGY_PARTNERS: PartnerItem[] = [
     specialty: "Multi-zone audio matrixes, modular sound sources & column speakers",
     imageSlot: "/images/partners/audac.svg",
     logo: "/images/partners/audac.png",
+    logoBg: "dark",
   },
   {
     id: "harman",

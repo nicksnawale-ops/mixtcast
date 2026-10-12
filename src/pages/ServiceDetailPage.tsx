@@ -3,7 +3,6 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { CheckCircle2, ArrowRight, ArrowLeft, Building2, Sparkles, Sliders } from "lucide-react";
 import { SERVICES } from "../data/services";
 import { SOLUTIONS } from "../data/solutions";
-import { IMAGES } from "../data/images";
 import { Button } from "../components/ui/Button";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback";
 import { WaveformDivider } from "../components/ui/WaveformDivider";
@@ -74,8 +73,12 @@ export const ServiceDetailPage: React.FC = () => {
           <div className="lg:col-span-5">
             <div className="rounded-3xl overflow-hidden shadow-xl border border-line">
               <ImageWithFallback
-                src={IMAGES.hero.primaryAuditorium}
-                alt={service.title}
+                src={service.photo}
+                srcSet={`${service.photo.replace(".webp", "-800.webp")} 800w, ${service.photo} 1400w`}
+                sizes="(min-width: 1024px) 480px, calc(100vw - 2rem)"
+                width={1400}
+                height={1050}
+                alt={service.photoAlt}
                 fallbackTitle={service.title}
                 category={service.category}
                 aspectRatioClass="aspect-4/3"

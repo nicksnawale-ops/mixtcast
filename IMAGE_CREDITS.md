@@ -34,3 +34,24 @@ Download date: 2026-10-12
 | Corporate Training Centers | `training-centers.webp`, `training-centers-800.webp` | https://unsplash.com/photos/eWnSMfxvpF4 | RUT MIIT (@rutmiit) | Unsplash | Unsplash License |
 | Residential Home Theatres | `residential-home-theatres.webp`, `residential-home-theatres-800.webp` | https://unsplash.com/photos/vDHEF40AQb8 | Im3rd Media (@im3rdmedia) | Unsplash | Unsplash License |
 | Podcast & Chroma Studios | `podcast-chroma-studios.webp`, `podcast-chroma-studios-800.webp` | https://unsplash.com/photos/zMC6LPgK8u4 | Luther Yonel (@lutheryonel) | Unsplash | Unsplash License |
+
+## Service detail pages
+
+Hero photo for each `/services/:slug` page. Self-hosted in `public/images/services/` as WebP
+(`<slug>.webp` at 1400px wide and `<slug>-800.webp` at 800px wide). Stock photos — not MixtCast installations.
+Download date: 2026-10-12.
+
+| Service | Files | Photo page | Photographer | Source | License |
+|---|---|---|---|---|---|
+| Audio Designing | `audio-designing.webp`, `audio-designing-800.webp` | https://unsplash.com/photos/llIZXpsK8Hs | Caught In Joy (@caught_in_joy) | Unsplash | [Unsplash License](https://unsplash.com/license) |
+| Video Designing | `video-designing.webp`, `video-designing-800.webp` | https://www.pexels.com/photo/37668809/ | SHOX ART (@shox) | Pexels | [Pexels License](https://www.pexels.com/license/) |
+| Auditorium Designing | `auditorium-designing.webp`, `auditorium-designing-800.webp` | https://www.pexels.com/photo/36900080/ | Earth Photart (@earth-photart-2149767641) | Pexels | [Pexels License](https://www.pexels.com/license/) |
+| Lighting Solutions | `lighting-solutions.webp`, `lighting-solutions-800.webp` | https://unsplash.com/photos/4QPsMAV3ILY | Mel — (@melwasthis) | Unsplash | [Unsplash License](https://unsplash.com/license) |
+| Digital Signage Solutions | `digital-signage-solutions.webp`, `digital-signage-solutions-800.webp` | https://www.pexels.com/photo/6009286/ | toter yau (@toter-yau-5305300) | Pexels | [Pexels License](https://www.pexels.com/license/) |
+| AV Control Suite | `av-control-suite.webp`, `av-control-suite-800.webp` | https://www.pexels.com/photo/6949336/ | Werner Pfennig (@werner-pfennig) | Pexels | [Pexels License](https://www.pexels.com/license/) |
+| Acoustic Solutions | `acoustic-solutions.webp`, `acoustic-solutions-800.webp` | https://unsplash.com/photos/hfBjWs80WoA | Céline Cao, uploaded by Soundsitive Studio (@soundsitive) | Unsplash | [Unsplash License](https://unsplash.com/license) |
+| AI in Audio Visual | `ai-in-audio-visual.webp`, `ai-in-audio-visual-800.webp` | https://www.pexels.com/photo/236730/ | Pixabay (@pixabay) | Pexels | [Pexels License](https://www.pexels.com/license/) |
+| Commercial Theatre | `commercial-theatre.webp`, `commercial-theatre-800.webp` | https://unsplash.com/photos/kRyJPPsLgbU | wong zihoo (@zihoowong) | Unsplash | [Unsplash License](https://unsplash.com/license) |
+| Customized Home Theatre | `customized-home-theatre.webp`, `customized-home-theatre-800.webp` | https://unsplash.com/photos/RBWK3YcwIOQ | IRa Kang (@lifeinkorea) | Unsplash | [Unsplash License](https://unsplash.com/license) |
+| Customized Chroma Studio | `customized-chroma-studio.webp`, `customized-chroma-studio-800.webp` | https://www.pexels.com/photo/6794933/ | Max Vakhtbovych (@artbovich) | Pexels | [Pexels License](https://www.pexels.com/license/) |
+| Podcasting Studio | `podcasting-studio.webp`, `podcasting-studio-800.webp` | https://www.pexels.com/photo/10321163/ | Ludvig Hedenborg (@ludvighedenborg) | Pexels | [Pexels License](https://www.pexels.com/license/) |

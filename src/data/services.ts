@@ -8,6 +8,9 @@ export interface ServiceItem {
   deliverables: string[];
   idealFor: string[];
   image: string;
+  /** Licensed hero photo (1400w WebP; an "-800" variant sits alongside). See IMAGE_CREDITS.md. */
+  photo: string;
+  photoAlt: string;
   accentQuote?: string;
 }
 
@@ -34,6 +37,8 @@ export const SERVICES: ServiceItem[] = [
       "Live Performance Venues",
     ],
     image: "/images/services/audio-designing.jpg",
+    photo: "/images/services/audio-designing.webp",
+    photoAlt: "Analog audio mixing console with illuminated VU meters",
     accentQuote: "Pristine acoustic dynamics where every spoken syllable is delivered with natural fidelity.",
   },
   {
@@ -58,6 +63,8 @@ export const SERVICES: ServiceItem[] = [
       "Retail & Brand Experience Centers",
     ],
     image: "/images/services/video-designing.jpg",
+    photo: "/images/services/video-designing.webp",
+    photoAlt: "Technician at video control monitors in front of a large LED video wall",
     accentQuote: "Pixel-perfect visual canvases calibrated for maximum contrast and audience engagement.",
   },
   {
@@ -82,6 +89,8 @@ export const SERVICES: ServiceItem[] = [
       "Cultural & Performing Arts Centers",
     ],
     image: "/images/services/auditorium-designing.jpg",
+    photo: "/images/services/auditorium-designing.webp",
+    photoAlt: "Modern conference auditorium with curved tiered seating, stage and architectural ceiling lighting",
     accentQuote: "Grand assembled spaces engineered for seamless performance and effortless governance.",
   },
   {
@@ -106,6 +115,8 @@ export const SERVICES: ServiceItem[] = [
       "Corporate Boardrooms",
     ],
     image: "/images/services/lighting-solutions.jpg",
+    photo: "/images/services/lighting-solutions.webp",
+    photoAlt: "Stage lighting rig with a moving-head fixture, spotlights and LED tubes",
     accentQuote: "Illuminating spaces with dramatic impact and broadcast-grade color fidelity.",
   },
   {
@@ -130,6 +141,8 @@ export const SERVICES: ServiceItem[] = [
       "Educational Campuses",
     ],
     image: "/images/services/digital-signage-solutions.jpg",
+    photo: "/images/services/digital-signage-solutions.webp",
+    photoAlt: "Modern metro platform with ceiling-mounted digital signage displays",
     accentQuote: "Dynamic visual touchpoints that communicate vital information in real-time.",
   },
   {
@@ -154,6 +167,8 @@ export const SERVICES: ServiceItem[] = [
       "Control & Command Rooms",
     ],
     image: "/images/services/av-control-suite.jpg",
+    photo: "/images/services/av-control-suite.webp",
+    photoAlt: "Meeting-table touch control tablet beside a gooseneck conference microphone",
     accentQuote: "Effortless one-touch room orchestration that lets teams focus on collaboration.",
   },
   {
@@ -178,6 +193,8 @@ export const SERVICES: ServiceItem[] = [
       "Home Theatres & Media Dens",
     ],
     image: "/images/services/acoustic-solutions.jpg",
+    photo: "/images/services/acoustic-solutions.webp",
+    photoAlt: "Acoustically treated studio with wall diffusers, studio monitors and mixing desk",
     accentQuote: "Harmonizing room physics to deliver tight bass, clean speech, and serene quietude.",
   },
   {
@@ -202,6 +219,8 @@ export const SERVICES: ServiceItem[] = [
       "Executive Collaboration Suites",
     ],
     image: "/images/services/ai-in-audio-visual.jpg",
+    photo: "/images/services/ai-in-audio-visual.webp",
+    photoAlt: "Smart meeting room with a video conferencing camera mounted above a display",
     accentQuote: "Intelligent automation that adapts in real-time to human behavior and acoustics.",
   },
   {
@@ -226,6 +245,8 @@ export const SERVICES: ServiceItem[] = [
       "Luxury Commercial Theatres",
     ],
     image: "/images/services/commercial-theatre.jpg",
+    photo: "/images/services/commercial-theatre.webp",
+    photoAlt: "Empty cinema hall with rows of red seats and a projector beam",
     accentQuote: "Awe-inspiring cinematic magic engineered for authentic theatrical drama.",
   },
   {
@@ -250,6 +271,8 @@ export const SERVICES: ServiceItem[] = [
       "Exclusive Clubhouses",
     ],
     image: "/images/services/customized-home-theatre.jpg",
+    photo: "/images/services/customized-home-theatre.webp",
+    photoAlt: "Dedicated home theatre room with a projection screen and acoustic wall finishes",
     accentQuote: "The intimacy of home paired with the uncompromised power of commercial cinema.",
   },
   {
@@ -274,6 +297,8 @@ export const SERVICES: ServiceItem[] = [
       "Advertising & Digital Media Agencies",
     ],
     image: "/images/services/customized-chroma-studio.jpg",
+    photo: "/images/services/customized-chroma-studio.webp",
+    photoAlt: "Green-screen chroma key studio with professional lighting",
     accentQuote: "Flawless green-screen environments engineered for limitless virtual realities.",
   },
   {
@@ -298,6 +323,8 @@ export const SERVICES: ServiceItem[] = [
       "Financial & Advisory Media Channels",
     ],
     image: "/images/services/podcasting-studio.jpg",
+    photo: "/images/services/podcasting-studio.webp",
+    photoAlt: "Studio microphone with pop filter on a boom arm",
     accentQuote: "Intimate, broadcast-grade studios built for captivating long-form conversation.",
   },
 ];

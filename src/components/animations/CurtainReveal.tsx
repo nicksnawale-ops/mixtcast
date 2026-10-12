@@ -4,6 +4,8 @@ import { LogoMark } from "../brand/Logo";
 
 interface CurtainRevealProps {
   children: React.ReactNode;
+  /** Skip the curtain for this visit and show the content in its final state (e.g. deep links). */
+  skip?: boolean;
 }
 
 // One-time cleanup: the curtain used to play once per session behind this flag.
@@ -33,10 +35,10 @@ const velvetBackground = [
   "repeating-linear-gradient(90deg, #0A2A63 0px, #0E3B8C 18px, #0A2A63 36px, #071E48 48px, #0A2A63 60px)",
 ].join(", ");
 
-export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children }) => {
+export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children, skip: skipCurtain = false }) => {
   const [reducedMotion] = useState(prefersReducedMotion);
   // Plays on every mount (every visit to the Solutions page).
-  const [shouldPlay] = useState(() => !reducedMotion);
+  const [shouldPlay] = useState(() => !reducedMotion && !skipCurtain);
   const [phase, setPhase] = useState<Phase>(shouldPlay ? "closed" : "done");
   const [openDuration, setOpenDuration] = useState(OPEN_DURATION);
 
@@ -71,6 +73,7 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children }) => {
 
   // Hide hero items before first paint so the entrance never flashes.
   useLayoutEffect(() => {
+    if (skipCurtain) return;
     if (reducedMotion) {
       const wrapper = contentRef.current;
       if (!wrapper) return;
@@ -85,7 +88,7 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({ children }) => {
     if (!shouldPlay) {
       revealHero();
     }
-  }, [reducedMotion, shouldPlay, revealHero]);
+  }, [skipCurtain, reducedMotion, shouldPlay, revealHero]);
 
   // Automatic timeline.
   useEffect(() => {

@@ -359,7 +359,7 @@ export const HomePage: React.FC = () => {
                 </div>
                 <div className="pt-2">
                   <Link
-                    to="/solutions"
+                    to={`/solutions#${sol.slug}`}
                     className="text-xs font-bold text-brand-navy hover:text-brand-orange transition-colors inline-flex items-center gap-1"
                   >
                     <span>View Architecture Breakdown</span>

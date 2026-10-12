@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { ArrowRight, CheckCircle2, AlertCircle, Sparkles } from "lucide-react";
 import { SOLUTIONS, SolutionSpace } from "../data/solutions";
@@ -69,12 +69,75 @@ const SolutionPhoto: React.FC<{ sol: SolutionSpace; eager: boolean }> = ({ sol, 
   );
 };
 
+const HIGHLIGHT_MS = 1200;
+
+/** Space slug from a deep link like /solutions#auditoriums, or null if it matches no space. */
+const getDeepLinkSlug = (hash: string) => {
+  const slug = decodeURIComponent(hash.replace(/^#/, ""));
+  return SOLUTIONS.some((s) => s.slug === slug) ? slug : null;
+};
+
 export const SolutionsPage: React.FC = () => {
+  const { hash } = useLocation();
+  // Read once on mount: a valid deep link skips the curtain and scrolls to that space.
+  const [targetSlug] = useState(() => getDeepLinkSlug(hash));
+  const [highlightSlug, setHighlightSlug] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!targetSlug) return;
+    const el = document.getElementById(targetSlug);
+    if (!el) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const behavior: ScrollBehavior = reduceMotion ? "auto" : "smooth";
+    const timers: number[] = [];
+    let userScrolled = false;
+
+    // Uses the section's scroll-margin-top, so the heading clears the fixed header.
+    const scrollToTarget = () => el.scrollIntoView({ behavior, block: "start" });
+    const realign = () => {
+      if (userScrolled) return;
+      const offset = el.getBoundingClientRect().top - parseFloat(getComputedStyle(el).scrollMarginTop || "0");
+      if (Math.abs(offset) > 4) scrollToTarget();
+    };
+    const onUserScroll = () => {
+      userScrolled = true;
+    };
+    const onLoad = () => timers.push(window.setTimeout(realign, 150));
+
+    // Deferred so it runs after the layout's scroll-to-top on route change.
+    timers.push(window.setTimeout(scrollToTarget, 50));
+
+    const highlightAt = reduceMotion ? 100 : 700;
+    timers.push(
+      window.setTimeout(() => setHighlightSlug(targetSlug), highlightAt),
+      window.setTimeout(() => setHighlightSlug(null), highlightAt + HIGHLIGHT_MS + 200)
+    );
+
+    // Re-check once after images have loaded, in case layout shifted.
+    if (document.readyState === "complete") {
+      timers.push(window.setTimeout(realign, 1200));
+    } else {
+      window.addEventListener("load", onLoad);
+    }
+    window.addEventListener("wheel", onUserScroll, { passive: true });
+    window.addEventListener("touchstart", onUserScroll, { passive: true });
+    window.addEventListener("keydown", onUserScroll);
+
+    return () => {
+      timers.forEach((t) => window.clearTimeout(t));
+      window.removeEventListener("load", onLoad);
+      window.removeEventListener("wheel", onUserScroll);
+      window.removeEventListener("touchstart", onUserScroll);
+      window.removeEventListener("keydown", onUserScroll);
+    };
+  }, [targetSlug]);
+
   return (
     <div className="space-y-24 sm:space-y-32 pb-24">
       {/* 1. CURTAIN REVEAL HEADER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <CurtainReveal>
+        <CurtainReveal skip={targetSlug !== null}>
           <div className="py-16 sm:py-24 px-8 sm:px-16 rounded-3xl bg-surface-warm border border-line text-center space-y-6">
             <div className="inline-flex items-center gap-2">
               <span className="h-[2px] w-4 bg-brand-orange" />
@@ -105,8 +168,18 @@ export const SolutionsPage: React.FC = () => {
             <div
               key={sol.id}
               id={sol.slug}
-              className="scroll-mt-28 p-8 sm:p-12 rounded-3xl bg-surface border border-line shadow-sm hover:shadow-md transition-shadow"
+              className="relative scroll-mt-28 p-8 sm:p-12 rounded-3xl bg-surface border border-line shadow-sm hover:shadow-md transition-shadow"
             >
+              {/* Deep-link landing highlight (opacity only) */}
+              {highlightSlug === sol.slug && (
+                <motion.div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 rounded-3xl ring-2 ring-brand-orange/70 shadow-[0_0_0_6px_rgba(255,90,31,0.12),0_0_32px_rgba(255,90,31,0.25)]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 1, 1, 0] }}
+                  transition={{ duration: HIGHLIGHT_MS / 1000, times: [0, 0.15, 0.6, 1], ease: "easeOut" }}
+                />
+              )}
               <div
                 className={`grid grid-cols-1 lg:grid-cols-12 gap-12 items-center ${
                   isReversed ? "lg:flex-row-reverse" : ""

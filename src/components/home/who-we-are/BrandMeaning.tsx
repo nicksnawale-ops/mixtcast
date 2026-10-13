@@ -108,12 +108,12 @@ export const BrandMeaning: React.FC<{ active: boolean; reduced: boolean }> = ({ 
   );
 
   return (
-    <div className="rounded-2xl border border-line bg-white/80 lg:bg-white/70 lg:backdrop-blur-sm px-5 py-4 sm:px-6 sm:py-5 text-center">
+    <div data-brand-meaning className="rounded-2xl border border-line bg-white/80 lg:bg-white/70 lg:backdrop-blur-sm px-5 py-4 sm:px-6 sm:py-5 text-center">
       <div ref={gridRef} className="grid grid-cols-[1fr_auto_1fr] items-start gap-3 sm:gap-6">
         {column(BRAND_MEANING.mixt, mixtRef, offsets.mixt, "text-brand-navy", 0.2)}
 
         {/* Hairline separator: a tiny waveform that draws in */}
-        <svg aria-hidden="true" viewBox="0 0 10 64" className="w-2.5 h-14 sm:h-16 mt-1" fill="none">
+        <svg data-brand-partition aria-hidden="true" viewBox="0 0 10 64" className="w-2.5 h-14 sm:h-16 mt-1" fill="none">
           <motion.path
             d="M5 0 V14 L2 18 L8 24 L1 30 L9 36 L3 42 L7 47 L5 50 V64"
             stroke="url(#mixtcast-hairline)"

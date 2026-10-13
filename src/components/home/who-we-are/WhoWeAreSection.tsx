@@ -57,7 +57,6 @@ export const WhoWeAreSection: React.FC = () => {
   const handoverDashOpacity = useHandoverDashOpacity();
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
-  const leftRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const active = useInView(sectionRef, { once: true, amount: M.inViewAmount });
@@ -78,7 +77,8 @@ export const WhoWeAreSection: React.FC = () => {
   const narration = useNarration(sectionRef, { mostlyInView, inView: onScreen });
   const [isDesktop, setIsDesktop] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches);
   const [lineOf, setLineOf] = useState<number[]>(HEADLINE.map(() => 0));
-  const [stream, setStream] = useState<{ x: number; y: number; length: number } | null>(null);
+  // Converge stream (desktop): from the brand block's partition line to the photo's left edge (grid coordinates).
+  const [stream, setStream] = useState<{ x: number; y: number; length: number; angle: number; landY: number } | null>(null);
 
   // Load the classical italic face only when this section is used.
   useEffect(() => {
@@ -111,15 +111,36 @@ export const WhoWeAreSection: React.FC = () => {
         setLineOf(tops.map((t) => unique.indexOf(t)));
       }
       const grid = gridRef.current?.getBoundingClientRect();
-      const left = leftRef.current?.getBoundingClientRect();
+      const partition = gridRef.current?.querySelector("[data-brand-partition]")?.getBoundingClientRect();
+      const brand = gridRef.current?.querySelector("[data-brand-meaning]")?.getBoundingClientRect();
       const img = imageRef.current?.getBoundingClientRect();
-      if (grid && left && img && isDesktop) {
-        setStream({ x: left.right - grid.left, y: img.top + img.height / 2 - grid.top, length: img.left - left.right });
+      if (grid && partition && brand && img && isDesktop && img.left > brand.right) {
+        // Leaves the block's right edge at the partition line's height; lands on the photo's left edge at the same
+        // height when it lines up, otherwise at the nearest point within the photo's middle 76%.
+        const startY = partition.top + partition.height / 2;
+        const endY = Math.min(img.bottom - img.height * 0.12, Math.max(img.top + img.height * 0.12, startY));
+        const dx = img.left - brand.right;
+        const dy = endY - startY;
+        // Narrow desktops (text column much taller than the photo): skip rather than draw a near-vertical stream.
+        if (Math.abs(dy) > dx) return setStream(null);
+        setStream({
+          x: brand.right - grid.left,
+          y: startY - grid.top,
+          length: Math.hypot(dx, dy),
+          angle: (Math.atan2(dy, dx) * 180) / Math.PI,
+          landY: (endY - img.top) / img.height,
+        });
       } else setStream(null);
     };
     measure();
     window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    // Re-measure when the grid reflows (e.g. once the serif face loads).
+    const observer = new ResizeObserver(measure);
+    if (gridRef.current) observer.observe(gridRef.current);
+    return () => {
+      window.removeEventListener("resize", measure);
+      observer.disconnect();
+    };
   }, [isDesktop]);
 
   // Background inscription: slow horizontal parallax (max ±40px).
@@ -161,15 +182,21 @@ export const WhoWeAreSection: React.FC = () => {
         MIXT<span className="inline-block w-[0.6em]" />CAST
       </motion.div>
 
-      <div ref={gridRef} className="relative grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-x-20 items-center">
-        {/* Converge: orange waveform + navy light beam meet at the image edge (desktop only) */}
+      {/* Below lg the two column wrappers are `display: contents`, so their blocks interleave via `order`:
+          eyebrow, headline, paragraph, photo, brand meaning, card, button. */}
+      <div ref={gridRef} className="relative flex flex-col gap-6 lg:grid lg:grid-cols-12 lg:gap-x-20 lg:gap-y-0 lg:items-start">
+        {/* Converge: orange waveform + navy light beam travel from the partition line to the image edge (desktop only) */}
         {stream && !reduced && stream.length > 0 && (
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute z-0 origin-left"
+            style={{ left: stream.x, top: stream.y, width: stream.length, height: 0, transform: `rotate(${stream.angle}deg)` }}
+          >
             <motion.div
               className="absolute h-3 origin-left"
               style={{
-                left: stream.x,
-                top: stream.y - 6,
+                left: 0,
+                top: -6,
                 width: stream.length,
                 background: "linear-gradient(90deg, rgba(14,59,140,0) 0%, rgba(14,59,140,0.28) 55%, rgba(14,59,140,0.5) 100%)",
                 clipPath: "polygon(0 46%, 100% 0, 100% 100%, 0 54%)",
@@ -178,7 +205,7 @@ export const WhoWeAreSection: React.FC = () => {
               animate={active ? { scaleX: [0, 1, 1], opacity: [0, 1, 0] } : { scaleX: 0, opacity: 0 }}
               transition={{ duration: M.convergeDuration + M.takeShapeDuration + 0.4, delay: M.convergeAt, times: [0, 0.45, 1], ease: EASE_OUT }}
             />
-            <svg className="absolute overflow-visible" style={{ left: stream.x, top: stream.y - 12, width: stream.length, height: 24 }} viewBox={`0 0 ${stream.length} 24`} fill="none">
+            <svg className="absolute overflow-visible" style={{ left: 0, top: -12, width: stream.length, height: 24 }} viewBox={`0 0 ${stream.length} 24`} fill="none">
               <motion.path
                 d={Array.from({ length: 9 }, (_, i) => {
                   const x = (stream.length / 8) * i;
@@ -201,8 +228,8 @@ export const WhoWeAreSection: React.FC = () => {
         )}
 
         {/* Left Text */}
-        <div ref={leftRef} className="relative z-10 lg:col-span-6 space-y-6">
-          <motion.div className="flex items-center justify-between gap-4" {...fadeUp(M.eyebrowAt, 8)}>
+        <div className="contents lg:relative lg:z-10 lg:col-span-6 lg:flex lg:flex-col lg:gap-6">
+          <motion.div className="order-1 lg:order-none flex items-center justify-between gap-4" {...fadeUp(M.eyebrowAt, 8)}>
             <div className="inline-flex items-center gap-2">
             <motion.span data-handover-dash className="h-[2px] w-4 bg-brand-orange" style={{ opacity: handoverDashOpacity ?? 1 }} />
             <span className="text-xs font-bold uppercase tracking-widest text-brand-orange">
@@ -218,7 +245,7 @@ export const WhoWeAreSection: React.FC = () => {
             />
           </motion.div>
 
-          <h2 ref={headlineRef} data-narration-target="wwa-headline" className="text-3xl sm:text-4xl font-bold text-ink font-heading leading-tight">
+          <h2 ref={headlineRef} data-narration-target="wwa-headline" className="order-2 lg:order-none text-3xl sm:text-4xl font-bold text-ink font-heading leading-tight">
             {HEADLINE.map((w, i) => (
               <React.Fragment key={w.word}>
                 <span data-word className="inline-block overflow-hidden align-bottom pb-[0.14em] -mb-[0.14em]">
@@ -237,25 +264,15 @@ export const WhoWeAreSection: React.FC = () => {
             ))}
           </h2>
 
-          <motion.p data-narration-target="wwa-paragraph" className="text-base sm:text-lg text-ink-muted leading-relaxed" {...fadeUp(M.paragraphAt)}>
+          <motion.p data-narration-target="wwa-paragraph" className="order-3 lg:order-none text-base sm:text-lg text-ink-muted leading-relaxed" {...fadeUp(M.paragraphAt)}>
             {COMPANY_INFO.aboutParagraphs[0]}
           </motion.p>
 
-          <BrandMeaning active={active} reduced={reduced} />
-
-          <div className="pt-2">
-            <FeatureCard
-              title={CUSTOM_ENGINEERING_CARD.title}
-              text={CUSTOM_ENGINEERING_CARD.text}
-              titleClassName="text-brand-navy"
-              icon={<AudioWaveform className="w-6 h-6" strokeWidth={1.75} />}
-              delay={M.cardsAt}
-              active={active}
-              reduced={reduced}
-            />
+          <div className="order-5 lg:order-none">
+            <BrandMeaning active={active} reduced={reduced} />
           </div>
 
-          <motion.div className="pt-2" {...fadeUp(M.buttonAt, 10)}>
+          <motion.div className="order-7 lg:order-none pt-2" {...fadeUp(M.buttonAt, 10)}>
             <motion.div
               className="inline-block"
               style={{ x: magnetX, y: magnetY }}
@@ -277,9 +294,22 @@ export const WhoWeAreSection: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Right: the image takes shape */}
-        <div className="relative z-10 lg:col-span-6">
-          <TakeShapeImage ref={imageRef} active={active} reduced={reduced} isDesktop={isDesktop} />
+        {/* Right: the image takes shape (top-aligned), with the Custom Engineering card beneath it */}
+        <div className="contents lg:relative lg:z-10 lg:col-span-6 lg:flex lg:flex-col lg:gap-6">
+          <div className="order-4 lg:order-none py-4 lg:py-0">
+            <TakeShapeImage ref={imageRef} active={active} reduced={reduced} isDesktop={isDesktop} convergeY={stream?.landY} />
+          </div>
+          <div className="order-6 lg:order-none">
+            <FeatureCard
+              title={CUSTOM_ENGINEERING_CARD.title}
+              text={CUSTOM_ENGINEERING_CARD.text}
+              titleClassName="text-brand-navy"
+              icon={<AudioWaveform className="w-6 h-6" strokeWidth={1.75} />}
+              delay={M.cardsAt}
+              active={active}
+              reduced={reduced}
+            />
+          </div>
         </div>
       </div>
     </section>

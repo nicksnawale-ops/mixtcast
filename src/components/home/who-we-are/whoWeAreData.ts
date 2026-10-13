@@ -44,11 +44,11 @@ export const WHO_WE_ARE_MOTION = {
   taglineAt: 1.95, // tagline takes shape last
   taglineStagger: 0.04,
   taglineLineAt: 2.1, // navy → orange line draws beneath the tagline
-  cardsAt: 0.9,
+  cardsAt: 1.4, // the card settles in beneath the photo as it takes shape
   buttonAt: 1.0,
-  convergeAt: 0.4, // desktop: orange waveform + navy light beam converge on the image edge
+  convergeAt: 1.05, // desktop: as MIXT/CAST split, the waveform + navy beam leave the partition line for the image edge
   convergeDuration: 0.75,
-  takeShapeAt: 1.1, // the image takes shape from the meeting point
+  takeShapeAt: 1.6, // the image takes shape from the meeting point
   takeShapeAtMobile: 0.3,
   takeShapeDuration: 0.8,
   kenBurnsScale: 1.06,

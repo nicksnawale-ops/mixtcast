@@ -9,15 +9,17 @@ interface TakeShapeImageProps {
   reduced: boolean;
   /** Desktop: the image takes shape from its left edge (where the streams converge); otherwise from the centre. */
   isDesktop: boolean;
+  /** Desktop: where the streams land on the left edge, as a fraction of the frame height (default: the middle). */
+  convergeY?: number;
 }
 
 const MAX_TILT = 5; // degrees
 
 /** The featured image takes shape through a soft expanding projector-light mask, then a slow Ken Burns. */
-export const TakeShapeImage = forwardRef<HTMLDivElement, TakeShapeImageProps>(({ active, reduced, isDesktop }, ref) => {
+export const TakeShapeImage = forwardRef<HTMLDivElement, TakeShapeImageProps>(({ active, reduced, isDesktop, convergeY = 0.5 }, ref) => {
   const rotateX = useSpring(0, { stiffness: 120, damping: 18 });
   const rotateY = useSpring(0, { stiffness: 120, damping: 18 });
-  const origin = isDesktop ? "0% 50%" : "50% 50%";
+  const origin = isDesktop ? `0% ${(convergeY * 100).toFixed(1)}%` : "50% 50%";
   const takeShapeAt = isDesktop ? M.takeShapeAt : M.takeShapeAtMobile;
   const shown = active || reduced;
 
@@ -55,7 +57,7 @@ export const TakeShapeImage = forwardRef<HTMLDivElement, TakeShapeImageProps>(({
       b.stop();
     };
   }, [shown, reduced, takeShapeAt, iris, irisOpacity]);
-  const o = { x: isDesktop ? 0 : size.w / 2, y: size.h / 2 };
+  const o = { x: isDesktop ? 0 : size.w / 2, y: isDesktop ? size.h * convergeY : size.h / 2 };
   const reach = 2 * Math.max(...[[0, 0], [size.w, 0], [0, size.h], [size.w, size.h]].map(([x, y]) => Math.hypot(x - o.x, y - o.y)));
 
   const onMove = (e: React.PointerEvent<HTMLDivElement>) => {

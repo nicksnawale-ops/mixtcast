@@ -9,6 +9,10 @@ import { CONSOLE_CSS } from "./consoleStyles";
 
 const STAGGER = 0.07; // s between cards in the entrance cascade
 
+// Home shows only the featured services. To change the set or its order, edit `featured: true` and
+// `featuredOrder` in src/data/services.ts — the Services page always lists every service.
+const FEATURED_SERVICES = SERVICES.filter((s) => s.featured).sort((a, b) => (a.featuredOrder ?? 0) - (b.featuredOrder ?? 0));
+
 const useMedia = (query: string) => {
   const [matches, setMatches] = useState(() => typeof window !== "undefined" && window.matchMedia(query).matches);
   useEffect(() => {
@@ -80,13 +84,13 @@ export const ServicesConsoleSection: React.FC<{ iconFor: (name: string) => React
             </h2>
           </div>
           <Button to="/services" variant="secondary" size="sm" icon={<ArrowRight className="w-4 h-4" />}>
-            View All 12 Services
+            View All {SERVICES.length} Services
           </Button>
         </div>
 
         {/* Channel strips */}
         <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {SERVICES.map((service, index) => (
+          {FEATURED_SERVICES.map((service, index) => (
             <ChannelCard
               key={service.slug}
               service={service}
@@ -98,6 +102,13 @@ export const ServicesConsoleSection: React.FC<{ iconFor: (name: string) => React
               onActivate={onActivate}
             />
           ))}
+        </div>
+
+        {/* The full list, one click away */}
+        <div className="mt-10 flex justify-center">
+          <Button to="/services" variant="secondary" size="sm" icon={<ArrowRight className="w-4 h-4" />}>
+            View All {SERVICES.length} Services
+          </Button>
         </div>
       </div>
     </section>

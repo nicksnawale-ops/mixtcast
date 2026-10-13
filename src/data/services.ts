@@ -12,11 +12,17 @@ export interface ServiceItem {
   photo: string;
   photoAlt: string;
   accentQuote?: string;
+  /** Shown on the Home page's services section (see `featuredOrder`). */
+  featured?: boolean;
+  /** Position among the featured services on the Home page (1 = first). */
+  featuredOrder?: number;
 }
 
 export const SERVICES: ServiceItem[] = [
   {
     slug: "audio-designing",
+    featured: true,
+    featuredOrder: 1,
     title: "Audio Designing",
     category: "Audio",
     icon: "Volume2",
@@ -43,6 +49,8 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     slug: "video-designing",
+    featured: true,
+    featuredOrder: 2,
     title: "Video Designing",
     category: "Video",
     icon: "Tv",
@@ -69,6 +77,8 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     slug: "auditorium-designing",
+    featured: true,
+    featuredOrder: 3,
     title: "Auditorium Designing",
     category: "Spaces",
     icon: "Building2",
@@ -147,6 +157,8 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     slug: "av-control-suite",
+    featured: true,
+    featuredOrder: 5,
     title: "AV Control Suite",
     category: "Audio",
     icon: "Cpu",
@@ -225,6 +237,8 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     slug: "commercial-theatre",
+    featured: true,
+    featuredOrder: 4,
     title: "Commercial Theatre",
     category: "Spaces",
     icon: "Film",
@@ -303,6 +317,8 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     slug: "podcasting-studio",
+    featured: true,
+    featuredOrder: 6,
     title: "Podcasting Studio",
     category: "Studios",
     icon: "Mic",

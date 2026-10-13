@@ -1,12 +1,3 @@
-export interface StatItem {
-  id: string;
-  value: number;
-  suffix?: string;
-  label: string;
-  isConfirmed: boolean;
-  note?: string;
-}
-
 export interface CoreValue {
   id: string;
   title: string;
@@ -52,40 +43,6 @@ export const COMPANY_INFO = {
     country: "India",
     addressLine: "[TODO: add full registered office address, Pune, Maharashtra, India]",
   },
-  stats: [
-    {
-      id: "projects",
-      value: 150,
-      suffix: "+",
-      label: "AV Installations Delivered",
-      isConfirmed: false,
-      note: "TODO: confirm exact count with client",
-    },
-    {
-      id: "experience",
-      value: 12,
-      suffix: "+",
-      label: "Years Collective Industry Expertise",
-      isConfirmed: false,
-      note: "TODO: confirm with client",
-    },
-    {
-      id: "partners",
-      value: 12,
-      suffix: "",
-      label: "Global Technology Partners",
-      isConfirmed: true,
-      note: "Confirmed from official profile partners list",
-    },
-    {
-      id: "cities",
-      value: 15,
-      suffix: "+",
-      label: "Cities Served Across India",
-      isConfirmed: false,
-      note: "TODO: confirm with client",
-    },
-  ] as StatItem[],
   coreValues: [
     {
       id: "quality",

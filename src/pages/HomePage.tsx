@@ -37,7 +37,6 @@ import { WaveformDivider } from "../components/ui/WaveformDivider";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback";
 import { WaveformCanvas } from "../components/animations/WaveformCanvas";
 import { Marquee } from "../components/animations/Marquee";
-import { CountUp } from "../components/animations/CountUp";
 import { WhoWeAreSection } from "../components/home/who-we-are/WhoWeAreSection";
 import { HeroSheetStack, RisingSheet, StackedHero } from "../components/home/who-we-are/StackingSheet";
 
@@ -381,29 +380,6 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* 7. STATS BAND (COUNT-UP WITH TODO PLACEHOLDERS MARKED) */}
-      <section className="bg-brand-navy text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-y lg:divide-y-0 lg:divide-x divide-white/10">
-            {COMPANY_INFO.stats.map((stat) => (
-              <div key={stat.id} className="pt-6 lg:pt-0 lg:px-6 flex flex-col items-center">
-                <div className="text-4xl sm:text-5xl font-extrabold font-heading text-brand-orange mb-2">
-                  <CountUp end={stat.value} suffix={stat.suffix} />
-                </div>
-                <span className="text-sm font-medium text-white/90 max-w-xs block">
-                  {stat.label}
-                </span>
-                {!stat.isConfirmed && (
-                  <span className="text-[10px] text-white/40 uppercase tracking-widest mt-1">
-                    [{stat.note}]
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

@@ -33,18 +33,25 @@ export const SystemLivePill: React.FC<{ className?: string }> = ({ className = "
   </span>
 );
 
-/** Faint blueprint grid (navy ~3%), fading toward the edges via a vignette in the section colour (no CSS mask). */
+/**
+ * Faint blueprint grid (navy ~3%), fading toward the edges via a vignette in the section colour (no CSS mask).
+ * Optional reveal hook for the "Site Survey Scan" transition: a `--ps-scan` length set on the `[data-ps-grid]`
+ * element shows the grid only above that line (two counter-moving transforms in a clip). Unset = fully visible.
+ */
 export const BlueprintGrid: React.FC = () => (
-  <div
-    aria-hidden="true"
-    className="pointer-events-none absolute inset-0"
-    style={{
-      backgroundImage:
-        "radial-gradient(ellipse 70% 70% at 50% 50%, rgba(243,246,251,0) 30%, #F3F6FB 100%), linear-gradient(rgba(14,59,140,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(14,59,140,0.03) 1px, transparent 1px)",
-      backgroundSize: "100% 100%, 48px 48px, 48px 48px",
-      backgroundPosition: "center, center, center",
-    }}
-  />
+  <div aria-hidden="true" data-ps-grid className="ps-grid pointer-events-none absolute inset-0 overflow-hidden">
+    <div className="ps-scan-clip absolute inset-0 overflow-hidden">
+      <div
+        className="ps-scan-inner absolute inset-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(ellipse 70% 70% at 50% 50%, rgba(243,246,251,0) 30%, #F3F6FB 100%), linear-gradient(rgba(14,59,140,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(14,59,140,0.03) 1px, transparent 1px)",
+          backgroundSize: "100% 100%, 48px 48px, 48px 48px",
+          backgroundPosition: "center, center, center",
+        }}
+      />
+    </div>
+  </div>
 );
 
 /**
@@ -109,5 +116,8 @@ export const SIGNAL_CSS = `
 .ps-breathe { transform-origin: center; animation: ps-breathe 3.6s ease-in-out infinite; }
 [data-paused] .ps-live-ping, [data-paused] .ps-breathe { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .ps-live-ping, .ps-breathe { animation: none !important; } }
+.ps-scan-clip { transform: translateY(min(0px, calc(var(--ps-scan, 100000px) - 100%))); }
+.ps-scan-inner { transform: translateY(max(0px, calc(100% - var(--ps-scan, 100000px)))); }
+.ps-grid[data-scanning] .ps-scan-clip, .ps-grid[data-scanning] .ps-scan-inner { will-change: transform; }
 .ps-num { font-family: var(--font-heading); font-weight: 800; line-height: 1; letter-spacing: -0.02em; -webkit-text-stroke: 1.5px #0E3B8C; }
 `;

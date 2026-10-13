@@ -40,6 +40,7 @@ import { HeroSheetStack, RisingSheet, StackedHero } from "../components/home/who
 import { ServicesConsoleSection } from "../components/home/services-console/ServicesConsoleSection";
 import { ProcessSignalSection } from "../components/home/process-signal/ProcessSignalSection";
 import { PatchInTransition } from "../components/home/patch-in/PatchInTransition";
+import { SurveyScanTransition } from "../components/home/survey-scan/SurveyScanTransition";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -257,8 +258,11 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. OUR PROCESS — "From Silence to Signal": scroll-driven signal-chain story */}
-      <ProcessSignalSection />
+      {/* 5. OUR PROCESS — "From Silence to Signal": scroll-driven signal-chain story, entered through the
+          "Site Survey Scan" transition (a survey beam reveals its blueprint grid and hands over to the waveform) */}
+      <SurveyScanTransition>
+        <ProcessSignalSection />
+      </SurveyScanTransition>
 
       {/* 6. WHY CHOOSE MIXTCAST */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

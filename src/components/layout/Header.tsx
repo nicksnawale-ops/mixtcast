@@ -7,6 +7,15 @@ import { MAIN_NAV_LINKS } from "../../data/navigation";
 import { COMPANY_INFO } from "../../data/company";
 import { Button } from "../ui/Button";
 
+// Header logo icon sizes. The mark's viewBox is 2:1, so these 2:1 boxes show the artwork at full size
+// (≈32 / 36 / 40 / 44px tall boxes; 30 / 32 / 34px when the header shrinks on scroll). The negative right margin
+// (10% of the width) trims the artwork's transparent edge so the visible gap to the wordmark stays ~10px.
+// Boxes taller than the logo row simply overflow it, so the header height is unchanged.
+const LOGO_MARK =
+  "shrink-0 transition-all duration-300 w-16 h-8 -mr-[6.4px] md:w-[72px] md:h-9 md:-mr-[7.2px] lg:w-20 lg:h-10 lg:-mr-2 xl:w-[88px] xl:h-11 xl:-mr-[8.8px]";
+const LOGO_MARK_SCROLLED =
+  "shrink-0 transition-all duration-300 w-[60px] h-[30px] -mr-1.5 md:w-16 md:h-8 md:-mr-[6.4px] lg:w-[68px] lg:h-[34px] lg:-mr-[6.8px]";
+
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -43,7 +52,7 @@ export const Header: React.FC = () => {
               className="flex items-center shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-navy rounded-lg"
               aria-label="MIXTCAST Visual Solutions Homepage"
             >
-              <LogoHorizontal className={isScrolled ? "h-8" : "h-9"} />
+              <LogoHorizontal className={isScrolled ? "h-8" : "h-9"} markClassName={isScrolled ? LOGO_MARK_SCROLLED : LOGO_MARK} />
             </Link>
 
             {/* Zone 2: Concise Single-line Nav Links (Desktop) */}

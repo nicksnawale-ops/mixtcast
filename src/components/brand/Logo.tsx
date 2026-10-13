@@ -79,13 +79,14 @@ export const LogoMark: React.FC<LogoProps> = ({ className = "w-10 h-10", animate
 /**
  * Compact horizontal lockup for the sticky header (single-line brand lockup).
  */
-export const LogoHorizontal: React.FC<{ className?: string; animate?: boolean }> = ({
+export const LogoHorizontal: React.FC<{ className?: string; animate?: boolean; markClassName?: string }> = ({
   className = "h-9",
   animate = false,
+  markClassName = "w-12 h-8 shrink-0",
 }) => {
   return (
     <div className={`flex items-center gap-2.5 select-none ${className}`}>
-      <LogoMark className="w-12 h-8 shrink-0" animate={animate} />
+      <LogoMark className={markClassName} animate={animate} />
       <div className="flex flex-col leading-none">
         <div className="flex items-baseline text-xl font-bold tracking-tight font-heading">
           <span className="text-[#0E3B8C]">MIXT</span>

@@ -38,6 +38,7 @@ import { Marquee } from "../components/animations/Marquee";
 import { WhoWeAreSection } from "../components/home/who-we-are/WhoWeAreSection";
 import { HeroSheetStack, RisingSheet, StackedHero } from "../components/home/who-we-are/StackingSheet";
 import { ServicesConsoleSection } from "../components/home/services-console/ServicesConsoleSection";
+import { ProcessSignalSection } from "../components/home/process-signal/ProcessSignalSection";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -252,48 +253,8 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. OUR PROCESS (WAVEFORM TIMELINE) */}
-      <section className="bg-surface-cool py-20 border-y border-line">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2">
-              Methodology
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-ink font-heading">
-              Our 5-Stage Engineering Process
-            </h2>
-            <p className="mt-3 text-base text-ink-muted">
-              From the initial acoustic survey to long-term preventative care, we uphold rigorous quality standards.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 relative">
-            {COMPANY_INFO.process.map((stage) => (
-              <div
-                key={stage.step}
-                className="relative bg-white p-6 rounded-2xl border border-line shadow-xs flex flex-col justify-between"
-              >
-                <div>
-                  <div className="w-10 h-10 rounded-full bg-brand-navy text-white font-heading font-bold text-sm flex items-center justify-center mb-4">
-                    0{stage.step}
-                  </div>
-                  <h3 className="text-base font-bold text-ink font-heading mb-2">
-                    {stage.title}
-                  </h3>
-                  <p className="text-xs text-ink-muted leading-relaxed">
-                    {stage.description}
-                  </p>
-                </div>
-                <div className="mt-6 pt-4 border-t border-line/60 flex items-center gap-1 opacity-40">
-                  <span className="w-1 h-2 bg-brand-orange rounded-full" />
-                  <span className="w-1 h-4 bg-brand-navy rounded-full" />
-                  <span className="w-1 h-2 bg-brand-orange rounded-full" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* 5. OUR PROCESS — "From Silence to Signal": scroll-driven signal-chain story */}
+      <ProcessSignalSection />
 
       {/* 6. WHY CHOOSE MIXTCAST */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

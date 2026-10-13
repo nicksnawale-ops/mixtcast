@@ -7,6 +7,7 @@ import { BrandMeaning } from "./BrandMeaning";
 import { FeatureCard } from "./FeatureCard";
 import { TakeShapeImage } from "./TakeShapeImage";
 import { WaveformUnderline } from "./WaveformUnderline";
+import { useHandoverDashOpacity } from "./SignalHandover";
 import { CUSTOM_ENGINEERING_CARD, EASE_OUT, WHO_WE_ARE_MOTION as M } from "./whoWeAreData";
 
 const SERIF_FONT_HREF = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap";
@@ -50,6 +51,8 @@ const SCOPED_CSS = `
 /** Home "Who We Are": Converge & Take Shape. */
 export const WhoWeAreSection: React.FC = () => {
   const reduced = !!useReducedMotion();
+  // When wrapped in SignalHandover, the eyebrow dash takes over from the hand-over line.
+  const handoverDashOpacity = useHandoverDashOpacity();
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const leftRef = useRef<HTMLDivElement>(null);
@@ -195,7 +198,7 @@ export const WhoWeAreSection: React.FC = () => {
         {/* Left Text */}
         <div ref={leftRef} className="relative z-10 lg:col-span-6 space-y-6">
           <motion.div className="inline-flex items-center gap-2" {...fadeUp(M.eyebrowAt, 8)}>
-            <span className="h-[2px] w-4 bg-brand-orange" />
+            <motion.span data-handover-dash className="h-[2px] w-4 bg-brand-orange" style={{ opacity: handoverDashOpacity ?? 1 }} />
             <span className="text-xs font-bold uppercase tracking-widest text-brand-orange">
               Who We Are
             </span>

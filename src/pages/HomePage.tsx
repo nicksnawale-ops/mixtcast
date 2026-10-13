@@ -21,7 +21,6 @@ import {
   Home,
   Video,
   Mic,
-  ChevronRight,
   ShieldCheck,
   Users,
   Compass,
@@ -39,6 +38,7 @@ import { ImageWithFallback } from "../components/ui/ImageWithFallback";
 import { WaveformCanvas } from "../components/animations/WaveformCanvas";
 import { Marquee } from "../components/animations/Marquee";
 import { CountUp } from "../components/animations/CountUp";
+import { WhoWeAreSection } from "../components/home/who-we-are/WhoWeAreSection";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -184,82 +184,8 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. INTRO / WHO WE ARE (SPLIT LAYOUT) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left Text */}
-          <div className="lg:col-span-6 space-y-6">
-            <div className="inline-flex items-center gap-2">
-              <span className="h-[2px] w-4 bg-brand-orange" />
-              <span className="text-xs font-bold uppercase tracking-widest text-brand-orange">
-                Who We Are
-              </span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-ink font-heading leading-tight">
-              Crafting Immersive, Intelligent Audio-Visual Ecosystems
-            </h2>
-            <p className="text-base sm:text-lg text-ink-muted leading-relaxed">
-              {COMPANY_INFO.aboutParagraphs[0]}
-            </p>
-            <div className="pt-2 flex flex-col sm:flex-row gap-4">
-              <div className="p-4 rounded-xl bg-surface-warm border border-line">
-                <span className="text-xs font-bold uppercase tracking-wider text-brand-navy block mb-1">
-                  Custom Engineering
-                </span>
-                <p className="text-xs text-ink-muted leading-relaxed">
-                  Every installation is acoustically simulated and calibrated for its architectural geometry.
-                </p>
-              </div>
-              <div className="p-4 rounded-xl bg-surface-warm border border-line">
-                <span className="text-xs font-bold uppercase tracking-wider text-brand-orange block mb-1">
-                  Future-Ready Tech
-                </span>
-                <p className="text-xs text-ink-muted leading-relaxed">
-                  Leveraging AI voice-tracking, Dante IP audio networks, and 4K uncompressed routing.
-                </p>
-              </div>
-            </div>
-            <div className="pt-2">
-              <Button to="/about" variant="primary" size="md" icon={<ChevronRight className="w-4 h-4" />}>
-                Learn More About Our Team
-              </Button>
-            </div>
-          </div>
-
-          {/* Right Parallax Cinema Frame */}
-          <div className="lg:col-span-6">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-line group">
-              <ImageWithFallback
-                src="/images/home/who-we-are.webp"
-                srcSet="/images/home/who-we-are-800.webp 800w, /images/home/who-we-are.webp 1400w"
-                sizes="(min-width: 1024px) 600px, calc(100vw - 2rem)"
-                width={1400}
-                height={998}
-                alt="Professional podcast studio with a boom-arm microphone, headphones and acoustic wall panels"
-                fallbackTitle="Broadcast Recording & Chroma Studio Setup"
-                category="Sound & Vision"
-                aspectRatioClass="aspect-4/3"
-                className="group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-white/90 backdrop-blur-md border border-line shadow-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-brand-orange block">
-                      Featured Environment
-                    </span>
-                    <h3 className="text-sm font-bold text-brand-navy font-heading">
-                      Acoustic Studio & Podcast Suites
-                    </h3>
-                  </div>
-                  <span className="text-xs font-semibold text-ink-muted bg-surface-warm px-3 py-1 rounded-full border border-line">
-                    Pune, India
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* 2. INTRO / WHO WE ARE — Sound + Vision, blended and projected */}
+      <WhoWeAreSection />
 
       {/* 3. SERVICES PREVIEW (BENTO GRID - 12 SERVICES) */}
       <section className="bg-surface-warm py-20 border-y border-line">

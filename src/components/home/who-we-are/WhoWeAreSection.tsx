@@ -6,7 +6,6 @@ import { Button } from "../../ui/Button";
 import { BrandMeaning } from "./BrandMeaning";
 import { FeatureCard } from "./FeatureCard";
 import { TakeShapeImage } from "./TakeShapeImage";
-import { WaveformUnderline } from "./WaveformUnderline";
 import { useHandoverDashOpacity } from "./SignalHandover";
 import { NarrationButton } from "./NarrationButton";
 import { useNarration } from "./useNarration";
@@ -15,11 +14,10 @@ import { CUSTOM_ENGINEERING_CARD, EASE_OUT, WHO_WE_ARE_MOTION as M } from "./who
 const SERIF_FONT_HREF = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap";
 
 // Headline split into words so it can slide up line by line; text is unchanged.
-// "Immersive" and "Intelligent" carry the gradient underline (the comma stays outside it).
-const HEADLINE: { word: string; underline?: boolean; trailing?: string }[] = [
+const HEADLINE: { word: string; trailing?: string }[] = [
   { word: "Crafting" },
-  { word: "Immersive", underline: true, trailing: "," },
-  { word: "Intelligent", underline: true },
+  { word: "Immersive", trailing: "," },
+  { word: "Intelligent" },
   { word: "Audio-Visual" },
   { word: "Ecosystems" },
 ];
@@ -33,8 +31,6 @@ const SCOPED_CSS = `
 .wwa-card[data-hover="true"] .wwa-eq-bar { animation: wwa-eq 0.9s ease-in-out infinite; }
 .wwa-meter-bar { transform-origin: bottom; animation: wwa-meter 1.6s ease-in-out infinite; }
 .wwa-ping { animation: wwa-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
-@keyframes wwa-wave { 0%, 80%, 100% { transform: scaleY(1); } 88% { transform: scaleY(1.45); } 94% { transform: scaleY(0.85); } }
-.wwa-wave-idle { transform-origin: 50% 50%; animation: wwa-wave 4s ease-in-out infinite; }
 @keyframes wwa-drift-a { 0%, 100% { transform: translate(-6%, -4%) scale(1); } 50% { transform: translate(6%, 5%) scale(1.08); } }
 @keyframes wwa-drift-b { 0%, 100% { transform: translate(5%, 6%) scale(1.05); } 50% { transform: translate(-5%, -5%) scale(0.95); } }
 @keyframes wwa-ripple { 0% { transform: scale(1); opacity: 0; } 12% { opacity: 1; } 100% { transform: scale(1.22); opacity: 0; } }
@@ -83,16 +79,6 @@ export const WhoWeAreSection: React.FC = () => {
   const [isDesktop, setIsDesktop] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches);
   const [lineOf, setLineOf] = useState<number[]>(HEADLINE.map(() => 0));
   const [stream, setStream] = useState<{ x: number; y: number; length: number } | null>(null);
-  // Headline word currently swelling its waveform underline (hover).
-  const [swellWord, setSwellWord] = useState<number | null>(null);
-  const swellTimer = useRef(0);
-  const swell = (i: number) => {
-    if (reduced) return;
-    window.clearTimeout(swellTimer.current);
-    setSwellWord(i);
-    swellTimer.current = window.setTimeout(() => setSwellWord(null), 600);
-  };
-  useEffect(() => () => window.clearTimeout(swellTimer.current), []);
 
   // Load the classical italic face only when this section is used.
   useEffect(() => {
@@ -235,30 +221,14 @@ export const WhoWeAreSection: React.FC = () => {
           <h2 ref={headlineRef} data-narration-target="wwa-headline" className="text-3xl sm:text-4xl font-bold text-ink font-heading leading-tight">
             {HEADLINE.map((w, i) => (
               <React.Fragment key={w.word}>
-                <span
-                  data-word
-                  className={`inline-block overflow-hidden align-bottom ${w.underline ? "pb-[0.42em] -mb-[0.42em]" : "pb-[0.14em] -mb-[0.14em]"}`}
-                  onPointerEnter={w.underline ? () => swell(i) : undefined}
-                >
+                <span data-word className="inline-block overflow-hidden align-bottom pb-[0.14em] -mb-[0.14em]">
                   <motion.span
                     className="relative inline-block"
                     initial={reduced ? false : { y: "105%" }}
                     animate={shown ? { y: "0%" } : { y: "105%" }}
                     transition={{ duration: M.headlineDuration, delay: reduced ? 0 : M.headlineAt + lineOf[i] * M.headlineLineStagger, ease: EASE_OUT }}
                   >
-                    {w.underline ? (
-                      <span className="relative inline-block">
-                        {w.word}
-                        <WaveformUnderline
-                          delay={M.underlineAt + HEADLINE.filter((h, j) => h.underline && j < i).length * M.underlineStagger}
-                          shown={shown}
-                          reduced={reduced}
-                          swell={swellWord === i}
-                        />
-                      </span>
-                    ) : (
-                      w.word
-                    )}
+                    {w.word}
                     {w.trailing}
                   </motion.span>
                 </span>

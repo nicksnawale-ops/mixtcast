@@ -184,7 +184,7 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. INTRO / WHO WE ARE — Sound + Vision, blended and projected */}
+      {/* 2. INTRO / WHO WE ARE — Converge & Take Shape */}
       <WhoWeAreSection />
 
       {/* 3. SERVICES PREVIEW (BENTO GRID - 12 SERVICES) */}

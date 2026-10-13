@@ -5,7 +5,7 @@ import { COMPANY_INFO } from "../../../data/company";
 import { Button } from "../../ui/Button";
 import { BrandMeaning } from "./BrandMeaning";
 import { FeatureCard } from "./FeatureCard";
-import { ProjectedImage } from "./ProjectedImage";
+import { TakeShapeImage } from "./TakeShapeImage";
 import { EASE_OUT, WHO_WE_ARE_MOTION as M } from "./whoWeAreData";
 
 const SERIF_FONT_HREF = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap";
@@ -34,7 +34,7 @@ const SCOPED_CSS = `
 @media (prefers-reduced-motion: reduce) { .wwa-root .wwa-idle { animation: none !important; } }
 `;
 
-/** Home "Who We Are": Sound + Vision, blended and projected. */
+/** Home "Who We Are": Converge & Take Shape. */
 export const WhoWeAreSection: React.FC = () => {
   const reduced = !!useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
@@ -70,7 +70,7 @@ export const WhoWeAreSection: React.FC = () => {
     };
   }, []);
 
-  // Group headline words by rendered line, and measure where the sound/vision streams travel (desktop).
+  // Group headline words by rendered line, and measure where the converging streams travel (desktop).
   useLayoutEffect(() => {
     const measure = () => {
       const words = headlineRef.current?.querySelectorAll<HTMLElement>("[data-word]");
@@ -130,7 +130,7 @@ export const WhoWeAreSection: React.FC = () => {
       </motion.div>
 
       <div ref={gridRef} className="relative grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-x-20 items-center">
-        {/* Sound + vision streams converge on the image edge (desktop only) */}
+        {/* Converge: orange waveform + navy light beam meet at the image edge (desktop only) */}
         {stream && !reduced && stream.length > 0 && (
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
             <motion.div
@@ -144,7 +144,7 @@ export const WhoWeAreSection: React.FC = () => {
               }}
               initial={{ scaleX: 0, opacity: 0 }}
               animate={active ? { scaleX: [0, 1, 1], opacity: [0, 1, 0] } : { scaleX: 0, opacity: 0 }}
-              transition={{ duration: M.blendDuration + M.projectDuration + 0.4, delay: M.blendAt, times: [0, 0.45, 1], ease: EASE_OUT }}
+              transition={{ duration: M.convergeDuration + M.takeShapeDuration + 0.4, delay: M.convergeAt, times: [0, 0.45, 1], ease: EASE_OUT }}
             />
             <svg className="absolute overflow-visible" style={{ left: stream.x, top: stream.y - 12, width: stream.length, height: 24 }} viewBox={`0 0 ${stream.length} 24`} fill="none">
               <motion.path
@@ -160,8 +160,8 @@ export const WhoWeAreSection: React.FC = () => {
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={active ? { pathLength: 1, opacity: [0, 1, 1, 0] } : { pathLength: 0, opacity: 0 }}
                 transition={{
-                  pathLength: { duration: M.blendDuration, delay: M.blendAt, ease: EASE_OUT },
-                  opacity: { duration: M.blendDuration + M.projectDuration + 0.4, delay: M.blendAt, times: [0, 0.1, 0.6, 1] },
+                  pathLength: { duration: M.convergeDuration, delay: M.convergeAt, ease: EASE_OUT },
+                  opacity: { duration: M.convergeDuration + M.takeShapeDuration + 0.4, delay: M.convergeAt, times: [0, 0.1, 0.6, 1] },
                 }}
               />
             </svg>
@@ -256,9 +256,9 @@ export const WhoWeAreSection: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Right: the projected image */}
+        {/* Right: the image takes shape */}
         <div className="relative z-10 lg:col-span-6">
-          <ProjectedImage ref={imageRef} active={active} reduced={reduced} isDesktop={isDesktop} />
+          <TakeShapeImage ref={imageRef} active={active} reduced={reduced} isDesktop={isDesktop} />
         </div>
       </div>
     </section>

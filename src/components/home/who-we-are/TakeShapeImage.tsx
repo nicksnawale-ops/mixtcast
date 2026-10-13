@@ -3,24 +3,24 @@ import { animate, motion, useMotionValue, useSpring, useTransform } from "motion
 import { ImageWithFallback } from "../../ui/ImageWithFallback";
 import { EASE_OUT, WHO_WE_ARE_MOTION as M } from "./whoWeAreData";
 
-interface ProjectedImageProps {
+interface TakeShapeImageProps {
   active: boolean;
   reduced: boolean;
-  /** Desktop: the image is projected from its left edge (where the streams meet); otherwise from the centre. */
+  /** Desktop: the image takes shape from its left edge (where the streams converge); otherwise from the centre. */
   isDesktop: boolean;
 }
 
 const MAX_TILT = 5; // degrees
 
-/** The featured image, "projected" in through a soft expanding light mask, then a slow Ken Burns. */
-export const ProjectedImage = forwardRef<HTMLDivElement, ProjectedImageProps>(({ active, reduced, isDesktop }, ref) => {
+/** The featured image takes shape through a soft expanding projector-light mask, then a slow Ken Burns. */
+export const TakeShapeImage = forwardRef<HTMLDivElement, TakeShapeImageProps>(({ active, reduced, isDesktop }, ref) => {
   const rotateX = useSpring(0, { stiffness: 120, damping: 18 });
   const rotateY = useSpring(0, { stiffness: 120, damping: 18 });
   const origin = isDesktop ? "0% 50%" : "50% 50%";
-  const projectAt = isDesktop ? M.projectAt : M.projectAtMobile;
+  const takeShapeAt = isDesktop ? M.takeShapeAt : M.takeShapeAtMobile;
   const shown = active || reduced;
 
-  // Frame size, so the projector "iris" can be centred on the meeting point.
+  // Frame size, so the projector "iris" can be centred on the point where the streams converge.
   const frameRef = useRef<HTMLDivElement | null>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
   useLayoutEffect(() => {
@@ -46,14 +46,14 @@ export const ProjectedImage = forwardRef<HTMLDivElement, ProjectedImageProps>(({
   const counter = useTransform(iris, (v) => 1 / v);
   useEffect(() => {
     if (!shown || reduced) return;
-    const delay = projectAt;
-    const a = animate(iris, 1, { duration: M.projectDuration, delay, ease: [0.45, 0, 0.2, 1] });
+    const delay = takeShapeAt;
+    const a = animate(iris, 1, { duration: M.takeShapeDuration, delay, ease: [0.45, 0, 0.2, 1] });
     const b = animate(irisOpacity, 1, { duration: 0.25, delay, ease: "easeOut" });
     return () => {
       a.stop();
       b.stop();
     };
-  }, [shown, reduced, projectAt, iris, irisOpacity]);
+  }, [shown, reduced, takeShapeAt, iris, irisOpacity]);
   const o = { x: isDesktop ? 0 : size.w / 2, y: size.h / 2 };
   const reach = 2 * Math.max(...[[0, 0], [size.w, 0], [0, size.h], [size.w, size.h]].map(([x, y]) => Math.hypot(x - o.x, y - o.y)));
 
@@ -77,7 +77,7 @@ export const ProjectedImage = forwardRef<HTMLDivElement, ProjectedImageProps>(({
         style={{ rotateX, rotateY }}
         className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-line bg-surface-warm"
       >
-        {/* Projector-light mask: an iris that expands from the meeting point to the full frame */}
+        {/* Projector-light mask: an iris that expands from the convergence point to the full frame */}
         <motion.div
           data-iris
           className="absolute rounded-full overflow-hidden"
@@ -99,7 +99,7 @@ export const ProjectedImage = forwardRef<HTMLDivElement, ProjectedImageProps>(({
           <motion.div
             initial={false}
             animate={shown && !reduced ? { scale: M.kenBurnsScale } : { scale: 1 }}
-            transition={{ duration: M.kenBurnsDuration, delay: projectAt + M.projectDuration, ease: "linear" }}
+            transition={{ duration: M.kenBurnsDuration, delay: takeShapeAt + M.takeShapeDuration, ease: "linear" }}
             style={{ transformOrigin: "60% 45%", willChange: "transform" }}
           >
             <ImageWithFallback
@@ -117,7 +117,7 @@ export const ProjectedImage = forwardRef<HTMLDivElement, ProjectedImageProps>(({
           </motion.div>
         </motion.div>
 
-        {/* Brief warm projector flare at the meeting point */}
+        {/* Brief warm projector flare at the convergence point */}
         {!reduced && (
           <motion.div
             aria-hidden="true"
@@ -127,7 +127,7 @@ export const ProjectedImage = forwardRef<HTMLDivElement, ProjectedImageProps>(({
             }}
             initial={{ opacity: 0 }}
             animate={active ? { opacity: [0, 1, 0] } : { opacity: 0 }}
-            transition={{ duration: 0.9, delay: projectAt, times: [0, 0.3, 1], ease: "easeOut" }}
+            transition={{ duration: 0.9, delay: takeShapeAt, times: [0, 0.3, 1], ease: "easeOut" }}
           />
         )}
 
@@ -135,7 +135,7 @@ export const ProjectedImage = forwardRef<HTMLDivElement, ProjectedImageProps>(({
         <motion.div
           initial={reduced ? false : { opacity: 0, y: 10 }}
           animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-          transition={{ duration: 0.5, delay: reduced ? 0 : projectAt + M.projectDuration * 0.6, ease: EASE_OUT }}
+          transition={{ duration: 0.5, delay: reduced ? 0 : takeShapeAt + M.takeShapeDuration * 0.6, ease: EASE_OUT }}
           className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-white/90 lg:bg-white/70 lg:backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_-8px_rgba(14,59,140,0.25)]"
         >
           <div className="flex items-center justify-between gap-3">
@@ -172,4 +172,4 @@ export const ProjectedImage = forwardRef<HTMLDivElement, ProjectedImageProps>(({
     </div>
   );
 });
-ProjectedImage.displayName = "ProjectedImage";
+TakeShapeImage.displayName = "TakeShapeImage";

@@ -31,7 +31,7 @@ export const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 /** "Converge & Take Shape" entrance timeline, in seconds from the moment ~25% of the section is in view. */
 export const WHO_WE_ARE_MOTION = {
-  inViewAmount: 0.25,
+  inViewAmount: 0.35,
   eyebrowAt: 0,
   headlineAt: 0.1,
   headlineLineStagger: 0.12,

@@ -39,7 +39,7 @@ import { WaveformCanvas } from "../components/animations/WaveformCanvas";
 import { Marquee } from "../components/animations/Marquee";
 import { CountUp } from "../components/animations/CountUp";
 import { WhoWeAreSection } from "../components/home/who-we-are/WhoWeAreSection";
-import { HeroRecede, SignalHandover } from "../components/home/who-we-are/SignalHandover";
+import { HeroSheetStack, RisingSheet, StackedHero } from "../components/home/who-we-are/StackingSheet";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -101,8 +101,9 @@ const PartnerMarqueeCard: React.FC<{ partner: (typeof TECHNOLOGY_PARTNERS)[numbe
 export const HomePage: React.FC = () => {
   return (
     <div className="space-y-24 sm:space-y-32">
-      {/* 1. HERO SECTION (wrapped: recedes as it scrolls out — content unchanged) */}
-      <HeroRecede>
+      {/* 1–2. HERO, then WHO WE ARE rising over it as a sheet (the Hero is pinned and recedes; content unchanged) */}
+      <HeroSheetStack>
+      <StackedHero>
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-12 pb-20">
         {/* Interactive canvas audio waveform background */}
         <div className="absolute inset-0 z-0 opacity-40">
@@ -185,12 +186,13 @@ export const HomePage: React.FC = () => {
           </motion.div>
         </div>
       </section>
-      </HeroRecede>
+      </StackedHero>
 
       {/* 2. INTRO / WHO WE ARE — Converge & Take Shape */}
-      <SignalHandover>
+      <RisingSheet>
         <WhoWeAreSection />
-      </SignalHandover>
+      </RisingSheet>
+      </HeroSheetStack>
 
       {/* 3. SERVICES PREVIEW (BENTO GRID - 12 SERVICES) */}
       <section className="bg-surface-warm py-20 border-y border-line">

@@ -39,6 +39,7 @@ import { WhoWeAreSection } from "../components/home/who-we-are/WhoWeAreSection";
 import { HeroSheetStack, RisingSheet, StackedHero } from "../components/home/who-we-are/StackingSheet";
 import { ServicesConsoleSection } from "../components/home/services-console/ServicesConsoleSection";
 import { ProcessSignalSection } from "../components/home/process-signal/ProcessSignalSection";
+import { PatchInTransition } from "../components/home/patch-in/PatchInTransition";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -193,8 +194,11 @@ export const HomePage: React.FC = () => {
       </RisingSheet>
       </HeroSheetStack>
 
-      {/* 3. SERVICES PREVIEW — "The Mixing Console": channel-strip cards over a signal-routing matrix */}
-      <ServicesConsoleSection iconFor={(name) => iconMap[name] || <Volume2 className="w-5 h-5" />} />
+      {/* 3. SERVICES PREVIEW — "The Mixing Console": channel-strip cards over a signal-routing matrix,
+          patched in from Who We Are ("Patch In" transition: a cable plugs into the console and powers it on) */}
+      <PatchInTransition>
+        <ServicesConsoleSection iconFor={(name) => iconMap[name] || <Volume2 className="w-5 h-5" />} />
+      </PatchInTransition>
 
       {/* 4. SPACES WE TRANSFORM */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

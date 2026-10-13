@@ -45,10 +45,12 @@ interface ChannelCardProps {
   claimDelay: () => number;
   /** Called when the card becomes active (hover / keyboard focus). */
   onActivate?: (el: HTMLElement) => void;
+  /** Hold the entrance until the console is powered on (Patch In). */
+  held?: boolean;
 }
 
 /** A service card styled as a mixing-console channel strip. The whole card is one link. */
-export const ChannelCard: React.FC<ChannelCardProps> = ({ service, index, icon, canHover, reduced, claimDelay, onActivate }) => {
+export const ChannelCard: React.FC<ChannelCardProps> = ({ service, index, icon, canHover, reduced, claimDelay, onActivate, held = false }) => {
   const channel = String(index + 1).padStart(2, "0");
   const wrapRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -66,8 +68,8 @@ export const ChannelCard: React.FC<ChannelCardProps> = ({ service, index, icon, 
   const near = useInView(wrapRef, { once: true, margin: "300px 0px" });
   const [delay, setDelay] = useState<number | null>(null);
   useEffect(() => {
-    if (inView && delay === null) setDelay(reduced ? 0 : claimDelay());
-  }, [inView, delay, reduced, claimDelay]);
+    if (inView && delay === null && !held) setDelay(reduced ? 0 : claimDelay());
+  }, [inView, delay, reduced, claimDelay, held]);
   const powered = delay !== null;
 
   // The entrance "channel check" flash is only mounted while it plays.

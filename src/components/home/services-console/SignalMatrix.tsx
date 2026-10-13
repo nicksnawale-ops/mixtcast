@@ -12,6 +12,8 @@ import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
 export interface SignalMatrixHandle {
   /** Route 2–3 brief pulses to `card` (desktop only). */
   route: (card: HTMLElement) => void;
+  /** One-time "power-on" (Patch In): a light wave from (x, y) across the grid and pulses launched from it. */
+  powerOn: (x: number, y: number) => void;
 }
 
 interface SignalMatrixProps {
@@ -24,6 +26,8 @@ interface SignalMatrixProps {
   wide: boolean;
   /** Hover-capable device: hover routing enabled. */
   canHover: boolean;
+  /** Before the Patch In power-on, the hairline grid rests at ~30% of its normal opacity. */
+  dimmed?: boolean;
   ref?: React.Ref<SignalMatrixHandle>;
 }
 
@@ -142,7 +146,7 @@ const wavePath = () => {
 };
 const WAVE_D = wavePath();
 
-export const SignalMatrix: React.FC<SignalMatrixProps> = ({ sectionRef, gridRef, running, reduced, wide, canHover, ref }) => {
+export const SignalMatrix: React.FC<SignalMatrixProps> = ({ sectionRef, gridRef, running, reduced, wide, canHover, dimmed = false, ref }) => {
   const layerRef = useRef<HTMLDivElement>(null);
   const routeRef = useRef<HTMLDivElement>(null);
   const waveRef = useRef<HTMLDivElement>(null);
@@ -294,6 +298,49 @@ export const SignalMatrix: React.FC<SignalMatrixProps> = ({ sectionRef, gridRef,
           anim.onfinish = () => d.clip.remove();
         });
       },
+      powerOn: (x: number, y: number) => {
+        const layer = routeRef.current;
+        if (!layer || reduced || !geo) return;
+        // Light wave: a soft ring scaled out from the port (transform/opacity only).
+        const radius = Math.hypot(Math.max(x, geo.w - x), Math.max(y, geo.h - y));
+        const wave = document.createElement("div");
+        Object.assign(wave.style, {
+          position: "absolute",
+          left: `${x - radius}px`,
+          top: `${y - radius}px`,
+          width: `${radius * 2}px`,
+          height: `${radius * 2}px`,
+          borderRadius: "50%",
+          background: `radial-gradient(closest-side, rgba(255,90,31,0) 78%, rgba(255,90,31,${wide ? 0.1 : 0.06}) 90%, rgba(14,59,140,${wide ? 0.06 : 0.035}) 95%, rgba(14,59,140,0) 100%)`,
+          transform: "scale(0.02)",
+        });
+        layer.appendChild(wave);
+        wave.animate(
+          [
+            { transform: "scale(0.02)", opacity: 1 },
+            { transform: "scale(1)", opacity: 0 },
+          ],
+          { duration: 900, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "forwards" },
+        ).onfinish = () => wave.remove();
+
+        // Signal pulses launched from the port along the grid's lines (3 on md+, 2 below).
+        const col = geo.cols[0];
+        const row = geo.rows[0];
+        const runs: [Segment, number][] = [
+          [{ x0: x, y0: y, x1: geo.w, y1: y }, 0],
+          [{ x0: col, y0: y, x1: col, y1: geo.h }, 60],
+        ];
+        if (wide && row > y) runs.push([{ x0: col, y0: row, x1: geo.w, y1: row }, 60 + ((row - y) / 600) * 1000]);
+        runs.forEach(([seg, delay]) => {
+          const d = makeDash(seg, ROUTE_ORANGE);
+          if (d.len < DASH) return;
+          layer.appendChild(d.clip);
+          d.dash.animate(
+            [{ transform: `translate${d.axis}(-${DASH}px)` }, { transform: `translate${d.axis}(${d.len}px)` }],
+            { duration: ((d.len + DASH) / 600) * 1000, delay, easing: "linear", fill: "backwards" },
+          ).onfinish = () => d.clip.remove();
+        });
+      },
     }),
     [sectionRef, reduced, canHover, wide, geo],
   );
@@ -303,8 +350,9 @@ export const SignalMatrix: React.FC<SignalMatrixProps> = ({ sectionRef, gridRef,
       {/* Hairline grid (64px), fading out toward the edges. The fade is a vignette in the section colour rather than a
           CSS mask: a masked full-section layer would be repainted every time a pulse moves over it. */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 transition-opacity duration-[900ms] ease-out"
         style={{
+          opacity: dimmed ? 0.3 : 1,
           backgroundImage:
             "radial-gradient(ellipse 70% 65% at 50% 50%, rgba(250,248,245,0) 35%, #FAF8F5 100%), linear-gradient(rgba(14,59,140,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(14,59,140,0.04) 1px, transparent 1px)",
           backgroundSize: "100% 100%, 64px 64px, 64px 64px",

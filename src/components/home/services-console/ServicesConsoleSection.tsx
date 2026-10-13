@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { usePatchIn } from "../patch-in/patchInContext";
 import { ArrowRight } from "lucide-react";
 import { useReducedMotion } from "motion/react";
 import { SERVICES } from "../../../data/services";
@@ -68,15 +69,34 @@ export const ServicesConsoleSection: React.FC<{ iconFor: (name: string) => React
 
   const onActivate = useCallback((el: HTMLElement) => matrixRef.current?.route(el), []);
 
+  // Patch In (when wrapped by PatchInTransition): the grid rests dimmed and the cascade waits until the cable
+  // connects; the transition then triggers the one-time power-on from its port.
+  const patch = usePatchIn();
+  const unpowered = !!patch && !patch.powered;
+  useEffect(() => {
+    if (!patch) return;
+    patch.registerPowerOn((x, y) => matrixRef.current?.powerOn(x, y));
+    return () => patch.registerPowerOn(null);
+  }, [patch?.registerPowerOn]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <section ref={sectionRef} data-paused={running ? undefined : ""} className="relative overflow-hidden bg-surface-warm py-20 border-y border-line">
       <style>{CONSOLE_CSS}</style>
-      <SignalMatrix ref={matrixRef} sectionRef={sectionRef} gridRef={gridRef} running={running} reduced={reduced} wide={wide} canHover={canHover} />
+      <SignalMatrix
+        ref={matrixRef}
+        sectionRef={sectionRef}
+        gridRef={gridRef}
+        running={running}
+        reduced={reduced}
+        wide={wide}
+        canHover={canHover}
+        dimmed={unpowered}
+      />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2">
+            <span data-patch-eyebrow className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2">
               End-to-End Capabilities
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-ink font-heading">
@@ -100,6 +120,7 @@ export const ServicesConsoleSection: React.FC<{ iconFor: (name: string) => React
               reduced={reduced}
               claimDelay={claimDelay}
               onActivate={onActivate}
+              held={unpowered}
             />
           ))}
         </div>

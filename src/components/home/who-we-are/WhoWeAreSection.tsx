@@ -32,6 +32,16 @@ const SCOPED_CSS = `
 .wwa-ping { animation: wwa-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
 @keyframes wwa-wave { 0%, 80%, 100% { transform: scaleY(1); } 88% { transform: scaleY(1.45); } 94% { transform: scaleY(0.85); } }
 .wwa-wave-idle { transform-origin: 50% 50%; animation: wwa-wave 4s ease-in-out infinite; }
+@keyframes wwa-drift-a { 0%, 100% { transform: translate(-6%, -4%) scale(1); } 50% { transform: translate(6%, 5%) scale(1.08); } }
+@keyframes wwa-drift-b { 0%, 100% { transform: translate(5%, 6%) scale(1.05); } 50% { transform: translate(-5%, -5%) scale(0.95); } }
+@keyframes wwa-ripple { 0% { transform: scale(1); opacity: 0; } 12% { opacity: 1; } 100% { transform: scale(1.22); opacity: 0; } }
+@keyframes wwa-spin { to { transform: rotate(360deg); } }
+@keyframes wwa-flash { 0% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.8); } 4%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.6); } }
+.wwa-drift-a { animation: wwa-drift-a 24s ease-in-out infinite; }
+.wwa-drift-b { animation: wwa-drift-b 30s ease-in-out infinite; }
+.wwa-ripple { animation: wwa-ripple 6s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+.wwa-spin { animation: wwa-spin 12s linear infinite; }
+.wwa-flash { animation: wwa-flash 36s ease-out infinite; }
 .wwa-root[data-idle="paused"] .wwa-idle { animation-play-state: paused; }
 .wwa-inscription { color: transparent; -webkit-text-stroke: 1px rgba(14, 59, 140, 0.07); }
 @media (prefers-reduced-motion: reduce) { .wwa-root .wwa-idle { animation: none !important; } }

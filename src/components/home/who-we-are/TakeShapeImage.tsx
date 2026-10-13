@@ -1,6 +1,7 @@
 import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { animate, motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import { ImageWithFallback } from "../../ui/ImageWithFallback";
+import { SonicHalo } from "./SonicHalo";
 import { EASE_OUT, WHO_WE_ARE_MOTION as M } from "./whoWeAreData";
 
 interface TakeShapeImageProps {
@@ -63,19 +64,30 @@ export const TakeShapeImage = forwardRef<HTMLDivElement, TakeShapeImageProps>(({
     rotateY.set(((e.clientX - r.left) / r.width - 0.5) * 2 * MAX_TILT);
     rotateX.set(-((e.clientY - r.top) / r.height - 0.5) * 2 * MAX_TILT);
   };
+  // Sonic halo behind the frame: starts once the projector reveal has finished; parallax opposite to the tilt.
+  const [haloOn, setHaloOn] = useState(reduced);
+  useEffect(() => {
+    if (!shown || reduced) return;
+    const t = window.setTimeout(() => setHaloOn(true), (takeShapeAt + M.takeShapeDuration) * 1000);
+    return () => window.clearTimeout(t);
+  }, [shown, reduced, takeShapeAt]);
+  const haloX = useTransform(rotateY, (v) => -v * 2); // ±5° tilt → ±10px
+  const haloY = useTransform(rotateX, (v) => v * 2);
+
   const onLeave = () => {
     rotateX.set(0);
     rotateY.set(0);
   };
 
   return (
-    <div className="[perspective:1200px]">
+    <div className="relative [perspective:1200px]">
+      <SonicHalo started={haloOn} reduced={reduced} isDesktop={isDesktop} frame={size} parallaxX={haloX} parallaxY={haloY} />
       <motion.div
         ref={setRefs}
         onPointerMove={onMove}
         onPointerLeave={onLeave}
         style={{ rotateX, rotateY }}
-        className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-line bg-surface-warm"
+        className="relative z-10 aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-line bg-surface-warm"
       >
         {/* Projector-light mask: an iris that expands from the convergence point to the full frame */}
         <motion.div

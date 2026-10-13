@@ -181,7 +181,7 @@ export const WhoWeAreSection: React.FC = () => {
 
       {/* Below lg the two column wrappers are `display: contents`, so their blocks interleave via `order`:
           eyebrow, headline, paragraph, photo, brand meaning, card, button. */}
-      <div ref={gridRef} className="relative flex flex-col gap-6 lg:grid lg:grid-cols-12 lg:gap-x-20 lg:gap-y-0 lg:items-start">
+      <div ref={gridRef} className="relative flex flex-col gap-6 lg:grid lg:grid-cols-12 lg:gap-x-20 lg:gap-y-0 lg:items-stretch">
         {/* Converge: orange waveform + navy light beam travel from the partition line to the image edge (desktop only) */}
         {stream && !reduced && stream.length > 0 && (
           <div
@@ -291,12 +291,13 @@ export const WhoWeAreSection: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Right: the image takes shape (top-aligned), with the Custom Engineering card beneath it */}
+        {/* Right: the image takes shape, its halo (40px beyond the frame) level with the eyebrow; the Custom Engineering card sits
+            at the bottom, level with the button, at least 32px clear of the halo */}
         <div className="contents lg:relative lg:z-10 lg:col-span-6 lg:flex lg:flex-col lg:gap-6">
-          <div className="order-4 lg:order-none py-4 lg:py-0">
+          <div className="order-4 lg:order-none py-4 lg:pt-10 lg:pb-12">
             <TakeShapeImage ref={imageRef} active={active} reduced={reduced} isDesktop={isDesktop} convergeY={stream?.landY} />
           </div>
-          <div className="order-6 lg:order-none">
+          <div className="order-6 lg:order-none lg:mt-auto">
             <FeatureCard
               title={CUSTOM_ENGINEERING_CARD.title}
               text={CUSTOM_ENGINEERING_CARD.text}

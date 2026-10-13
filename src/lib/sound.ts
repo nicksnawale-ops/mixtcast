@@ -1,3 +1,5 @@
+import { audioManager } from "./audioManager";
+
 // Tiny Web Audio sound utility. Uses a GainNode for volume/fades (iOS ignores HTMLAudioElement.volume)
 // and never throws: blocked playback simply resolves to null.
 
@@ -31,6 +33,7 @@ export interface SoundHandle {
 }
 
 let context: AudioContext | null = null;
+let playCount = 0;
 const buffers = new Map<SoundName, Promise<AudioBuffer | null>>();
 const peaks = new WeakMap<AudioBuffer, number>();
 const active = new Set<SoundHandle>();
@@ -157,11 +160,13 @@ export async function play(name: SoundName, options: PlayOptions = {}): Promise<
     source.start(start, offset, length);
 
     let stopped = false;
+    const managerId = `sound:${name}:${++playCount}`;
     const handle: SoundHandle = {
       stop(fadeMs = 150) {
         if (stopped) return;
         stopped = true;
         active.delete(handle);
+        audioManager.release(managerId);
         try {
           const now = ctx.currentTime;
           gain.gain.cancelScheduledValues(now);
@@ -174,7 +179,12 @@ export async function play(name: SoundName, options: PlayOptions = {}): Promise<
       },
     };
     active.add(handle);
-    source.onended = () => active.delete(handle);
+    // Only one site audio at a time: starting this fades out e.g. the Home narration (and vice versa).
+    audioManager.claim(managerId, (ms) => handle.stop(ms));
+    source.onended = () => {
+      active.delete(handle);
+      audioManager.release(managerId);
+    };
     return handle;
   } catch {
     return null;

@@ -136,7 +136,7 @@ export const BrandMeaning: React.FC<{ active: boolean; reduced: boolean }> = ({ 
       </div>
 
       {/* Statement writes in word by word */}
-      <p className="mt-4 text-lg sm:text-xl text-ink leading-snug" style={{ ...SERIF_ITALIC, fontWeight: 600 }}>
+      <p data-narration-target="wwa-statement" className="mt-4 text-lg sm:text-xl text-ink leading-snug" style={{ ...SERIF_ITALIC, fontWeight: 600 }}>
         {statementWords.map((word, i) => (
           <React.Fragment key={i}>
             <motion.span className="inline-block" {...writeIn(M.statementAt + i * M.statementStagger)}>
@@ -149,7 +149,7 @@ export const BrandMeaning: React.FC<{ active: boolean; reduced: boolean }> = ({ 
 
       {/* Tagline takes shape last, with a navy → orange line drawing beneath it */}
       <div className="mt-3 inline-block">
-        <p className="font-heading font-semibold text-sm sm:text-[15px] text-ink tracking-[0.08em] [font-variant-caps:all-small-caps]">
+        <p data-narration-target="wwa-tagline" className="font-heading font-semibold text-sm sm:text-[15px] text-ink tracking-[0.08em] [font-variant-caps:all-small-caps]">
           {tagline.map(({ t, className }, i) =>
             /^\s+$/.test(t) ? (
               <React.Fragment key={i}>{t}</React.Fragment>

@@ -8,6 +8,8 @@ import { FeatureCard } from "./FeatureCard";
 import { TakeShapeImage } from "./TakeShapeImage";
 import { WaveformUnderline } from "./WaveformUnderline";
 import { useHandoverDashOpacity } from "./SignalHandover";
+import { NarrationButton } from "./NarrationButton";
+import { useNarration } from "./useNarration";
 import { CUSTOM_ENGINEERING_CARD, EASE_OUT, WHO_WE_ARE_MOTION as M } from "./whoWeAreData";
 
 const SERIF_FONT_HREF = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap";
@@ -45,7 +47,11 @@ const SCOPED_CSS = `
 .wwa-flash { animation: wwa-flash 36s ease-out infinite; }
 .wwa-root[data-idle="paused"] .wwa-idle { animation-play-state: paused; }
 .wwa-inscription { color: transparent; -webkit-text-stroke: 1px rgba(14, 59, 140, 0.07); }
-@media (prefers-reduced-motion: reduce) { .wwa-root .wwa-idle { animation: none !important; } }
+[data-narration-target] { position: relative; isolation: isolate; }
+[data-narration-target]::before { content: ""; position: absolute; inset: -6px -10px; border-radius: 12px; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, rgba(14, 59, 140, 0.07), rgba(255, 90, 31, 0.09)); opacity: 0; transition: opacity 0.45s ease; }
+[data-narration-active="true"]::before { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .wwa-root .wwa-idle { animation: none !important; } [data-narration-target]::before { transition: none; } }
 `;
 
 /** Home "Who We Are": Converge & Take Shape. */
@@ -61,6 +67,19 @@ export const WhoWeAreSection: React.FC = () => {
   const active = useInView(sectionRef, { once: true, amount: M.inViewAmount });
   const onScreen = useInView(sectionRef, { amount: 0 });
   const [pageHidden, setPageHidden] = useState(false);
+  // "Mostly in view": half the section visible, or the section filling half the viewport (it can be taller than the screen).
+  const [mostlyInView, setMostlyInView] = useState(false);
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setMostlyInView(entry.intersectionRatio >= 0.5 || entry.intersectionRect.height >= window.innerHeight * 0.5),
+      { threshold: Array.from({ length: 21 }, (_, i) => i / 20) }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  const narration = useNarration(sectionRef, { mostlyInView, inView: onScreen });
   const [isDesktop, setIsDesktop] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches);
   const [lineOf, setLineOf] = useState<number[]>(HEADLINE.map(() => 0));
   const [stream, setStream] = useState<{ x: number; y: number; length: number } | null>(null);
@@ -197,14 +216,23 @@ export const WhoWeAreSection: React.FC = () => {
 
         {/* Left Text */}
         <div ref={leftRef} className="relative z-10 lg:col-span-6 space-y-6">
-          <motion.div className="inline-flex items-center gap-2" {...fadeUp(M.eyebrowAt, 8)}>
+          <motion.div className="flex items-center justify-between gap-4" {...fadeUp(M.eyebrowAt, 8)}>
+            <div className="inline-flex items-center gap-2">
             <motion.span data-handover-dash className="h-[2px] w-4 bg-brand-orange" style={{ opacity: handoverDashOpacity ?? 1 }} />
             <span className="text-xs font-bold uppercase tracking-widest text-brand-orange">
               Who We Are
             </span>
+            </div>
+            <NarrationButton
+              status={narration.status}
+              pulse={narration.pulse}
+              progress={narration.progress}
+              reduced={reduced}
+              onToggle={narration.toggle}
+            />
           </motion.div>
 
-          <h2 ref={headlineRef} className="text-3xl sm:text-4xl font-bold text-ink font-heading leading-tight">
+          <h2 ref={headlineRef} data-narration-target="wwa-headline" className="text-3xl sm:text-4xl font-bold text-ink font-heading leading-tight">
             {HEADLINE.map((w, i) => (
               <React.Fragment key={w.word}>
                 <span
@@ -239,7 +267,7 @@ export const WhoWeAreSection: React.FC = () => {
             ))}
           </h2>
 
-          <motion.p className="text-base sm:text-lg text-ink-muted leading-relaxed" {...fadeUp(M.paragraphAt)}>
+          <motion.p data-narration-target="wwa-paragraph" className="text-base sm:text-lg text-ink-muted leading-relaxed" {...fadeUp(M.paragraphAt)}>
             {COMPANY_INFO.aboutParagraphs[0]}
           </motion.p>
 

@@ -36,7 +36,8 @@ export const WHO_WE_ARE_MOTION = {
   headlineAt: 0.1,
   headlineLineStagger: 0.12,
   headlineDuration: 0.6,
-  underlineAt: 0.5,
+  underlineAt: 0.5, // waveform underlines draw (~700ms each)…
+  underlineStagger: 0.2, // …second word 200ms later
   paragraphAt: 0.55,
   brandAt: 0.7, // "MIXTCAST" appears as one word…
   brandSplitAt: 1.05, // …then splits into MIXT + CAST, meanings rise beneath

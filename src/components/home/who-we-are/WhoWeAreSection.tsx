@@ -6,6 +6,7 @@ import { Button } from "../../ui/Button";
 import { BrandMeaning } from "./BrandMeaning";
 import { FeatureCard } from "./FeatureCard";
 import { TakeShapeImage } from "./TakeShapeImage";
+import { WaveformUnderline } from "./WaveformUnderline";
 import { CUSTOM_ENGINEERING_CARD, EASE_OUT, WHO_WE_ARE_MOTION as M } from "./whoWeAreData";
 
 const SERIF_FONT_HREF = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap";
@@ -29,6 +30,8 @@ const SCOPED_CSS = `
 .wwa-card[data-hover="true"] .wwa-eq-bar { animation: wwa-eq 0.9s ease-in-out infinite; }
 .wwa-meter-bar { transform-origin: bottom; animation: wwa-meter 1.6s ease-in-out infinite; }
 .wwa-ping { animation: wwa-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
+@keyframes wwa-wave { 0%, 80%, 100% { transform: scaleY(1); } 88% { transform: scaleY(1.45); } 94% { transform: scaleY(0.85); } }
+.wwa-wave-idle { transform-origin: 50% 50%; animation: wwa-wave 4s ease-in-out infinite; }
 .wwa-root[data-idle="paused"] .wwa-idle { animation-play-state: paused; }
 .wwa-inscription { color: transparent; -webkit-text-stroke: 1px rgba(14, 59, 140, 0.07); }
 @media (prefers-reduced-motion: reduce) { .wwa-root .wwa-idle { animation: none !important; } }
@@ -48,6 +51,16 @@ export const WhoWeAreSection: React.FC = () => {
   const [isDesktop, setIsDesktop] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches);
   const [lineOf, setLineOf] = useState<number[]>(HEADLINE.map(() => 0));
   const [stream, setStream] = useState<{ x: number; y: number; length: number } | null>(null);
+  // Headline word currently swelling its waveform underline (hover).
+  const [swellWord, setSwellWord] = useState<number | null>(null);
+  const swellTimer = useRef(0);
+  const swell = (i: number) => {
+    if (reduced) return;
+    window.clearTimeout(swellTimer.current);
+    setSwellWord(i);
+    swellTimer.current = window.setTimeout(() => setSwellWord(null), 600);
+  };
+  useEffect(() => () => window.clearTimeout(swellTimer.current), []);
 
   // Load the classical italic face only when this section is used.
   useEffect(() => {
@@ -181,7 +194,11 @@ export const WhoWeAreSection: React.FC = () => {
           <h2 ref={headlineRef} className="text-3xl sm:text-4xl font-bold text-ink font-heading leading-tight">
             {HEADLINE.map((w, i) => (
               <React.Fragment key={w.word}>
-                <span data-word className="inline-block overflow-hidden align-bottom pb-[0.14em] -mb-[0.14em]">
+                <span
+                  data-word
+                  className={`inline-block overflow-hidden align-bottom ${w.underline ? "pb-[0.42em] -mb-[0.42em]" : "pb-[0.14em] -mb-[0.14em]"}`}
+                  onPointerEnter={w.underline ? () => swell(i) : undefined}
+                >
                   <motion.span
                     className="relative inline-block"
                     initial={reduced ? false : { y: "105%" }}
@@ -191,12 +208,11 @@ export const WhoWeAreSection: React.FC = () => {
                     {w.underline ? (
                       <span className="relative inline-block">
                         {w.word}
-                        <motion.span
-                          aria-hidden="true"
-                          className="absolute left-0 right-0 -bottom-[0.06em] h-[3px] rounded-full bg-gradient-to-r from-brand-navy to-brand-orange origin-left"
-                          initial={reduced ? false : { scaleX: 0 }}
-                          animate={shown ? { scaleX: 1 } : { scaleX: 0 }}
-                          transition={{ duration: 0.6, delay: reduced ? 0 : M.underlineAt + lineOf[i] * M.headlineLineStagger, ease: EASE_OUT }}
+                        <WaveformUnderline
+                          delay={M.underlineAt + HEADLINE.filter((h, j) => h.underline && j < i).length * M.underlineStagger}
+                          shown={shown}
+                          reduced={reduced}
+                          swell={swellWord === i}
                         />
                       </span>
                     ) : (

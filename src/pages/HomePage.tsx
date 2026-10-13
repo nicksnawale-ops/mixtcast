@@ -27,18 +27,17 @@ import {
 } from "lucide-react";
 
 import { COMPANY_INFO } from "../data/company";
-import { SERVICES } from "../data/services";
 import { SOLUTIONS } from "../data/solutions";
 import { CLIENT_PROJECTS } from "../data/clients";
 import { TECHNOLOGY_PARTNERS } from "../data/partners";
 import { Button } from "../components/ui/Button";
-import { SpotlightCard } from "../components/ui/Card";
 import { WaveformDivider } from "../components/ui/WaveformDivider";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback";
 import { WaveformCanvas } from "../components/animations/WaveformCanvas";
 import { Marquee } from "../components/animations/Marquee";
 import { WhoWeAreSection } from "../components/home/who-we-are/WhoWeAreSection";
 import { HeroSheetStack, RisingSheet, StackedHero } from "../components/home/who-we-are/StackingSheet";
+import { ServicesConsoleSection } from "../components/home/services-console/ServicesConsoleSection";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -193,62 +192,8 @@ export const HomePage: React.FC = () => {
       </RisingSheet>
       </HeroSheetStack>
 
-      {/* 3. SERVICES PREVIEW (BENTO GRID - 12 SERVICES) */}
-      <section className="bg-surface-warm py-20 border-y border-line">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2">
-                End-to-End Capabilities
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-ink font-heading">
-                Specialized Audio-Visual Services
-              </h2>
-            </div>
-            <Button to="/services" variant="secondary" size="sm" icon={<ArrowRight className="w-4 h-4" />}>
-              View All 12 Services
-            </Button>
-          </div>
-
-          {/* Animated Bento Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SERVICES.map((service, index) => {
-              const isMarqueeItem = index === 0 || index === 2 || index === 7;
-              return (
-                <Link key={service.slug} to={`/services/${service.slug}`} className="group block h-full">
-                  <SpotlightCard
-                    className={`h-full p-6 flex flex-col justify-between transition-all duration-300 ${
-                      isMarqueeItem ? "bg-white border-brand-navy/15 shadow-sm" : "bg-white"
-                    }`}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="w-10 h-10 rounded-xl bg-surface-cool text-brand-navy flex items-center justify-center group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">
-                          {iconMap[service.icon] || <Volume2 className="w-5 h-5" />}
-                        </div>
-                        <span className="text-[11px] font-semibold text-ink-muted">
-                          {service.category}
-                        </span>
-                      </div>
-                      <h3 className="text-lg font-bold text-ink group-hover:text-brand-navy font-heading transition-colors mb-2">
-                        {service.title}
-                      </h3>
-                      <p className="text-xs text-ink-muted leading-relaxed line-clamp-2">
-                        {service.shortLine}
-                      </p>
-                    </div>
-
-                    <div className="mt-6 pt-4 border-t border-line/60 flex items-center justify-between text-xs font-semibold text-brand-orange group-hover:translate-x-1 transition-transform">
-                      <span>Explore details</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </div>
-                  </SpotlightCard>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      {/* 3. SERVICES PREVIEW — "The Mixing Console": channel-strip cards over a signal-routing matrix */}
+      <ServicesConsoleSection iconFor={(name) => iconMap[name] || <Volume2 className="w-5 h-5" />} />
 
       {/* 4. SPACES WE TRANSFORM */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

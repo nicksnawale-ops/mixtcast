@@ -1,12 +1,12 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
-import { ChevronRight } from "lucide-react";
+import { AudioWaveform, ChevronRight } from "lucide-react";
 import { COMPANY_INFO } from "../../../data/company";
 import { Button } from "../../ui/Button";
 import { BrandMeaning } from "./BrandMeaning";
 import { FeatureCard } from "./FeatureCard";
 import { TakeShapeImage } from "./TakeShapeImage";
-import { EASE_OUT, WHO_WE_ARE_MOTION as M } from "./whoWeAreData";
+import { CUSTOM_ENGINEERING_CARD, EASE_OUT, WHO_WE_ARE_MOTION as M } from "./whoWeAreData";
 
 const SERIF_FONT_HREF = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap";
 
@@ -126,7 +126,8 @@ export const WhoWeAreSection: React.FC = () => {
         style={{ x: inscriptionX, willChange: "transform" }}
         className="wwa-inscription pointer-events-none select-none absolute inset-x-0 top-1/2 -translate-y-1/2 text-center whitespace-nowrap font-heading font-extrabold leading-none text-[13vw] lg:text-[11rem] tracking-tight"
       >
-        MIXT · CAST
+        {/* No middle dot: an outlined "·" rendered as a stray ring between the columns */}
+        MIXT<span className="inline-block w-[0.6em]" />CAST
       </motion.div>
 
       <div ref={gridRef} className="relative grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-x-20 items-center">
@@ -215,20 +216,13 @@ export const WhoWeAreSection: React.FC = () => {
 
           <BrandMeaning active={active} reduced={reduced} />
 
-          <div className="pt-2 flex flex-col sm:flex-row gap-4">
+          <div className="pt-2">
             <FeatureCard
-              title="Custom Engineering"
-              text="Every installation is acoustically simulated and calibrated for its architectural geometry."
+              title={CUSTOM_ENGINEERING_CARD.title}
+              text={CUSTOM_ENGINEERING_CARD.text}
               titleClassName="text-brand-navy"
+              icon={<AudioWaveform className="w-6 h-6" strokeWidth={1.75} />}
               delay={M.cardsAt}
-              active={active}
-              reduced={reduced}
-            />
-            <FeatureCard
-              title="Future-Ready Tech"
-              text="Leveraging AI voice-tracking, Dante IP audio networks, and 4K uncompressed routing."
-              titleClassName="text-brand-orange"
-              delay={M.cardsAt + M.cardsStagger}
               active={active}
               reduced={reduced}
             />

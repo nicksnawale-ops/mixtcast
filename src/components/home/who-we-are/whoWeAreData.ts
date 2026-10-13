@@ -14,6 +14,12 @@ export const BRAND_MEANING = {
   tagline: "Where Ideas Converge and Innovation Takes Shape.",
 };
 
+/** The single feature card in this section (copy unchanged from the original card). */
+export const CUSTOM_ENGINEERING_CARD = {
+  title: "Custom Engineering",
+  text: "Every installation is acoustically simulated and calibrated for its architectural geometry.",
+};
+
 /** Words in the tagline that carry the brand colours (the text itself is unchanged). */
 export const TAGLINE_ACCENTS = [
   { text: "Converge", className: "text-brand-navy" },
@@ -40,7 +46,6 @@ export const WHO_WE_ARE_MOTION = {
   taglineStagger: 0.04,
   taglineLineAt: 2.1, // navy → orange line draws beneath the tagline
   cardsAt: 0.9,
-  cardsStagger: 0.1,
   buttonAt: 1.0,
   convergeAt: 0.4, // desktop: orange waveform + navy light beam converge on the image edge
   convergeDuration: 0.75,

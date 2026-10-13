@@ -8,6 +8,8 @@ interface FeatureCardProps {
   titleClassName: string;
   /** Entrance delay (s). */
   delay: number;
+  /** Optional icon shown in a 48px tile on the left (horizontal layout from md). */
+  icon?: React.ReactNode;
   active: boolean;
   reduced: boolean;
 }
@@ -15,7 +17,7 @@ interface FeatureCardProps {
 const MAX_TILT = 4; // degrees
 
 /** Feature card with a cursor-following spotlight, a gentle 3D tilt and a mini equalizer on hover (desktop pointers). */
-export const FeatureCard: React.FC<FeatureCardProps> = ({ title, text, titleClassName, delay, active, reduced }) => {
+export const FeatureCard: React.FC<FeatureCardProps> = ({ title, text, titleClassName, delay, icon, active, reduced }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
   const glowX = useMotionValue(0);
@@ -53,7 +55,9 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({ title, text, titleClas
         onPointerMove={onMove}
         onPointerLeave={onLeave}
         style={{ rotateX, rotateY }}
-        className="wwa-card relative h-full overflow-hidden p-4 rounded-xl bg-surface-warm border border-line transition-shadow duration-300 hover:shadow-lg hover:border-brand-navy/20"
+        className={`wwa-card relative h-full overflow-hidden rounded-xl bg-surface-warm border border-line transition-shadow duration-300 hover:shadow-lg hover:border-brand-navy/20 ${
+          icon ? "p-6 md:p-7 flex flex-col md:flex-row md:items-center gap-4 md:gap-5" : "p-4"
+        }`}
       >
         {/* Cursor-following spotlight (navy → orange, low opacity) */}
         <motion.span
@@ -78,8 +82,18 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({ title, text, titleClas
           ))}
         </span>
 
-        <span className={`relative text-xs font-bold uppercase tracking-wider block mb-1 pr-8 ${titleClassName}`}>{title}</span>
-        <p className="relative text-xs text-ink-muted leading-relaxed">{text}</p>
+        {icon && (
+          <span
+            aria-hidden="true"
+            className="relative shrink-0 w-12 h-12 rounded-xl bg-white border border-brand-navy/20 text-brand-navy flex items-center justify-center"
+          >
+            {icon}
+          </span>
+        )}
+        <span className="relative block min-w-0">
+          <span className={`font-bold uppercase tracking-wider block mb-1 pr-8 ${icon ? "text-sm" : "text-xs"} ${titleClassName}`}>{title}</span>
+          <span className={`block text-ink-muted leading-relaxed ${icon ? "text-sm" : "text-xs"}`}>{text}</span>
+        </span>
       </motion.div>
     </motion.div>
   );

@@ -39,6 +39,7 @@ import { SurveyScanTransition } from "../components/home/survey-scan/SurveyScanT
 import { WhyMixtcastSection } from "../components/home/why-eq/WhyMixtcastSection";
 import { SpacesPortalSection } from "../components/home/spaces-portal/SpacesPortalSection";
 import { PremiereQuoteSection } from "../components/home/premiere/PremiereQuoteSection";
+import { TestimonialsSection } from "../components/home/testimonials/TestimonialsSection";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -254,6 +255,9 @@ export const HomePage: React.FC = () => {
           ))}
         </div>
       </section>
+
+      {/* CLIENT VOICES — testimonials (verbatim from data/testimonials.ts) */}
+      <TestimonialsSection />
 
       {/* 9. TECHNOLOGY PARTNERS (MARQUEE) */}
       <section className="bg-surface-warm py-16 border-y border-line overflow-hidden">

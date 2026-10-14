@@ -5,19 +5,19 @@ import { SOLUTIONS } from "../../../data/solutions";
 import { FloorPlan } from "../../home/spaces-portal/FloorPlans";
 import { BLUEPRINT } from "./blueprintSettings";
 import { RAY_CSS, RayTrace } from "./RayTrace";
+import { SILK_CSS, SoundSilk } from "./SoundSilk";
 
 /**
  * Solutions page ambient background — "The Acoustic Blueprint". Decoration only: every layer is aria-hidden,
  * pointer-events: none, and sits at z-index −10 inside an isolated wrapper, so the curtain, hero, showcase and all
  * cards (opaque) stay above it; it only shows in the page gutters and between sections.
- *  1. blueprint grid (whole page, static)
+ *  1. "Sound Silk" ribbons (flowing curves; 3 / 2 / 1 by breakpoint)
  *  2. acoustic ray-tracing (md+, follows the viewport via a sticky layer, one group at a time)
  *  3. a ghost floor plan per space (md+, drawn once when its section is ~25% in view, gentle parallax)
  *  4. ambient glow (two soft radial blobs; one on mobile)
- * Reduced motion: the static grid and static (fully drawn) floor plans only. Tuning: blueprintSettings.ts.
+ * Reduced motion: static ribbons and static (fully drawn) floor plans only. Tuning: blueprintSettings.ts.
  */
 
-const G = BLUEPRINT.grid;
 const P = BLUEPRINT.plans;
 const W = BLUEPRINT.glow;
 const HEADER = 80;
@@ -26,6 +26,7 @@ const navy = (a: number) => `rgba(14,59,140,${a})`;
 
 const CSS = `
 ${RAY_CSS}
+${SILK_CSS}
 .ab-plan svg { stroke: ${navy(P.navyOpacity)}; }
 .ab-plan .fp-line { vector-effect: non-scaling-stroke; stroke-width: ${P.strokeWidth}px; stroke-dasharray: 1 1; stroke-dashoffset: 1; }
 .ab-plan .fp-line:first-child { stroke: rgba(255,90,31,${P.accentOpacity}); }
@@ -85,10 +86,12 @@ const GhostPlan: React.FC<{ plan: PlanPos; size: number; scrollY: MotionValue<nu
   );
 };
 
-export const AcousticBlueprint: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AcousticBlueprint: React.FC<{ children: React.ReactNode; curtainOpen?: boolean }> = ({ children, curtainOpen = true }) => {
   const reduced = !!useReducedMotion();
   const wide = useMedia(`(min-width: ${P.minWidth}px)`);
   const xl = useMedia("(min-width: 1280px)");
+  const lg = useMedia("(min-width: 1024px)");
+  const [pageH, setPageH] = useState(0);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [plans, setPlans] = useState<PlanPos[]>([]);
   const [drawn, setDrawn] = useState<Record<string, boolean>>({});
@@ -101,6 +104,7 @@ export const AcousticBlueprint: React.FC<{ children: React.ReactNode }> = ({ chi
     if (!wrap) return;
     const measure = () => {
       const w0 = wrap.getBoundingClientRect();
+      setPageH(wrap.offsetHeight);
       setPlans(
         SOLUTIONS.map((sol, index) => {
           const el = document.getElementById(sol.slug);
@@ -158,24 +162,13 @@ export const AcousticBlueprint: React.FC<{ children: React.ReactNode }> = ({ chi
   const blobShift = useTransform(scrollYProgress, [0, 1], [-W.scrollShift / 2, W.scrollShift / 2]);
   const planSize = xl ? P.width[1] : P.width[0];
 
-  const gridLine = (a: number) => `linear-gradient(${navy(a)} 1px, transparent 1px), linear-gradient(90deg, ${navy(a)} 1px, transparent 1px)`;
-
   return (
     <div ref={wrapRef} className="relative isolate">
       <div aria-hidden="true" data-paused={visible ? undefined : ""} className="pointer-events-none absolute inset-0 -z-10 overflow-clip">
         <style>{CSS}</style>
 
-        {/* 1 · Blueprint grid (static), fading toward the page edges */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `${gridLine(G.majorOpacity - G.lineOpacity)}, ${gridLine(G.lineOpacity)}`,
-            backgroundSize: `${G.spacing * G.majorEvery}px ${G.spacing * G.majorEvery}px, ${G.spacing}px ${G.spacing}px`,
-            backgroundPosition: "center top",
-            maskImage: `linear-gradient(to right, transparent, #000 ${G.edgeFade}, #000 calc(100% - ${G.edgeFade}), transparent)`,
-            WebkitMaskImage: `linear-gradient(to right, transparent, #000 ${G.edgeFade}, #000 calc(100% - ${G.edgeFade}), transparent)`,
-          }}
-        />
+        {/* 1 · Sound Silk ribbons */}
+        <SoundSilk count={lg ? 3 : wide ? 2 : 1} vw={view.w} pageH={pageH} viewH={view.h} scrollY={scrollY} curtainOpen={curtainOpen} reduced={reduced} />
 
         {/* 3 · Ghost floor plans (md+) */}
         {wide &&

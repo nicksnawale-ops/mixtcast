@@ -160,7 +160,7 @@ export const SolutionsPage: React.FC = () => {
 
   return (
     // Ambient "Acoustic Blueprint" background (decoration only, behind all content)
-    <AcousticBlueprint>
+    <AcousticBlueprint curtainOpen={showcaseActive}>
     <div className="space-y-24 sm:space-y-32 pb-24">
       {/* 1. CURTAIN REVEAL HEADER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">

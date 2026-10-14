@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import {
   ArrowRight,
-  CheckCircle2,
   Sliders,
   Award,
   Clock,
@@ -41,6 +40,7 @@ import { ServicesConsoleSection } from "../components/home/services-console/Serv
 import { ProcessSignalSection } from "../components/home/process-signal/ProcessSignalSection";
 import { PatchInTransition } from "../components/home/patch-in/PatchInTransition";
 import { SurveyScanTransition } from "../components/home/survey-scan/SurveyScanTransition";
+import { WhyMixtcastSection } from "../components/home/why-eq/WhyMixtcastSection";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -264,38 +264,8 @@ export const HomePage: React.FC = () => {
         <ProcessSignalSection />
       </SurveyScanTransition>
 
-      {/* 6. WHY CHOOSE MIXTCAST */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2">
-            Why MixtCast
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-ink font-heading">
-            Engineered For Absolute Performance
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {COMPANY_INFO.whyChooseUs.map((item) => (
-            <div
-              key={item.id}
-              className="p-6 rounded-2xl bg-surface-warm border border-line shadow-xs flex flex-col justify-between hover:border-brand-navy/30 transition-colors"
-            >
-              <div>
-                <div className="mb-4">
-                  {iconMap[item.icon] || <CheckCircle2 className="w-6 h-6 text-brand-orange" />}
-                </div>
-                <h3 className="text-base font-bold text-ink font-heading mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-xs text-ink-muted leading-relaxed">
-                  {item.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* 6. WHY CHOOSE MIXTCAST — "The Five-Band EQ": the reasons as console faders, with a classic hairline entrance */}
+      <WhyMixtcastSection />
 
       {/* 8. TRUSTED BY (CLIENTS SHOWCASE & MARQUEE) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

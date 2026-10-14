@@ -25,7 +25,6 @@ import {
 } from "lucide-react";
 
 import { COMPANY_INFO } from "../data/company";
-import { CLIENT_PROJECTS } from "../data/clients";
 import { TECHNOLOGY_PARTNERS } from "../data/partners";
 import { Button } from "../components/ui/Button";
 import { WaveformCanvas } from "../components/animations/WaveformCanvas";
@@ -40,6 +39,7 @@ import { WhyMixtcastSection } from "../components/home/why-eq/WhyMixtcastSection
 import { SpacesPortalSection } from "../components/home/spaces-portal/SpacesPortalSection";
 import { PremiereQuoteSection } from "../components/home/premiere/PremiereQuoteSection";
 import { TestimonialsSection } from "../components/home/testimonials/TestimonialsSection";
+import { ClientCreditsSection } from "../components/home/client-credits/ClientCreditsSection";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -213,48 +213,8 @@ export const HomePage: React.FC = () => {
       {/* 6. WHY CHOOSE MIXTCAST — "The Five-Band EQ": the reasons as console faders, with a classic hairline entrance */}
       <WhyMixtcastSection />
 
-      {/* 8. TRUSTED BY (CLIENTS SHOWCASE & MARQUEE) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2">
-            Client Trust
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-ink font-heading">
-            Trusted by Prestigious Organizations
-          </h2>
-          <p className="mt-2 text-sm text-ink-muted">
-            Delivering mission-critical audio-visual installations across premier defense, institutional, and commercial leaders.
-          </p>
-        </div>
-
-        {/* Client Showcase Wall */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {CLIENT_PROJECTS.map((client) => (
-            <div
-              key={client.id}
-              className="p-6 rounded-2xl bg-surface-warm border border-line shadow-xs flex flex-col justify-between hover:border-brand-orange/40 transition-colors"
-            >
-              <div>
-                <span className="text-[11px] font-semibold text-brand-navy block mb-1">
-                  {client.category}
-                </span>
-                <h3 className="text-lg font-bold text-ink font-heading">
-                  {client.name}
-                </h3>
-                <p className="text-xs text-ink-muted mt-2 leading-relaxed">
-                  {client.descriptionPlaceholder}
-                </p>
-              </div>
-              <div className="mt-4 pt-3 border-t border-line/60 flex items-center justify-between text-xs text-ink-muted">
-                <span>{client.city}</span>
-                <span className="text-[10px] uppercase font-bold text-brand-orange">
-                  Client Partner
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* 8. TRUSTED BY — "Closing Credits": client names and categories set like film end credits */}
+      <ClientCreditsSection />
 
       {/* CLIENT VOICES — testimonials (verbatim from data/testimonials.ts) */}
       <TestimonialsSection />

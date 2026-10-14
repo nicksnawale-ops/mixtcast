@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle2, AlertCircle, Sparkles } from "lucide-react";
 import { SOLUTIONS, SolutionSpace } from "../data/solutions";
 import { CURTAIN_TIMING, CurtainReveal } from "../components/animations/CurtainReveal";
 import { SHOWCASE_TIMING, SpacesShowcase } from "../components/solutions/SpacesShowcase";
+import { AcousticBlueprint } from "../components/solutions/acoustic-blueprint/AcousticBlueprint";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback";
 import { Button } from "../components/ui/Button";
 
@@ -158,6 +159,8 @@ export const SolutionsPage: React.FC = () => {
   }, [targetSlug, flashHighlight]);
 
   return (
+    // Ambient "Acoustic Blueprint" background (decoration only, behind all content)
+    <AcousticBlueprint>
     <div className="space-y-24 sm:space-y-32 pb-24">
       {/* 1. CURTAIN REVEAL HEADER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
@@ -326,5 +329,6 @@ export const SolutionsPage: React.FC = () => {
         </div>
       </section>
     </div>
+    </AcousticBlueprint>
   );
 };

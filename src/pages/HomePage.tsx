@@ -28,7 +28,6 @@ import { COMPANY_INFO } from "../data/company";
 import { CLIENT_PROJECTS } from "../data/clients";
 import { TECHNOLOGY_PARTNERS } from "../data/partners";
 import { Button } from "../components/ui/Button";
-import { WaveformDivider } from "../components/ui/WaveformDivider";
 import { WaveformCanvas } from "../components/animations/WaveformCanvas";
 import { Marquee } from "../components/animations/Marquee";
 import { WhoWeAreSection } from "../components/home/who-we-are/WhoWeAreSection";
@@ -39,6 +38,7 @@ import { PatchInTransition } from "../components/home/patch-in/PatchInTransition
 import { SurveyScanTransition } from "../components/home/survey-scan/SurveyScanTransition";
 import { WhyMixtcastSection } from "../components/home/why-eq/WhyMixtcastSection";
 import { SpacesPortalSection } from "../components/home/spaces-portal/SpacesPortalSection";
+import { PremiereQuoteSection } from "../components/home/premiere/PremiereQuoteSection";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -277,23 +277,8 @@ export const HomePage: React.FC = () => {
         </Marquee>
       </section>
 
-      {/* 10. PHILOSOPHY QUOTE */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-12">
-        <div className="relative p-12 sm:p-16 rounded-3xl bg-surface-warm border border-line shadow-sm overflow-hidden">
-          {/* Subtle light sweep */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/80 to-transparent -translate-x-full animate-anamorphic" />
-
-          <WaveformDivider variant="subtle" className="mb-6" />
-
-          <blockquote className="text-2xl sm:text-4xl font-extrabold text-ink font-heading tracking-tight leading-tight">
-            "{COMPANY_INFO.philosophy}"
-          </blockquote>
-
-          <p className="mt-4 text-xs uppercase tracking-[0.2em] font-bold text-brand-orange">
-            MIXTCAST VISUAL SOLUTIONS PVT. LTD.
-          </p>
-        </div>
-      </section>
+      {/* 10. PHILOSOPHY QUOTE — "The Premiere": a cinematic title card revealed by a projector beam */}
+      <PremiereQuoteSection />
 
       {/* 11. CTA BAND (SIGNATURE GRADIENT BACKGROUND) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">

@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import {
   ArrowRight,
@@ -26,12 +25,10 @@ import {
 } from "lucide-react";
 
 import { COMPANY_INFO } from "../data/company";
-import { SOLUTIONS } from "../data/solutions";
 import { CLIENT_PROJECTS } from "../data/clients";
 import { TECHNOLOGY_PARTNERS } from "../data/partners";
 import { Button } from "../components/ui/Button";
 import { WaveformDivider } from "../components/ui/WaveformDivider";
-import { ImageWithFallback } from "../components/ui/ImageWithFallback";
 import { WaveformCanvas } from "../components/animations/WaveformCanvas";
 import { Marquee } from "../components/animations/Marquee";
 import { WhoWeAreSection } from "../components/home/who-we-are/WhoWeAreSection";
@@ -41,6 +38,7 @@ import { ProcessSignalSection } from "../components/home/process-signal/ProcessS
 import { PatchInTransition } from "../components/home/patch-in/PatchInTransition";
 import { SurveyScanTransition } from "../components/home/survey-scan/SurveyScanTransition";
 import { WhyMixtcastSection } from "../components/home/why-eq/WhyMixtcastSection";
+import { SpacesPortalSection } from "../components/home/spaces-portal/SpacesPortalSection";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -201,62 +199,9 @@ export const HomePage: React.FC = () => {
         <ServicesConsoleSection iconFor={(name) => iconMap[name] || <Volume2 className="w-5 h-5" />} />
       </PatchInTransition>
 
-      {/* 4. SPACES WE TRANSFORM */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2">
-            Environments
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-ink font-heading">
-            Spaces We Transform
-          </h2>
-          <p className="mt-3 text-base text-ink-muted">
-            Engineered architectural acoustic and visual integrations tailored for specific room dynamics.
-          </p>
-        </div>
-
-        {/* Cinematic Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {SOLUTIONS.slice(0, 6).map((sol) => (
-            <div
-              key={sol.id}
-              className="group rounded-2xl overflow-hidden bg-white border border-line shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
-            >
-              <div className="overflow-hidden aspect-video relative">
-                <ImageWithFallback
-                  src={sol.image}
-                  alt={sol.title}
-                  fallbackTitle={sol.title}
-                  category="Architecture & Acoustics"
-                  className="group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-md text-[10px] font-bold text-brand-navy uppercase tracking-wider">
-                  Verified Space
-                </div>
-              </div>
-              <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                <div>
-                  <h3 className="text-lg font-bold text-ink font-heading group-hover:text-brand-orange transition-colors">
-                    {sol.title}
-                  </h3>
-                  <p className="text-xs text-ink-muted mt-2 leading-relaxed">
-                    {sol.tagline}
-                  </p>
-                </div>
-                <div className="pt-2">
-                  <Link
-                    to={`/solutions#${sol.slug}`}
-                    className="text-xs font-bold text-brand-navy hover:text-brand-orange transition-colors inline-flex items-center gap-1"
-                  >
-                    <span>View Architecture Breakdown</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* 4. SPACES WE TRANSFORM — "Room Portals": proscenium-framed photos with floor plans, entered through a
+          light "Proscenium" header transition */}
+      <SpacesPortalSection />
 
       {/* 5. OUR PROCESS — "From Silence to Signal": scroll-driven signal-chain story, entered through the
           "Site Survey Scan" transition (a survey beam reveals its blueprint grid and hands over to the waveform) */}

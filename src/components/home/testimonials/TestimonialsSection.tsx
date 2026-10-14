@@ -63,7 +63,7 @@ const Slide: React.FC<{ t: Testimonial; index: number; total: number; play: bool
       exit={reduced ? { opacity: 0, transition: { duration: 0 } } : { opacity: 0, y: -8, filter: "blur(6px)", transition: { duration: 0.2, ease: "easeIn" } }}
     >
       {/* Stars pop in one by one */}
-      <div role="img" aria-label={`Rated ${t.rating} out of 5`} className="flex items-center gap-1 mb-5 justify-center lg:justify-start">
+      <div role="img" aria-label={`Rated ${t.rating} out of 5`} className="flex items-center gap-1 mb-5 justify-center">
         {Array.from({ length: t.rating }, (_, i) => (
           <motion.span
             key={i}
@@ -77,7 +77,7 @@ const Slide: React.FC<{ t: Testimonial; index: number; total: number; play: bool
         ))}
       </div>
 
-      <blockquote className="text-center lg:text-left">
+      <blockquote className="text-center">
         <p className="font-['Cormorant_Garamond',Georgia,serif] italic font-medium text-ink" style={{ fontSize: "clamp(1.5rem, 2.6vw, 2.25rem)", lineHeight: 1.35 }}>
           {words.map((w, i) => (
             <React.Fragment key={i}>
@@ -95,7 +95,7 @@ const Slide: React.FC<{ t: Testimonial; index: number; total: number; play: bool
         </p>
 
         {/* Voiceprint: unique to this quote, redrawn each time it appears */}
-        <svg aria-hidden="true" className="mt-6 mx-auto lg:mx-0 block overflow-visible" width={VOICE_W} height={VOICE_H} viewBox={`0 0 ${VOICE_W} ${VOICE_H}`} fill="none">
+        <svg aria-hidden="true" className="mt-6 mx-auto block overflow-visible" width={VOICE_W} height={VOICE_H} viewBox={`0 0 ${VOICE_W} ${VOICE_H}`} fill="none">
           <defs>
             <linearGradient id={gid} x1="0" y1="0" x2="1" y2="0">
               <stop offset="0" stopColor="#0E3B8C" />
@@ -105,12 +105,13 @@ const Slide: React.FC<{ t: Testimonial; index: number; total: number; play: bool
           {play && <path className="tv-voice" d={voice} pathLength={1} stroke={`url(#${gid})`} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />}
         </svg>
 
-        <footer className="mt-6 flex items-center justify-center lg:justify-start gap-3">
+        <footer className="mt-6 flex items-center justify-center gap-3">
           <span aria-hidden="true" className="h-px w-8 bg-brand-orange shrink-0" />
-          <cite className="not-italic text-sm">
+          <cite className="not-italic text-sm text-center">
             <span className="font-heading font-semibold text-ink">{t.author}</span>
             <span className="text-ink-muted"> — {t.organization}</span>
           </cite>
+          <span aria-hidden="true" className="h-px w-8 bg-brand-orange shrink-0" />
         </footer>
       </blockquote>
     </motion.div>
@@ -196,7 +197,7 @@ export const TestimonialsSection: React.FC = () => {
   return (
     <section ref={sectionRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <style>{CSS}</style>
-      <div className="text-center lg:text-left mb-10">
+      <div className="text-center max-w-2xl mx-auto mb-10">
         <motion.span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2" {...fadeUp(0)}>
           Testimonials
         </motion.span>
@@ -209,7 +210,7 @@ export const TestimonialsSection: React.FC = () => {
         role="region"
         aria-roledescription="carousel"
         aria-label="Client testimonials"
-        className="relative max-w-[980px] mx-auto lg:mx-0"
+        className="relative max-w-[880px] mx-auto"
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
         onFocus={() => setFocused(true)}
@@ -224,7 +225,7 @@ export const TestimonialsSection: React.FC = () => {
         {/* Decorative opening quote */}
         <motion.span
           aria-hidden="true"
-          className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0 lg:-top-14 lg:-left-2 font-['Cormorant_Garamond',Georgia,serif] italic text-[7rem] lg:text-[9rem] leading-none text-brand-orange/20 select-none"
+          className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 lg:-top-14 font-['Cormorant_Garamond',Georgia,serif] italic text-[7rem] lg:text-[9rem] leading-none text-brand-orange/20 select-none"
           initial={reduced ? false : { opacity: 0, scale: 0.6 }}
           animate={entered ? { opacity: 1, scale: 1 } : undefined}
           transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
@@ -257,11 +258,11 @@ export const TestimonialsSection: React.FC = () => {
         </motion.div>
 
         {/* Controls */}
-        <div className="relative mt-8 flex items-center gap-3">
+        <div className="relative mt-8 flex items-center justify-center gap-3">
           <button type="button" onClick={() => setAutoplay((a) => !a)} aria-label={autoplay ? "Pause testimonials" : "Play testimonials"} className={btn}>
             {autoplay ? <Pause className="w-4 h-4" aria-hidden="true" /> : <Play className="w-4 h-4" aria-hidden="true" />}
           </button>
-          <div className="flex-1 flex items-center gap-2">
+          <div className="flex-1 max-w-[420px] flex items-center gap-2">
             {TESTIMONIALS.map((t, i) => (
               <button
                 key={t.organization}

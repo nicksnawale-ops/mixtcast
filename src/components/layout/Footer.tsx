@@ -128,21 +128,21 @@ export const Footer: React.FC = () => {
               </div>
             </div>
 
-            {/* Social Icons Placeholders */}
+            {/* Social */}
             <div className="pt-2">
               <span className="text-[11px] font-semibold text-ink-muted block mb-2">
                 Connect With Us
               </span>
               <div className="flex items-center gap-2">
-                {["LinkedIn", "YouTube", "Instagram"].map((platform) => (
-                  <span
-                    key={platform}
-                    className="px-2.5 py-1 rounded-md bg-white border border-line text-xs font-medium text-ink-muted cursor-pointer hover:border-brand-orange hover:text-brand-navy transition-colors"
-                    title={`${platform} - [TODO: confirm official handle]`}
-                  >
-                    {platform}
-                  </span>
-                ))}
+                <a
+                  href="https://www.linkedin.com/company/107356295/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="MixtCast on LinkedIn"
+                  className="px-2.5 py-1 rounded-md bg-white border border-line text-xs font-medium text-ink-muted cursor-pointer hover:border-brand-orange hover:text-brand-navy transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-orange"
+                >
+                  LinkedIn
+                </a>
               </div>
             </div>
           </div>

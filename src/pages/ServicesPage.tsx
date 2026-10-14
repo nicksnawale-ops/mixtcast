@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import {
   Volume2,
   Tv,
@@ -14,11 +13,15 @@ import {
   Home,
   Video,
   Mic,
-  ArrowRight,
 } from "lucide-react";
-import { SERVICES, ServiceItem } from "../data/services";
-import { SpotlightCard } from "../components/ui/Card";
+import { SERVICES } from "../data/services";
 import { Button } from "../components/ui/Button";
+// "Mixing Console" design: the Home console card styles are reused read-only; the rest is Services-specific.
+import { CONSOLE_CSS } from "../components/home/services-console/consoleStyles";
+import { SERVICES_CSS, SVC } from "../components/services/servicesConsoleStyles";
+import { ServiceChannelCard } from "../components/services/ServiceChannelCard";
+import { ServicesSignalField, type SignalFieldHandle } from "../components/services/ServicesSignalField";
+import { FaderBank } from "../components/services/FaderBank";
 
 const iconMap: Record<string, React.ReactNode> = {
   Volume2: <Volume2 className="w-6 h-6" />,
@@ -37,6 +40,21 @@ const iconMap: Record<string, React.ReactNode> = {
 
 type CategoryFilter = "All" | "Audio" | "Video" | "Spaces" | "Studios";
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+const HEADLINE = "Comprehensive Audio-Visual Capabilities";
+
+const useMedia = (query: string) => {
+  const [matches, setMatches] = useState(() => typeof window !== "undefined" && window.matchMedia(query).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const onChange = () => setMatches(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [query]);
+  return matches;
+};
+
 export const ServicesPage: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<CategoryFilter>("All");
 
@@ -47,95 +65,145 @@ export const ServicesPage: React.FC = () => {
       ? SERVICES
       : SERVICES.filter((s) => s.category === activeFilter);
 
+  const reduced = !!useReducedMotion();
+  const canHover = useMedia("(hover: hover) and (pointer: fine)");
+  const wide = useMedia("(min-width: 768px)");
+  const sectionRef = useRef<HTMLElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const fieldRef = useRef<SignalFieldHandle>(null);
+
+  // Loops (meters, pulses, waveform) run only while the card section is near the viewport and the tab is visible.
+  const [running, setRunning] = useState(false);
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    let onScreen = false;
+    const update = () => setRunning(onScreen && !document.hidden);
+    const observer = new IntersectionObserver(([e]) => {
+      onScreen = e.isIntersecting;
+      update();
+    }, { rootMargin: "100px 0px" });
+    observer.observe(section);
+    document.addEventListener("visibilitychange", update);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", update);
+    };
+  }, []);
+
+  // Entrance cascade ("console powering on"): cards entering together are queued in order, 70ms apart.
+  const nextSlot = useRef(0);
+  const claimDelay = useCallback(() => {
+    const now = performance.now();
+    const start = Math.max(now, nextSlot.current);
+    nextSlot.current = start + SVC.cards.stagger * 1000;
+    return (start - now) / 1000;
+  }, []);
+  const onActivate = useCallback((el: HTMLElement) => fieldRef.current?.route(el), []);
+
   return (
     <div className="space-y-16 pb-24">
       {/* Header */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 text-center">
-        <div className="inline-flex items-center gap-2 mb-3">
+      <style>{CONSOLE_CSS + SERVICES_CSS}</style>
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 text-center">
+        {/* A faint fader bank moving like an automated mix (decorative) */}
+        <FaderBank count={wide ? SVC.faders.desktop : SVC.faders.mobile} reduced={reduced} />
+        <div className="relative inline-flex items-center gap-2 mb-3">
           <span className="h-[2px] w-4 bg-brand-orange" />
           <span className="text-xs font-bold uppercase tracking-widest text-brand-orange">
             Engineering Catalog
           </span>
           <span className="h-[2px] w-4 bg-brand-orange" />
         </div>
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-ink font-heading tracking-tight">
-          Comprehensive Audio-Visual Capabilities
-        </h1>
-        <p className="mt-4 text-base sm:text-lg text-ink-muted max-w-2xl mx-auto">
+        {/* Headline: masked slide-up, word by word (wraps into lines naturally), with one soft light sweep */}
+        <div className="relative overflow-hidden pb-2">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-ink font-heading tracking-tight">
+            {HEADLINE.split(" ").map((word, i) => (
+              <React.Fragment key={word}>
+                {i > 0 && " "}
+                <span className="inline-block overflow-hidden align-bottom pb-[0.12em] -mb-[0.12em]">
+                  <motion.span
+                    className="inline-block"
+                    initial={reduced ? false : { y: "110%" }}
+                    animate={{ y: "0%" }}
+                    transition={{ duration: SVC.hero.wordDuration, delay: 0.1 + i * SVC.hero.wordStagger, ease: EASE }}
+                  >
+                    {word}
+                  </motion.span>
+                </span>
+              </React.Fragment>
+            ))}
+          </h1>
+          <span
+            aria-hidden="true"
+            className="svc-sweep pointer-events-none absolute inset-y-0 left-0 w-1/5"
+            style={{ background: "linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.75), rgba(255,255,255,0))" }}
+          />
+        </div>
+        <motion.p
+          className="relative mt-4 text-base sm:text-lg text-ink-muted max-w-2xl mx-auto"
+          initial={reduced ? false : { opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: SVC.hero.subAt, ease: EASE }}
+        >
           Explore our complete suite of 12 specialized AV engineering disciplines, from electro-acoustics
           and projection mapping to AI speech enhancement and turnkey studio design.
-        </p>
+        </motion.p>
 
         {/* Filter Controls (Segmented Bar) */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-2">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveFilter(cat)}
-              className={`px-5 py-2 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer select-none whitespace-nowrap ${
-                activeFilter === cat
-                  ? "bg-brand-navy text-white shadow-md shadow-brand-navy/20"
-                  : "bg-surface-warm text-ink-muted hover:text-ink hover:bg-surface-cool border border-line"
-              }`}
-            >
-              {cat} {cat === "All" ? `(${SERVICES.length})` : ""}
-            </button>
-          ))}
+        {/* Filter controls as illuminated console buttons */}
+        <div className="relative mt-10 flex flex-wrap items-center justify-center gap-2">
+          {categories.map((cat) => {
+            const on = activeFilter === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                aria-pressed={on}
+                onClick={() => setActiveFilter(cat)}
+                className={`inline-flex items-center gap-2 pl-3 pr-4 py-2 rounded-lg border text-xs font-bold transition-colors duration-200 cursor-pointer select-none whitespace-nowrap outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-orange ${
+                  on
+                    ? "bg-brand-navy border-brand-navy text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_6px_16px_-6px_rgba(14,59,140,0.5)]"
+                    : "bg-white border-line text-ink-muted hover:text-ink shadow-[inset_0_-2px_0_rgba(14,59,140,0.06),inset_0_1px_2px_rgba(14,59,140,0.06)]"
+                }`}
+              >
+                <span aria-hidden="true" className="relative w-2 h-2 shrink-0">
+                  <span className="svc-led-halo absolute -inset-1.5 rounded-full" style={{ background: "radial-gradient(closest-side, rgba(255,90,31,0.65), rgba(255,90,31,0))" }} />
+                  <span key={on ? "on" : "off"} className={`svc-led-flash relative block w-2 h-2 rounded-full ${on ? "bg-brand-orange" : "bg-[#E6E8EC]"}`} />
+                </span>
+                {cat} {cat === "All" ? `(${SERVICES.length})` : ""}
+              </button>
+            );
+          })}
         </div>
       </section>
 
-      {/* Bento Grid Services List */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence mode="popLayout">
-            {filteredServices.map((service) => (
-              <motion.div
-                key={service.slug}
-                layout
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Link to={`/services/${service.slug}`} className="block h-full group">
-                  <SpotlightCard className="h-full p-8 flex flex-col justify-between hover:border-brand-orange/40 bg-white">
-                    <div>
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="w-12 h-12 rounded-2xl bg-surface-cool text-brand-navy flex items-center justify-center group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300 shadow-xs">
-                          {iconMap[service.icon] || <Volume2 className="w-6 h-6" />}
-                        </div>
-                        <span className="text-xs font-semibold text-ink-muted uppercase tracking-wider">
-                          {service.category}
-                        </span>
-                      </div>
-
-                      <h3 className="text-xl font-bold text-ink font-heading group-hover:text-brand-navy transition-colors mb-3">
-                        {service.title}
-                      </h3>
-
-                      <p className="text-sm text-ink-muted leading-relaxed line-clamp-3 mb-6">
-                        {service.overview}
-                      </p>
-
-                      <div className="space-y-1.5 pt-2 border-t border-line/60">
-                        <span className="text-[11px] font-bold text-brand-orange uppercase tracking-wider block">
-                          Key Deliverable Focus
-                        </span>
-                        <p className="text-xs text-ink/80 truncate">
-                          • {service.deliverables[0]}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="mt-8 pt-4 border-t border-line/60 flex items-center justify-between text-xs font-bold text-brand-orange group-hover:translate-x-1 transition-transform">
-                      <span>View Specifications & Applications</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </div>
-                  </SpotlightCard>
-                </Link>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+      {/* The full 12-channel console */}
+      <section ref={sectionRef} data-paused={running ? undefined : ""} className="svc-cards relative">
+        <ServicesSignalField ref={fieldRef} sectionRef={sectionRef} gridRef={gridRef} running={running} reduced={reduced} wide={wide} canHover={canHover} />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <AnimatePresence mode="popLayout" initial={false}>
+              {filteredServices.map((service) => (
+                <motion.div
+                  key={service.slug}
+                  layout={!reduced}
+                  exit={reduced ? { opacity: 0, transition: { duration: 0 } } : { opacity: 0, scale: 0.96 }}
+                  transition={{ duration: reduced ? 0 : SVC.filter.layoutMs / 1000, ease: EASE }}
+                >
+                  <ServiceChannelCard
+                    service={service}
+                    channel={SERVICES.indexOf(service) + 1}
+                    icon={iconMap[service.icon] || <Volume2 className="w-6 h-6" />}
+                    canHover={canHover}
+                    reduced={reduced}
+                    claimDelay={claimDelay}
+                    onActivate={onActivate}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
         </div>
       </section>
 

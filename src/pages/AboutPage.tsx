@@ -61,18 +61,16 @@ export const AboutPage: React.FC = () => {
               <span className="text-xs font-bold text-brand-navy block mb-1">
                 Headquarters
               </span>
-              <p className="text-xs text-ink-muted">
-                Pune, Maharashtra, India. Delivering turnkey installations across nationwide academic,
-                defence, and commercial venues.
-              </p>
+              <p className="text-xs text-ink-muted">{COMPANY_INFO.contact.address}</p>
             </div>
           </div>
 
-          <div className="lg:col-span-7 space-y-6 text-base text-ink-muted leading-relaxed">
-            <p className="text-lg text-ink font-medium leading-relaxed">
+          {/* Both paragraphs share one style: Inter 400, 16px (17px lg+), line-height 1.75, #4A5260, 20px apart */}
+          <div className="lg:col-span-7 space-y-5">
+            <p className="font-body font-normal text-base lg:text-[17px] leading-[1.75] text-[#4A5260]">
               {COMPANY_INFO.aboutParagraphs[0]}
             </p>
-            <p>
+            <p className="font-body font-normal text-base lg:text-[17px] leading-[1.75] text-[#4A5260]">
               {COMPANY_INFO.aboutParagraphs[1]}
             </p>
           </div>

@@ -42,6 +42,8 @@ export const COMPANY_INFO = {
     state: "Maharashtra",
     country: "India",
     addressLine: "[TODO: add full registered office address, Pune, Maharashtra, India]",
+    /** Headquarters street address (shown on the About page). */
+    address: "326, Building No. 23, Lokamanya Nagar, LBS Road, Navi Peth, Pune 411030",
   },
   coreValues: [
     {

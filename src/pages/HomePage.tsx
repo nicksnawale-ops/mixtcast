@@ -125,7 +125,7 @@ export const HomePage: React.FC = () => {
           >
             <span className="h-[2px] w-6 bg-brand-orange rounded-full" />
             <span className="text-xs font-bold uppercase tracking-[0.25em] text-brand-orange font-heading">
-              AUDIO • VIDEO • INTEGRATION
+              We Provide The Best Services
             </span>
             <span className="h-[2px] w-6 bg-brand-orange rounded-full" />
           </motion.div>
@@ -138,8 +138,8 @@ export const HomePage: React.FC = () => {
             className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-ink font-heading tracking-tight leading-[1.1] max-w-4xl mx-auto"
             style={{ textWrap: "balance" }}
           >
-            Where Expertise <br className="hidden sm:inline" />
-            Meets <span className="text-brand-orange">Innovation</span>
+            Empowering <br className="hidden sm:inline" />
+            Digital <span className="text-brand-orange">Transformation</span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -147,10 +147,12 @@ export const HomePage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-6 text-lg sm:text-xl text-ink-muted max-w-2xl mx-auto font-normal leading-relaxed"
+            className="mt-6 text-lg sm:text-xl text-ink-muted max-w-[44rem] mx-auto font-normal leading-relaxed"
+            style={{ textWrap: "balance" }}
           >
-            We design and deliver world-class AV environments — from auditoriums and theatres to
-            boardrooms and classrooms.
+            Mixtcast Visual Solution Pvt. Ltd. provides end-to-end Audio Visual, Networking, Security, and IT
+            Infrastructure solutions tailored to modern businesses, educational institutions, healthcare facilities,
+            and enterprises.
           </motion.p>
 
           {/* CTAs */}

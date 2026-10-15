@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ShieldCheck, Cpu, Users, Headphones, ArrowRight, UserCheck } from "lucide-react";
+import { ShieldCheck, Cpu, Users, Headphones, ArrowRight } from "lucide-react";
 import { COMPANY_INFO } from "../data/company";
 import { Button } from "../components/ui/Button";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback";
@@ -171,61 +171,6 @@ export const AboutPage: React.FC = () => {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. LEADERSHIP PROFILE */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2">
-              Leadership
-            </span>
-            <h2 className="text-3xl font-bold text-ink font-heading">
-              Executive Direction
-            </h2>
-          </div>
-
-          <div className="p-8 sm:p-10 rounded-3xl bg-surface-warm border border-line shadow-sm flex flex-col sm:flex-row items-center gap-8">
-            <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden shrink-0 border-2 border-brand-orange/30 shadow-md relative bg-white flex items-center justify-center">
-              {/* Photo slot / placeholder */}
-              <div className="flex flex-col items-center justify-center text-center p-3">
-                <UserCheck className="w-12 h-12 text-brand-navy mb-1" />
-                <span className="text-[10px] font-bold text-ink-muted uppercase">
-                  Photo Slot
-                </span>
-              </div>
-            </div>
-
-            <div className="space-y-3 text-center sm:text-left flex-1">
-              <div>
-                <h3 className="text-2xl font-bold text-ink font-heading">
-                  {COMPANY_INFO.leadership[0].name}
-                </h3>
-                <span className="text-xs font-semibold text-brand-orange uppercase tracking-wider block">
-                  {COMPANY_INFO.leadership[0].designation}
-                </span>
-              </div>
-              <p className="text-sm text-ink-muted leading-relaxed">
-                {COMPANY_INFO.leadership[0].bio}
-              </p>
-              <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs font-semibold text-ink">
-                <a
-                  href={`mailto:${COMPANY_INFO.contact.emailPrimary}`}
-                  className="text-brand-navy hover:text-brand-orange transition-colors"
-                >
-                  {COMPANY_INFO.contact.emailPrimary}
-                </a>
-                <span>·</span>
-                <a
-                  href={`tel:${COMPANY_INFO.contact.phoneRaw}`}
-                  className="text-brand-navy hover:text-brand-orange transition-colors"
-                >
-                  {COMPANY_INFO.contact.phone}
-                </a>
-              </div>
-            </div>
           </div>
         </div>
       </section>

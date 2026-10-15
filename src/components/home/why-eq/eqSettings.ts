@@ -17,8 +17,8 @@ export const ENTRANCE = {
 /** Knob spring: a smooth glide with a small, quick settle. */
 export const KNOB_SPRING = { type: "spring" as const, stiffness: 170, damping: 19, mass: 0.9 };
 
-/** Classic hairline transition above the header. */
-export const HEADER = { lineMs: 600, eyebrowDelay: 0.45, headingDelay: 0.55, rise: 16 };
+/** Header entrance: the eyebrow and heading fade up. */
+export const HEADER = { eyebrowDelay: 0.45, headingDelay: 0.55, rise: 16 };
 
 /** Soft seam from the Methodology tint into this section's white. */
 export const SEAM = 120;

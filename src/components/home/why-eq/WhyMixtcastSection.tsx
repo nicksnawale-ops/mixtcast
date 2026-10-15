@@ -6,7 +6,7 @@ import { ACTIVE_GROW, EASE, ENTRANCE, HEADER, HOVER_MS, KNOB_SPRING, REST, SEAM 
 
 /**
  * Home "Why MixtCast": "The Five-Band EQ" — the five reasons as equalizer bands with faders (no cards), entered from
- * the Methodology story through a light, classic hairline transition. Tuning lives in eqSettings.ts.
+ * the Methodology story through a soft seam and a header fade-up. Tuning lives in eqSettings.ts.
  */
 
 type Reason = (typeof COMPANY_INFO.whyChooseUs)[number];
@@ -324,15 +324,6 @@ export const WhyMixtcastSection: React.FC = () => {
       )}
 
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Classic hairline: draws outward from the centre, above the header (in the gap — adds no height) */}
-        <motion.span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-4 sm:inset-x-6 lg:inset-x-8 -top-7 h-px"
-          style={{ background: "rgba(14,59,140,0.25)" }}
-          initial={reduced ? false : { scaleX: 0 }}
-          animate={headerIn ? { scaleX: 1 } : undefined}
-          transition={{ duration: HEADER.lineMs / 1000, ease: EASE }}
-        />
         <div ref={headerRef} className="text-center max-w-2xl mx-auto mb-16">
           <motion.span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2" {...fadeUp(HEADER.eyebrowDelay)}>
             Why MixtCast

@@ -207,7 +207,7 @@ export const ContactPage: React.FC = () => {
               <div className="aspect-16/9 w-full rounded-2xl overflow-hidden relative lg:flex-1">
                 <iframe
                   title="MixtCast Visual Solutions office location"
-                  src="https://maps.google.com/maps?q=18.5040313,73.8453046&z=17&output=embed"
+                  src="https://maps.google.com/maps?q=18.5040313,73.8453046&hl=en&z=17&output=embed"
                   className="w-full h-full border-0"
                   loading="lazy"
                 />

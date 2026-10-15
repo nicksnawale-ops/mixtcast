@@ -10,6 +10,7 @@ import {
   MessageSquare,
   Clock,
   Sparkles,
+  ExternalLink,
 } from "lucide-react";
 import { COMPANY_INFO } from "../data/company";
 import { SOLUTIONS } from "../data/solutions";
@@ -125,19 +126,7 @@ export const ContactPage: React.FC = () => {
               </span>
 
               <div className="space-y-4">
-                <div>
-                  <span className="text-xs font-semibold text-ink-muted uppercase tracking-wider block">
-                    Contact Person
-                  </span>
-                  <h3 className="text-xl font-bold text-ink font-heading">
-                    {COMPANY_INFO.contact.contactPerson}
-                  </h3>
-                  <span className="text-xs text-brand-navy font-semibold">
-                    {COMPANY_INFO.contact.designation}
-                  </span>
-                </div>
-
-                <div className="pt-2 space-y-3 text-sm">
+                <div className="space-y-3 text-sm">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-white border border-line text-brand-navy flex items-center justify-center shrink-0">
                       <Phone className="w-4 h-4" />
@@ -182,12 +171,7 @@ export const ContactPage: React.FC = () => {
                     </div>
                     <div>
                       <span className="text-[11px] text-ink-muted block">Registered Location</span>
-                      <p className="font-semibold text-ink">
-                        {COMPANY_INFO.contact.city}, {COMPANY_INFO.contact.state}, {COMPANY_INFO.contact.country}
-                      </p>
-                      <p className="text-xs text-ink-muted/80 mt-0.5">
-                        {COMPANY_INFO.contact.addressLine}
-                      </p>
+                      <p className="font-semibold text-ink">{COMPANY_INFO.contact.address}</p>
                     </div>
                   </div>
 
@@ -219,16 +203,25 @@ export const ContactPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Embedded Google Maps Placeholder */}
+            {/* Office location map */}
             <div className="rounded-3xl overflow-hidden border border-line shadow-sm bg-surface-cool p-2 lg:flex-1 lg:flex lg:flex-col">
               <div className="aspect-16/9 w-full rounded-2xl overflow-hidden relative lg:flex-1">
                 <iframe
-                  title="MixtCast Visual Solutions Pune Location"
-                  src="https://maps.google.com/maps?q=Pune,%20Maharashtra,%20India&t=&z=12&ie=UTF8&iwloc=&output=embed"
+                  title="MixtCast Visual Solutions office location"
+                  src="https://maps.google.com/maps?q=Mixtcast%20Visual%20Solutions%20Pvt%20Ltd%2C%2018.5040313%2C73.8453046&z=17&output=embed"
                   className="w-full h-full border-0"
                   loading="lazy"
                 />
               </div>
+              <a
+                href="https://www.google.com/maps/place/Mixtcast+Visual+Solutions+Pvt+Ltd/@18.5040313,73.8453046,17z/data=!4m6!3m5!1s0x3bc2bf99ada69e31:0x25aafaa3dba6828d!8m2!3d18.5040313!4d73.8453046!16s%2Fg%2F11p1_51t65"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-auto flex w-fit items-center gap-1.5 px-3 pt-2.5 pb-1.5 text-xs font-semibold text-brand-navy hover:text-brand-orange transition-colors"
+              >
+                Open in Maps
+                <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+              </a>
             </div>
           </div>
 

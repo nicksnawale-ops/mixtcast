@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Phone,
@@ -10,11 +10,12 @@ import {
   MessageSquare,
   Clock,
   Sparkles,
+  Loader2,
 } from "lucide-react";
 import { COMPANY_INFO } from "../data/company";
 import { SOLUTIONS } from "../data/solutions";
 import { SERVICES } from "../data/services";
-import { submitEnquiry, EnquiryPayload } from "../lib/api";
+import { submitEnquiry, honeypotResponse, EnquiryPayload } from "../lib/api";
 import { Button } from "../components/ui/Button";
 import { PremiumSelect } from "../components/forms/PremiumSelect";
 
@@ -40,11 +41,15 @@ export const ContactPage: React.FC = () => {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sendFailed, setSendFailed] = useState(false);
   const [submitResult, setSubmitResult] = useState<{
     success: boolean;
     referenceId: string;
     message: string;
   } | null>(null);
+  // Guards against double submission (state updates are async; a ref blocks a second click immediately).
+  const sendingRef = useRef(false);
+  const botcheckRef = useRef<HTMLInputElement>(null);
 
   const toggleService = (title: string) => {
     setFormData((prev) => ({
@@ -74,23 +79,31 @@ export const ContactPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (sendingRef.current) return;
     if (!validate()) return;
 
+    // Honeypot ticked (bots only): show success without sending anything.
+    if (botcheckRef.current?.checked) {
+      const res = honeypotResponse();
+      setSubmitResult({ success: true, referenceId: res.reference, message: res.message });
+      return;
+    }
+
+    sendingRef.current = true;
     setIsSubmitting(true);
+    setSendFailed(false);
     try {
-      const res = await submitEnquiry(formData);
+      const res = await submitEnquiry(formData, false);
       setSubmitResult({
         success: true,
-        referenceId: res.referenceId,
+        referenceId: res.reference,
         message: res.message,
       });
-    } catch (err: any) {
-      setSubmitResult({
-        success: false,
-        referenceId: "",
-        message: err.message || "Failed to submit enquiry. Please try again.",
-      });
+    } catch {
+      // Keep everything the visitor entered; show the inline error with direct contact options.
+      setSendFailed(true);
     } finally {
+      sendingRef.current = false;
       setIsSubmitting(false);
     }
   };
@@ -279,12 +292,6 @@ export const ContactPage: React.FC = () => {
                     </p>
                   </div>
 
-                  {submitResult && !submitResult.success && (
-                    <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-xs text-red-800">
-                      {submitResult.message}
-                    </div>
-                  )}
-
                   {/* Name & Company */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -440,16 +447,46 @@ export const ContactPage: React.FC = () => {
                     />
                   </div>
 
+                  {/* Honeypot: hidden from people and assistive tech; only bots tick it */}
+                  <input
+                    ref={botcheckRef}
+                    type="checkbox"
+                    name="botcheck"
+                    tabIndex={-1}
+                    aria-hidden="true"
+                    autoComplete="off"
+                    className="hidden"
+                  />
+
+                  {sendFailed && (
+                    <div role="alert" className="p-4 rounded-xl bg-red-50 border border-red-200 text-xs text-red-800 leading-relaxed">
+                      We couldn't send your enquiry right now. Please try again, or reach us directly on{" "}
+                      <a href={COMPANY_INFO.contact.whatsapp} target="_blank" rel="noopener noreferrer" className="font-semibold underline">
+                        WhatsApp
+                      </a>{" "}
+                      or at{" "}
+                      <a href={`tel:${COMPANY_INFO.contact.phoneRaw}`} className="font-semibold underline">
+                        {COMPANY_INFO.contact.phone}
+                      </a>{" "}
+                      /{" "}
+                      <a href={`mailto:${COMPANY_INFO.contact.emailSales}`} className="font-semibold underline">
+                        {COMPANY_INFO.contact.emailSales}
+                      </a>
+                      .
+                    </div>
+                  )}
+
                   <div className="pt-2">
                     <Button
                       type="submit"
                       variant="cta"
                       size="lg"
                       disabled={isSubmitting}
+                      aria-busy={isSubmitting}
                       className="w-full"
-                      icon={<Send className="w-4 h-4" />}
+                      icon={isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /> : <Send className="w-4 h-4" />}
                     >
-                      {isSubmitting ? "Submitting Blueprint Request..." : "Submit Technical Enquiry"}
+                      {isSubmitting ? "Sending…" : "Submit Technical Enquiry"}
                     </Button>
                   </div>
                 </motion.form>

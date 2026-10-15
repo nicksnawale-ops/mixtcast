@@ -16,16 +16,17 @@ export const AboutPage: React.FC = () => {
           <div className="inline-flex items-center gap-2 mb-3">
             <span className="h-[2px] w-4 bg-brand-orange" />
             <span className="text-xs font-bold uppercase tracking-widest text-brand-orange">
-              Corporate Profile
+              About Company
             </span>
             <span className="h-[2px] w-4 bg-brand-orange" />
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-ink font-heading tracking-tight">
-            Pioneering the Future of Audio-Visual Integration
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-ink font-heading tracking-tight" style={{ textWrap: "balance" }}>
+            Driven by Innovation, <br className="hidden sm:inline" />
+            Built on Trust
           </h1>
           <p className="mt-4 text-base sm:text-lg text-ink-muted leading-relaxed">
-            MixtCast Visual Solutions Private Limited is a specialized AV engineering firm based in
-            Pune, delivering high-performance acoustic, projection, and automation installations.
+            Mixtcast Visual Solution Pvt. Ltd. is focused on delivering reliable technology solutions that help
+            businesses communicate, connect, and operate more efficiently.
           </p>
         </div>
 

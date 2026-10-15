@@ -1,7 +1,7 @@
 import React from "react";
 
 /**
- * Line-art pictograms for the five stages (96×96 viewBox, 1.5px strokes, navy with orange accents).
+ * Line-art pictograms for the process stages (96×96 viewBox, 1.5px strokes, navy with orange accents).
  * Pure CSS animation (stroke-dashoffset / opacity / a few short scale pops): animating SVG attributes from JS
  * every frame forced a layout per frame. The svg's classes drive everything:
  *  - `pg-play`: draw in (remount with a new `key` to redraw);
@@ -23,6 +23,9 @@ export const PICTOGRAM_CSS = `
 .pg-play .pg-pop { animation: pg-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s) both; }
 @keyframes pg-pop { 0% { opacity: 0; transform: scale(0.4); } 55% { opacity: 1; transform: scale(1.35); } 100% { opacity: 1; transform: scale(1); } }
 .pg-play .pg-fadeout { animation: pg-fadeout 0.45s ease-in var(--d, 0s) both; }
+.pg .pg-slide { opacity: 0; transform: translateX(var(--from, -20px)); }
+.pg-play .pg-slide { animation: pg-slide var(--t, 0.9s) cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s) both; }
+@keyframes pg-slide { to { opacity: 1; transform: translateX(0); } }
 @keyframes pg-fadeout { from { opacity: 1; } to { opacity: 0; } }
 /* Idle loops (declared after the one-shot rules so they take over) */
 .pg-loop .pg-pulse { animation: pg-fade 0.35s ease-out var(--d, 0s) both, pg-pulse 1.8s ease-in-out calc(var(--d, 0s) + 0.35s) infinite; }
@@ -33,6 +36,7 @@ export const PICTOGRAM_CSS = `
 @keyframes pg-beat { 0% { stroke-dashoffset: 1; opacity: 1; } 60% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
 .pg-static .pg-draw, .pg-static .pg-fade, .pg-static .pg-pop, .pg-static .pg-pulse, .pg-static .pg-beat { animation: none; stroke-dasharray: none; stroke-dashoffset: 0; opacity: var(--o, 1); transform: none; }
 .pg-static .pg-fadeout { animation: none; opacity: 0; }
+.pg-static .pg-slide { animation: none; opacity: 1; transform: none; }
 .pg-static .pg-cone { animation: none; }
 [data-paused] .pg * { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .pg * { animation: none !important; } }
@@ -70,7 +74,7 @@ const Pop: React.FC<{ delay: number; children: React.ReactNode }> = ({ delay, ch
   </g>
 );
 
-// 1 · Consult & Understand — a room being measured, an ear listening.
+// Site Survey — a room being measured, an ear listening.
 const dashes = (x1: number, y1: number, x2: number, y2: number, dash = 3.5, gap = 3) => {
   const len = Math.hypot(x2 - x1, y2 - y1);
   const ux = (x2 - x1) / len;
@@ -96,7 +100,7 @@ const Consult: React.FC = () => (
   </>
 );
 
-// 2 · Design & Engineer — a blueprint grid, a speaker's dispersion cone sweeping across the seats.
+// Consulting & Design — a blueprint grid, a speaker's dispersion cone sweeping across the seats.
 const GRID = [24, 36, 48, 60, 72].map((x) => `M${x} 14 V82 M14 ${x} H82`).join(" ");
 const SEATS = [58, 66, 74].flatMap((x) => [34, 42, 50, 58, 66].map((y) => [x, y] as const));
 const CONE_ANGLES = [-14, 0, 12];
@@ -128,7 +132,7 @@ const Design: React.FC = () => (
   </>
 );
 
-// 3 · Supply & Integrate — three devices, cabled together; a spark as each plug clicks home.
+// Installation & Integration — three devices, cabled together; a spark as each plug clicks home.
 const Integrate: React.FC = () => (
   <>
     <Draw d="M10 18 H36 V38 H10 Z M15 28 H24" duration={0.5} />
@@ -150,40 +154,65 @@ const Integrate: React.FC = () => (
   </>
 );
 
-// 4 · Test & Commission — a jagged frequency response settles into a flat, balanced line. ✓
-const Commission: React.FC = () => (
+// Procurement & Logistics — equipment crates move along a dashed route to a small building; a tick on arrival.
+const Logistics: React.FC = () => (
   <>
-    <Draw d="M14 16 V80 H86" duration={0.5} />
-    <g className="pg-fadeout" style={v({ "--d": "1.0s" })}>
-      <Draw d="M18 50 L24 36 L30 62 L36 32 L42 60 L48 40 L54 64 L60 42 L66 58 L72 44 L80 51" delay={0.3} duration={0.6} />
-    </g>
-    <Draw d="M18 50 C30 48 40 52 50 49.5 S70 50.5 82 50" stroke={ORANGE} width={1.75} delay={1.1} duration={0.6} />
-    <Draw d="M64 24 L69.5 29.5 L80 19" stroke={ORANGE} width={1.75} delay={1.6} duration={0.35} />
+    <Draw d="M64 46 L76 36 L88 46 V70 H64 Z M72 70 V58 H80 V70" duration={0.6} />
+    <Draw d={dashes(6, 76, 62, 76, 3, 3)} stroke={NAVY} width={1.25} opacity={0.6} delay={0.2} duration={0.5} />
+    {[28, 40, 52].map((x, i) => (
+      <g key={x} className="pg-slide" style={v({ "--d": `${0.45 + i * 0.15}s`, "--t": "0.9s", "--from": "-22px" })}>
+        <path d={`M${x - 5} 64 h10 v10 h-10 Z M${x - 5} 68 h10`} stroke={i === 1 ? ORANGE : NAVY} strokeWidth={1.5} strokeLinejoin="round" fill="none" />
+      </g>
+    ))}
+    <Pop delay={1.6}>
+      <path d="M70 22 l4 4 l8 -8" stroke={ORANGE} strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    </Pop>
   </>
 );
 
-// 5 · Train & Support — an operator at the console; a steady live pulse.
-const Support: React.FC = () => (
+// Product Training & Commissioning — a jagged response settles into a balanced line ✓, with an operator at the console.
+const Commissioning: React.FC = () => (
   <>
-    <Draw d="M30 18 a7 7 0 1 1 -0.01 0 Z" duration={0.5} />
-    <Draw d="M17 46 C17 37 43 37 43 46" delay={0.15} duration={0.5} />
-    <Draw d="M8 76 L14 54 H58 L64 76 Z" delay={0.3} duration={0.6} />
-    <Draw d="M22 60 V70 M30 60 V70 M38 60 V70 M46 60 V70" width={1.25} delay={0.6} duration={0.4} />
+    <Draw d="M40 14 V58 H88" duration={0.5} />
+    <g className="pg-fadeout" style={v({ "--d": "1.0s" })}>
+      <Draw d="M44 38 L48 28 L52 46 L56 26 L60 44 L64 30 L68 46 L72 32 L76 42 L80 34 L86 39" delay={0.3} duration={0.6} />
+    </g>
+    <Draw d="M44 38 C54 36 62 40 70 37.5 S82 38.5 86 38" stroke={ORANGE} width={1.75} delay={1.1} duration={0.6} />
+    <Draw d="M74 19 L78 23 L86 14" stroke={ORANGE} width={1.75} delay={1.6} duration={0.35} />
+    <Draw d="M20 34 a6 6 0 1 1 -0.01 0 Z" delay={0.2} duration={0.45} />
+    <Draw d="M9 60 C9 52 31 52 31 60" delay={0.3} duration={0.45} />
+    <Draw d="M4 84 L9 66 H45 L50 84 Z" delay={0.4} duration={0.55} />
+    <Draw d="M17 70 V79 M25 70 V79 M33 70 V79 M41 70 V79" width={1.25} delay={0.65} duration={0.4} />
     {[
-      [22, 63],
-      [30, 67],
-      [38, 62],
-      [46, 66],
+      [17, 73],
+      [25, 76],
+      [33, 72],
+      [41, 75],
     ].map(([x, y], i) => (
-      <Pop key={x} delay={0.8 + i * 0.06}>
+      <Pop key={x} delay={0.85 + i * 0.06}>
         <rect x={x - 2.5} y={y - 1.5} width={5} height={3} rx={1} fill={ORANGE} />
       </Pop>
     ))}
-    <Draw d="M60 36 H67 L70 28 L74.5 44 L78 30 L80.5 36 H90" stroke={ORANGE} delay={0.9} duration={0.8} className="pg-draw pg-beat" />
   </>
 );
 
-const STAGES = [Consult, Design, Integrate, Commission, Support];
+// Support & Maintenance — a headset and a steady live pulse.
+const Maintenance: React.FC = () => (
+  <>
+    <Draw d="M14 48 a18 18 0 0 1 36 0" duration={0.55} />
+    <Draw d="M10 46 h7 v16 h-7 Z M47 46 h7 v16 h-7 Z" delay={0.2} duration={0.5} />
+    <Draw d="M50 62 C50 70 44 74 37 74" delay={0.45} duration={0.4} />
+    <Pop delay={0.8}>
+      <circle cx={35} cy={74} r={2.4} fill={ORANGE} />
+    </Pop>
+    <Draw d="M56 40 H64 L67 32 L71.5 48 L75 34 L77.5 40 H90" stroke={ORANGE} delay={0.9} duration={0.8} className="pg-draw pg-beat" />
+  </>
+);
+
+// Drawing per stage, in process order (data/company.ts → process):
+// 1 Consulting & Design · 2 Site Survey · 3 Procurement & Logistics · 4 Installation & Integration ·
+// 5 Product Training & Commissioning · 6 Support & Maintenance.
+const STAGES = [Design, Consult, Logistics, Integrate, Commissioning, Maintenance];
 
 interface PictogramProps {
   stage: number;
@@ -195,7 +224,7 @@ interface PictogramProps {
 }
 
 export const Pictogram: React.FC<PictogramProps> = ({ stage, play, loop, reduced, size = 96, className = "" }) => {
-  const Art = STAGES[stage - 1];
+  const Art = STAGES[(stage - 1) % STAGES.length];
   const state = reduced ? "pg-static" : `${play ? "pg-play" : ""} ${play && loop ? "pg-loop" : ""}`;
   return (
     <svg aria-hidden="true" width={size} height={size} viewBox="0 0 96 96" fill="none" className={`pg ${state} shrink-0 overflow-visible ${className}`}>

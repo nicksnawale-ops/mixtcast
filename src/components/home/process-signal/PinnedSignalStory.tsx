@@ -51,7 +51,7 @@ export const PinnedSignalStory: React.FC<{ steps: ProcessStep[]; running: boolea
   useEffect(() => sync(drawn.get()), []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Redraw the active stage's pictogram each time it becomes active.
-  const [plays, setPlays] = useState<number[]>([1, 0, 0, 0, 0]);
+  const [plays, setPlays] = useState<number[]>(() => steps.map((_, i) => (i === 0 ? 1 : 0)));
   useEffect(() => {
     setPlays((p) => p.map((v, i) => (i === state.stage - 1 ? v + 1 : v)));
   }, [state.stage]);

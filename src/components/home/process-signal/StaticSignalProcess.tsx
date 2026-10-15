@@ -11,7 +11,7 @@ const Node: React.FC<{ style?: React.CSSProperties; className?: string }> = ({ s
   </span>
 );
 
-/** Reduced motion: no pinning or scroll-linking — the full signal, drawn, and all five stages as a list. */
+/** Reduced motion: no pinning or scroll-linking — the full signal, drawn, and every stage as a list. */
 export const StaticSignalProcess: React.FC<{ steps: ProcessStep[] }> = ({ steps }) => {
   const lineRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLOListElement>(null);
@@ -33,7 +33,7 @@ export const StaticSignalProcess: React.FC<{ steps: ProcessStep[] }> = ({ steps 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ProcessHeader />
 
-        {/* Desktop: the signal across the top, stages in five columns beneath */}
+        {/* Desktop: the signal across the top, stages in a 3-column grid beneath */}
         <div ref={lineRef} className="relative hidden lg:block mb-10" style={{ height: LINE_H }}>
           {size.w > 0 && (
             <svg aria-hidden="true" className="absolute inset-0 overflow-visible" width={size.w} height={LINE_H} viewBox={`0 0 ${size.w} ${LINE_H}`} fill="none">
@@ -66,7 +66,7 @@ export const StaticSignalProcess: React.FC<{ steps: ProcessStep[] }> = ({ steps 
               </defs>
             </svg>
           )}
-          <ol ref={listRef} className="grid grid-cols-1 lg:grid-cols-5 gap-14 lg:gap-8 pl-16 sm:pl-20 lg:pl-0">
+          <ol ref={listRef} className="grid grid-cols-1 lg:grid-cols-3 gap-14 lg:gap-x-10 lg:gap-y-12 pl-16 sm:pl-20 lg:pl-0">
             {steps.map((s) => (
               <li key={s.step} className="relative lg:text-center">
                 {/* On the line (centre 24px from the list edge; the list is padded 64px / 80px) */}

@@ -123,33 +123,33 @@ export const COMPANY_INFO = {
   process: [
     {
       step: 1,
-      title: "Consult & Understand",
-      description:
-        "Comprehensive site audit, architectural acoustic assessment, and workflow discovery to define clear experiential objectives.",
+      title: "Consulting & Design",
+      description: "Expert consultation and strategic system design for reliable, future-ready technology infrastructure.",
     },
     {
       step: 2,
-      title: "Design & Engineer",
-      description:
-        "Detailed CAD schematics, speaker dispersion modeling, display sightline calculations, and equipment specification.",
+      title: "Site Survey",
+      description: "Comprehensive site surveys to evaluate infrastructure, requirements, and project feasibility.",
     },
     {
       step: 3,
-      title: "Supply & Integrate",
-      description:
-        "Procurement of premium certified hardware, clean cabling infrastructure, and precision on-site mounting and rigging.",
+      title: "Procurement & Logistics",
+      description: "Efficient procurement and coordinated logistics for smooth and timely project delivery.",
     },
     {
       step: 4,
-      title: "Test & Commission",
-      description:
-        "Acoustic frequency response tuning, digital signal processing calibration, video color timing, and system burn-in.",
+      title: "Installation & Integration",
+      description: "End-to-end installation and integration services tailored to your operational requirements.",
     },
     {
       step: 5,
-      title: "Train & Support",
-      description:
-        "Hands-on operator training for your staff, handover documentation, and dependable preventative maintenance support.",
+      title: "Product Training & Commissioning",
+      description: "Seamless system commissioning with expert training for efficient and reliable operation.",
+    },
+    {
+      step: 6,
+      title: "Support & Maintenance",
+      description: "Delivering prompt technical support and preventive maintenance for continuous business operations.",
     },
   ],
 };

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { COMPANY_INFO } from "../../../data/company";
 import { motion, useTransform, type MotionValue } from "motion/react";
 
 export interface ProcessStep {
@@ -13,7 +14,7 @@ export const pad2 = (n: number) => String(n).padStart(2, "0");
 export const ProcessHeader: React.FC<{ className?: string }> = ({ className = "mb-16" }) => (
   <div className={`text-center max-w-2xl mx-auto ${className}`}>
     <span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2">Methodology</span>
-    <h2 className="text-3xl sm:text-4xl font-bold text-ink font-heading">Our 5-Stage Engineering Process</h2>
+    <h2 className="text-3xl sm:text-4xl font-bold text-ink font-heading">Our {COMPANY_INFO.process.length}-Stage Engineering Process</h2>
     <p className="mt-3 text-base text-ink-muted">
       From the initial acoustic survey to long-term preventative care, we uphold rigorous quality standards.
     </p>

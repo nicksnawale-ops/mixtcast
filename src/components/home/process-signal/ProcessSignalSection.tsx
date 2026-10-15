@@ -8,8 +8,8 @@ import { SIGNAL_CSS, useMedia, useRunning } from "./shared";
 import { PICTOGRAM_CSS } from "./Pictograms";
 
 /**
- * Home "Methodology — Our 5-Stage Engineering Process": "From Silence to Signal".
- * The five stages form an AV signal chain; one waveform grows from near-silence to a full, live signal.
+ * Home "Methodology — Our N-Stage Engineering Process": "From Silence to Signal".
+ * The stages (COMPANY_INFO.process) form an AV signal chain; one waveform grows from near-silence to a full, live signal.
  *  - lg+: pinned, scroll-driven story (PinnedSignalStory) — adjust its length with PIN_HEIGHT_VH in signalMath.ts;
  *  - below lg: a vertical journey down the left (VerticalSignalJourney);
  *  - reduced motion: a static, fully drawn layout (StaticSignalProcess).

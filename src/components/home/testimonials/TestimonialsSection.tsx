@@ -5,7 +5,7 @@ import { TESTIMONIALS, type Testimonial } from "../../../data/testimonials";
 
 /**
  * Home "Client Voices": the client testimonials (verbatim, from data/testimonials.ts) as an open editorial carousel —
- * stars, the quote in Cormorant italic, a per-quote "voiceprint" and the attribution. Auto-advances every 8s (paused
+ * stars, the quote in Poppins, a per-quote "voiceprint" and the attribution. Auto-advances every 8s (paused
  * on hover/focus, off-screen, tab hidden, or by the pause button); prev/next, progress bars, swipe on touch.
  * Reduced motion: no autoplay, no blur/word reveal; instant switching.
  */
@@ -78,7 +78,7 @@ const Slide: React.FC<{ t: Testimonial; index: number; total: number; play: bool
       </div>
 
       <blockquote className="text-center">
-        <p className="font-['Cormorant_Garamond',Georgia,serif] italic font-medium text-ink" style={{ fontSize: "clamp(1.5rem, 2.6vw, 2.25rem)", lineHeight: 1.35 }}>
+        <p className="font-heading font-medium not-italic text-ink" style={{ fontSize: "clamp(1.125rem, 1.8vw, 1.5rem)", lineHeight: 1.6, letterSpacing: "-0.005em" }}>
           {words.map((w, i) => (
             <React.Fragment key={i}>
               {i > 0 && " "}
@@ -225,7 +225,7 @@ export const TestimonialsSection: React.FC = () => {
         {/* Decorative opening quote */}
         <motion.span
           aria-hidden="true"
-          className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 lg:-top-14 font-['Cormorant_Garamond',Georgia,serif] italic text-[7rem] lg:text-[9rem] leading-none text-brand-orange/20 select-none"
+          className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 lg:-top-14 font-heading font-bold not-italic text-[7rem] lg:text-[9rem] leading-none text-brand-orange/20 select-none"
           initial={reduced ? false : { opacity: 0, scale: 0.6 }}
           animate={entered ? { opacity: 1, scale: 1 } : undefined}
           transition={{ duration: 0.6, delay: 0.2, ease: EASE }}

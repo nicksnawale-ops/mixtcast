@@ -133,8 +133,8 @@ export const ClientCreditsSection: React.FC = () => {
                   {client.category}
                 </span>
                 <span
-                  className="cc-name block mt-1 md:mt-0 md:text-left font-['Cormorant_Garamond',Georgia,serif] italic font-medium text-ink leading-tight"
-                  style={{ fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)" }}
+                  className="cc-name block mt-1 md:mt-0 md:text-left font-heading font-semibold not-italic text-ink"
+                  style={{ fontSize: "clamp(1.25rem, 2vw, 1.75rem)", lineHeight: 1.25, letterSpacing: "-0.01em" }}
                 >
                   {client.name}
                 </span>

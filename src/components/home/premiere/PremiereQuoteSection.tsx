@@ -90,7 +90,7 @@ export const PremiereQuoteSection: React.FC = () => {
         className="pointer-events-none absolute inset-x-0 -top-20 -bottom-20"
         style={{
           background:
-            "linear-gradient(to bottom, #FFFFFF 0px, rgba(255,255,255,0) 80px, rgba(255,255,255,0) calc(100% - 80px), #FFFFFF 100%), radial-gradient(ellipse at 50% 45%, #EEF1F6 0%, #E1E6EF 55%, #D5DCE8 100%)",
+            "linear-gradient(to bottom, #FFFFFF 0px, rgba(255,255,255,0) 80px, rgba(255,255,255,0) calc(100% - 80px), #FFFFFF 100%), radial-gradient(ellipse at 50% 45%, #F2F4F8 0%, #E7EAF2 55%, #DCE2EC 100%)",
         }}
       />
       <figure data-premiere={on ? "on" : undefined} className="relative max-w-[980px] mx-auto px-6 sm:px-10 text-center">
@@ -100,7 +100,7 @@ export const PremiereQuoteSection: React.FC = () => {
           className="pm-beam pointer-events-none absolute left-1/2 -translate-x-1/2 -top-10 bottom-0 w-[115%] sm:w-[105%]"
           style={{
             clipPath: "polygon(44% 0, 56% 0, 100% 100%, 0 100%)",
-            background: "linear-gradient(to bottom, rgba(255,214,170,0.135), rgba(255,236,214,0.105) 55%, rgba(255,255,255,0))",
+            background: "linear-gradient(to bottom, rgba(255,214,170,0.12), rgba(255,236,214,0.09) 55%, rgba(255,255,255,0))",
           }}
         >
           {DUST.map((d, i) => (
@@ -112,7 +112,7 @@ export const PremiereQuoteSection: React.FC = () => {
                 top: `${d.y}%`,
                 width: d.size,
                 height: d.size,
-                background: d.orange ? "rgba(255,90,31,0.34)" : "rgba(14,59,140,0.32)",
+                background: d.orange ? "rgba(255,90,31,0.3)" : "rgba(14,59,140,0.28)",
                 ["--dur" as string]: `${d.dur}s`,
                 ["--delay" as string]: `${d.delay}s`,
                 ["--dx" as string]: `${d.dx}px`,
@@ -133,10 +133,10 @@ export const PremiereQuoteSection: React.FC = () => {
           <span aria-hidden="true" className="pm-letterbox-bottom pointer-events-none absolute inset-x-0 top-full h-10 bg-brand-navy/[0.06]" />
 
           {/* Typographic quote marks, outside the text block */}
-          <span aria-hidden="true" className="pointer-events-none absolute -left-1 sm:-left-6 -top-6 sm:-top-10 font-['Cormorant_Garamond',Georgia,serif] italic text-[4.5rem] sm:text-[7rem] leading-none text-brand-orange/35">
+          <span aria-hidden="true" className="pointer-events-none absolute -left-1 sm:-left-6 -top-6 sm:-top-10 font-['Cormorant_Garamond',Georgia,serif] italic text-[4.5rem] sm:text-[7rem] leading-none text-brand-orange/32">
             “
           </span>
-          <span aria-hidden="true" className="pointer-events-none absolute -right-1 sm:-right-6 -bottom-12 sm:-bottom-20 font-['Cormorant_Garamond',Georgia,serif] italic text-[4.5rem] sm:text-[7rem] leading-none text-brand-orange/35">
+          <span aria-hidden="true" className="pointer-events-none absolute -right-1 sm:-right-6 -bottom-12 sm:-bottom-20 font-['Cormorant_Garamond',Georgia,serif] italic text-[4.5rem] sm:text-[7rem] leading-none text-brand-orange/32">
             ”
           </span>
 

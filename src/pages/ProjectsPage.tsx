@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { motion, AnimatePresence, useInView, useReducedMotion } from "motion/react";
 import { X } from "lucide-react";
 import { PROJECTS, ClientProject } from "../data/clients";
 import { TESTIMONIALS } from "../data/testimonials";
 import { Button } from "../components/ui/Button";
-import { Clapstick, ProductionSlate, SLATE, SLATE_CSS, takeNumber } from "../components/projects/production-slate/ProductionSlate";
-import { SprocketEdges } from "../components/projects/production-slate/SprocketEdges";
+import { INDEX, INDEX_CSS, ProjectIndexRow, SectorPill, indexNumber } from "../components/projects/project-index/ProjectIndexRow";
 
 type ProjectCategory = "All" | ClientProject["category"];
 
-// "The Production Slate": only confirmed content is displayed — name, category (sector), confirmed scope and a linked
+// "Project Index": only confirmed content is displayed — name, category (sector), confirmed scope and a linked
 // client testimonial. Project descriptions and locations in the data are unconfirmed and are not rendered here.
 const testimonialFor = (p: ClientProject) => TESTIMONIALS.find((t) => t.organization === p.testimonialOrg);
-const takeOf = (p: ClientProject) => PROJECTS.indexOf(p) + 1; // fixed by the full list, not the filtered position
+const indexOf = (p: ClientProject) => PROJECTS.indexOf(p) + 1; // fixed by the full list, not the filtered position
+const countOf = (cat: string) => (cat === "All" ? PROJECTS.length : PROJECTS.filter((p) => p.category === cat).length);
 
 export const ProjectsPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>("All");
@@ -55,21 +55,22 @@ export const ProjectsPage: React.FC = () => {
       : PROJECTS.filter((p) => p.category === activeCategory);
 
   const reduced = !!useReducedMotion();
-  // Entrance cascade: slates entering together are queued in order, 120ms apart.
-  const nextSlot = useRef(0);
-  const claimDelay = useCallback(() => {
-    const now = performance.now();
-    const start = Math.max(now, nextSlot.current);
-    nextSlot.current = start + SLATE.stagger * 1000;
-    return (start - now) / 1000;
-  }, []);
+  // Entrance (once per page view): as the list enters view, hairlines draw and rows rise, 70ms apart. Rows shown later
+  // by a filter change simply fade in.
+  const listRef = useRef<HTMLDivElement>(null);
+  const listIn = useInView(listRef, { once: true, amount: 0.1 }) || reduced;
+  const entranceDone = useRef(false);
+  useEffect(() => {
+    if (!listIn) return;
+    const t = window.setTimeout(() => (entranceDone.current = true), (PROJECTS.length * INDEX.stagger + 1) * 1000);
+    return () => window.clearTimeout(t);
+  }, [listIn]);
+  const rowDelay = useCallback((i: number) => (listIn ? (entranceDone.current || reduced ? 0 : i * INDEX.stagger) : null), [listIn, reduced]);
   const selectedTestimonial = selectedProject ? testimonialFor(selectedProject) : undefined;
 
   return (
-    <div className="relative space-y-16 pb-24">
-      <style>{SLATE_CSS}</style>
-      {/* Faint film-strip edges (desktop) */}
-      <SprocketEdges />
+    <div className="space-y-16 pb-24">
+      <style>{INDEX_CSS}</style>
       {/* Header */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 text-center">
         <div className="inline-flex items-center gap-2 mb-3">
@@ -89,44 +90,59 @@ export const ProjectsPage: React.FC = () => {
 
         {/* Category Filters */}
         <div className="mt-10 flex flex-wrap items-center justify-center gap-2">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer select-none whitespace-nowrap ${
-                activeCategory === cat
-                  ? "bg-brand-navy text-white shadow-md shadow-brand-navy/20"
-                  : "bg-surface-warm text-ink-muted hover:text-ink hover:bg-surface-cool border border-line"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const on = activeCategory === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                aria-pressed={on}
+                onClick={() => setActiveCategory(cat)}
+                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium cursor-pointer select-none whitespace-nowrap transition-colors duration-200 outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-orange ${
+                  on ? "bg-brand-navy border-brand-navy text-white" : "bg-white border-[#E6E8EC] text-[#4A5260] hover:text-ink"
+                }`}
+              >
+                {cat}
+                <span className={`rounded-full px-1.5 py-px text-[11px] tabular-nums ${on ? "bg-white/15 text-white" : "bg-surface-cool text-[#8A929E]"}`}>
+                  {countOf(cat)}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </section>
 
-      {/* Projects Grid — production slates */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-          <AnimatePresence mode="popLayout" initial={false}>
-            {filteredProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                layout={!reduced}
-                exit={reduced ? { opacity: 0, transition: { duration: 0 } } : { opacity: 0, scale: 0.96 }}
-                transition={{ duration: reduced ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <ProductionSlate
-                  project={project}
-                  take={takeOf(project)}
-                  testimonial={testimonialFor(project)}
-                  reduced={reduced}
-                  claimDelay={claimDelay}
-                  onOpen={() => setSelectedProject(project)}
-                />
-              </motion.div>
-            ))}
-          </AnimatePresence>
+      {/* Project index */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div ref={listRef}>
+          <motion.span
+            aria-hidden="true"
+            className="block h-px bg-[#E6E8EC] origin-left"
+            initial={reduced ? false : { scaleX: 0 }}
+            animate={listIn ? { scaleX: 1 } : undefined}
+            transition={{ duration: INDEX.lineMs / 1000, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <ul>
+            <AnimatePresence mode="popLayout" initial={false}>
+              {filteredProjects.map((project, i) => (
+                <motion.li
+                  key={project.id}
+                  layout={!reduced}
+                  exit={reduced ? { opacity: 0, transition: { duration: 0 } } : { opacity: 0 }}
+                  transition={{ duration: reduced ? 0 : INDEX.layoutMs / 1000, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <ProjectIndexRow
+                    project={project}
+                    index={indexOf(project)}
+                    testimonial={testimonialFor(project)}
+                    reduced={reduced}
+                    delay={rowDelay(i)}
+                    onOpen={() => setSelectedProject(project)}
+                  />
+                </motion.li>
+              ))}
+            </AnimatePresence>
+          </ul>
         </div>
       </section>
 
@@ -158,30 +174,21 @@ export const ProjectsPage: React.FC = () => {
                     <X className="w-5 h-5" />
                   </button>
 
-                  {/* Slate header */}
-                  <div className="px-8 pt-16">
-                    <Clapstick />
-                    <div className="grid grid-cols-[auto_1fr] border border-[#E6E8EC] border-t-0">
-                      <div className="px-5 py-3 border-r border-[#E6E8EC]">
-                        <span className="slate-label block">Take</span>
-                        <span className="slate-num block text-[36px] leading-none mt-1">{takeNumber(takeOf(selectedProject))}</span>
-                      </div>
-                      <div className="px-5 py-3 min-w-0">
-                        <span className="slate-label block">Sector</span>
-                        <span className="block mt-1.5 font-heading font-semibold text-sm text-brand-navy">{selectedProject.category}</span>
-                      </div>
-                    </div>
+                  {/* Header: project index + sector */}
+                  <div className="px-8 pt-8 pr-16 flex items-center gap-3">
+                    <span className="text-sm font-medium tabular-nums text-[#8A929E]">{indexNumber(indexOf(selectedProject))}</span>
+                    <SectorPill sector={selectedProject.category} />
                   </div>
 
                   <div className="p-8 space-y-5">
                     <div>
-                      <span className="slate-label block">Client</span>
+                      <span className="pi-label block">Client</span>
                       <h3 className="mt-1.5 text-2xl font-bold text-ink font-heading">{selectedProject.name}</h3>
                     </div>
 
                     {selectedProject.scope && (
                       <div>
-                        <span className="slate-label block">Scope</span>
+                        <span className="pi-label block">Scope</span>
                         <p className="mt-1.5 text-[15px] leading-relaxed text-[#4A5260]">{selectedProject.scope}</p>
                       </div>
                     )}

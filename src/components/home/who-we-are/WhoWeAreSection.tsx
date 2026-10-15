@@ -295,7 +295,14 @@ export const WhoWeAreSection: React.FC = () => {
             at the bottom, level with the button, at least 32px clear of the halo */}
         <div className="contents lg:relative lg:z-10 lg:col-span-6 lg:flex lg:flex-col lg:gap-6">
           <div className="order-4 lg:order-none py-4 lg:pt-10 lg:pb-12">
-            <TakeShapeImage ref={imageRef} active={active} reduced={reduced} isDesktop={isDesktop} convergeY={stream?.landY} />
+            <TakeShapeImage
+              ref={imageRef}
+              active={active}
+              reduced={reduced}
+              isDesktop={isDesktop}
+              convergeY={stream?.landY}
+              narrating={narration.status === "playing" || narration.status === "loading"}
+            />
           </div>
           <div className="order-6 lg:order-none lg:mt-auto">
             <FeatureCard

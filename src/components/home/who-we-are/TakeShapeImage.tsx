@@ -1,8 +1,12 @@
 import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { animate, motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import { AnimatePresence, animate, motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import { ImageWithFallback } from "../../ui/ImageWithFallback";
 import { SonicHalo } from "./SonicHalo";
 import { EASE_OUT, WHO_WE_ARE_MOTION as M } from "./whoWeAreData";
+import { SLIDESHOW, WHO_WE_ARE_SLIDES as SLIDES } from "../../../data/whoWeAreSlides";
+
+const SIZES = "(min-width: 1024px) 600px, calc(100vw - 2rem)";
+const srcSetOf = (s: (typeof SLIDES)[number]) => `${s.image800} 800w, ${s.image} ${s.width}w`;
 
 interface TakeShapeImageProps {
   active: boolean;
@@ -11,12 +15,14 @@ interface TakeShapeImageProps {
   isDesktop: boolean;
   /** Desktop: where the streams land on the left edge, as a fraction of the frame height (default: the middle). */
   convergeY?: number;
+  /** The Who We Are narration is playing: the slideshow holds still. */
+  narrating?: boolean;
 }
 
 const MAX_TILT = 5; // degrees
 
 /** The featured image takes shape through a soft expanding projector-light mask, then a slow Ken Burns. */
-export const TakeShapeImage = forwardRef<HTMLDivElement, TakeShapeImageProps>(({ active, reduced, isDesktop, convergeY = 0.5 }, ref) => {
+export const TakeShapeImage = forwardRef<HTMLDivElement, TakeShapeImageProps>(({ active, reduced, isDesktop, convergeY = 0.5, narrating = false }, ref) => {
   const rotateX = useSpring(0, { stiffness: 120, damping: 18 });
   const rotateY = useSpring(0, { stiffness: 120, damping: 18 });
   const origin = isDesktop ? `0% ${(convergeY * 100).toFixed(1)}%` : "50% 50%";
@@ -79,7 +85,50 @@ export const TakeShapeImage = forwardRef<HTMLDivElement, TakeShapeImageProps>(({
   const onLeave = () => {
     rotateX.set(0);
     rotateY.set(0);
+    setHovered(false);
   };
+
+  // ── Slideshow: starts after the projector reveal; one slide every ~5.5s, looping. Holds while hovered/focused,
+  // off-screen, tab hidden or during the narration. Reduced motion: slide 1 only. ────────────────────────────────
+  const [index, setIndex] = useState(0);
+  const [started, setStarted] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [onScreen, setOnScreen] = useState(false);
+  const [tabHidden, setTabHidden] = useState(() => typeof document !== "undefined" && document.hidden);
+  useEffect(() => {
+    if (!shown || reduced) return;
+    const t = window.setTimeout(() => setStarted(true), (takeShapeAt + M.takeShapeDuration + SLIDESHOW.startAfterRevealS) * 1000);
+    return () => window.clearTimeout(t);
+  }, [shown, reduced, takeShapeAt]);
+  useEffect(() => {
+    const el = frameRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), { threshold: 0.2 });
+    observer.observe(el);
+    const onVisibility = () => setTabHidden(document.hidden);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+  const playing = started && !reduced && !hovered && !focused && onScreen && !tabHidden && !narrating;
+  useEffect(() => {
+    if (!playing) return;
+    const t = window.setTimeout(() => setIndex((i) => (i + 1) % SLIDES.length), SLIDESHOW.intervalS * 1000);
+    return () => window.clearTimeout(t);
+  }, [playing, index]);
+  // Preload only the next slide (the browser picks the 800w / full file from the same srcSet + sizes).
+  useEffect(() => {
+    if (!started || reduced) return;
+    const next = SLIDES[(index + 1) % SLIDES.length];
+    const img = new Image();
+    img.sizes = SIZES;
+    img.srcset = srcSetOf(next);
+    img.src = next.image;
+  }, [started, reduced, index]);
+  const slide = SLIDES[index];
 
   return (
     <div className="relative [perspective:1200px]">
@@ -87,7 +136,13 @@ export const TakeShapeImage = forwardRef<HTMLDivElement, TakeShapeImageProps>(({
       <motion.div
         ref={setRefs}
         onPointerMove={onMove}
+        onPointerEnter={() => setHovered(true)}
         onPointerLeave={onLeave}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        role="region"
+        aria-roledescription="slideshow"
+        aria-label="Featured environments"
         style={{ rotateX, rotateY }}
         className="relative z-10 aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-line bg-surface-warm"
       >
@@ -110,24 +165,40 @@ export const TakeShapeImage = forwardRef<HTMLDivElement, TakeShapeImageProps>(({
             className="absolute"
             style={{ left: reach / 2 - o.x, top: reach / 2 - o.y, width: size.w, height: size.h, scale: counter, transformOrigin: `${o.x}px ${o.y}px` }}
           >
-          <motion.div
-            initial={false}
-            animate={shown && !reduced ? { scale: M.kenBurnsScale } : { scale: 1 }}
-            transition={{ duration: M.kenBurnsDuration, delay: takeShapeAt + M.takeShapeDuration, ease: "linear" }}
-            style={{ transformOrigin: "60% 45%", willChange: "transform" }}
-          >
-            <ImageWithFallback
-              src="/images/home/who-we-are.webp"
-              srcSet="/images/home/who-we-are-800.webp 800w, /images/home/who-we-are.webp 1400w"
-              sizes="(min-width: 1024px) 600px, calc(100vw - 2rem)"
-              width={1400}
-              height={998}
-              alt="Professional podcast studio with a boom-arm microphone, headphones and acoustic wall panels"
-              fallbackTitle="Broadcast Recording & Chroma Studio Setup"
-              category="Sound & Vision"
-              aspectRatioClass="aspect-4/3"
-            />
-          </motion.div>
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={slide.id}
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: SLIDESHOW.crossfadeS, ease: "easeInOut" }}
+            >
+              <motion.div
+                initial={index === 0 ? false : { scale: 1 }}
+                animate={shown && !reduced ? { scale: M.kenBurnsScale } : { scale: 1 }}
+                transition={{
+                  duration: M.kenBurnsDuration,
+                  // Slide 1 starts its Ken Burns after the projector reveal (as before); later slides start from 1.00 at once.
+                  delay: index === 0 && !started ? takeShapeAt + M.takeShapeDuration : 0,
+                  ease: "linear",
+                }}
+                style={{ transformOrigin: "60% 45%", willChange: "transform" }}
+              >
+                <ImageWithFallback
+                  src={slide.image}
+                  srcSet={srcSetOf(slide)}
+                  sizes={SIZES}
+                  width={slide.width}
+                  height={Math.round((slide.width * 3) / 4)}
+                  alt={slide.alt}
+                  fallbackTitle={slide.title}
+                  category="Sound & Vision"
+                  aspectRatioClass="aspect-4/3"
+                />
+              </motion.div>
+            </motion.div>
+          </AnimatePresence>
           </motion.div>
         </motion.div>
 
@@ -156,7 +227,7 @@ export const TakeShapeImage = forwardRef<HTMLDivElement, TakeShapeImageProps>(({
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-brand-orange block">
-                  Featured Environment
+                  {slide.eyebrow}
                 </span>
                 {/* Live level meter */}
                 <span aria-hidden="true" className="flex items-end gap-[2px] h-2.5">
@@ -169,17 +240,36 @@ export const TakeShapeImage = forwardRef<HTMLDivElement, TakeShapeImageProps>(({
                   ))}
                 </span>
               </div>
-              <h3 className="text-sm font-bold text-brand-navy font-heading">
-                Acoustic Studio & Podcast Suites
+              {/* Title swaps with a subtle fade + rise; changes aren't announced (aria-live off) */}
+              <h3 className="text-sm font-bold text-brand-navy font-heading" aria-live="off">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={slide.id}
+                    className="block"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, transition: { duration: SLIDESHOW.titleS / 2 } }}
+                    transition={{ duration: SLIDESHOW.titleS, ease: EASE_OUT }}
+                  >
+                    {slide.title}
+                  </motion.span>
+                </AnimatePresence>
               </h3>
             </div>
-            <span className="shrink-0 inline-flex items-center gap-1.5 text-xs font-semibold text-ink-muted bg-surface-warm/80 px-3 py-1 rounded-full border border-line">
+            {/* Location pill: only on company-owned photos (kept in the layout and faded, so the card never jumps) */}
+            <motion.span
+              aria-hidden={!slide.companyPhoto}
+              initial={false}
+              animate={{ opacity: slide.companyPhoto ? 1 : 0 }}
+              transition={{ duration: reduced ? 0 : SLIDESHOW.titleS }}
+              className="shrink-0 inline-flex items-center gap-1.5 text-xs font-semibold text-ink-muted bg-surface-warm/80 px-3 py-1 rounded-full border border-line"
+            >
               <span aria-hidden="true" className="relative flex w-1.5 h-1.5">
                 <span className="wwa-ping wwa-idle absolute inset-0 rounded-full bg-brand-orange" />
                 <span className="relative w-1.5 h-1.5 rounded-full bg-brand-orange" />
               </span>
               Pune, India
-            </span>
+            </motion.span>
           </div>
         </motion.div>
       </motion.div>

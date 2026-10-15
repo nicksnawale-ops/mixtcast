@@ -98,10 +98,7 @@ export const BrandMeaning: React.FC<{ active: boolean; reduced: boolean }> = ({ 
       >
         {part.word}
       </motion.span>
-      <motion.p className="mt-1 text-[15px] sm:text-base text-ink-muted leading-snug" style={{ ...SERIF_ITALIC, fontWeight: 500 }} {...rise(delay)}>
-        {part.origin}
-      </motion.p>
-      <motion.p className="mt-1 text-xs sm:text-[13px] text-[#5B6470] leading-snug" {...rise(delay + 0.12)}>
+      <motion.p className="mt-1.5 text-xs sm:text-[13px] text-[#5B6470] leading-snug" {...rise(delay)}>
         {part.meaning}
       </motion.p>
     </div>

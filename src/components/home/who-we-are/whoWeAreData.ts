@@ -2,12 +2,10 @@
 export const BRAND_MEANING = {
   mixt: {
     word: "MIXT",
-    origin: "from the Latin mixtus — blended",
     meaning: "Diverse ideas, technologies and capabilities, brought together.",
   },
   cast: {
     word: "CAST",
-    origin: "to give form",
     meaning: "Shaped into something meaningful.",
   },
   statement: "A fusion of diverse ideas, transformed into something meaningful.",

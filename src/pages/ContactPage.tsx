@@ -10,7 +10,6 @@ import {
   MessageSquare,
   Clock,
   Sparkles,
-  ExternalLink,
 } from "lucide-react";
 import { COMPANY_INFO } from "../data/company";
 import { SOLUTIONS } from "../data/solutions";
@@ -208,20 +207,14 @@ export const ContactPage: React.FC = () => {
               <div className="aspect-16/9 w-full rounded-2xl overflow-hidden relative lg:flex-1">
                 <iframe
                   title="MixtCast Visual Solutions office location"
-                  src="https://maps.google.com/maps?q=18.5040313,73.8453046&hl=en&z=17&output=embed"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4488.039138951732!2d73.84530459999999!3d18.504031299999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf99ada69e31%3A0x25aafaa3dba6828d!2sMixtcast%20Visual%20Solutions%20Pvt%20Ltd!5e1!3m2!1sen!2sin!4v1792069720824!5m2!1sen!2sin"
                   className="w-full h-full border-0"
+                  style={{ border: 0 }}
+                  allowFullScreen
                   loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
                 />
               </div>
-              <a
-                href="https://maps.app.goo.gl/mLXp7kyoGByGLdAM6"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ml-auto flex w-fit items-center gap-1.5 px-3 pt-2.5 pb-1.5 text-xs font-semibold text-brand-navy hover:text-brand-orange transition-colors"
-              >
-                Open in Maps
-                <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
-              </a>
             </div>
           </div>
 

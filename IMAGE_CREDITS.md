@@ -32,7 +32,7 @@ Download date: 2026-10-12
 | Conference Rooms & Boardrooms | `conference-boardrooms.webp`, `conference-boardrooms-800.webp` | — | Supplied by MixtCast (company-owned photo) | MixtCast | Company-owned — 2026-10-15 |
 | Educational Institutions & Smart Classrooms | `educational-institutions.webp`, `educational-institutions-800.webp` | https://unsplash.com/photos/F8t2VGnI47I | Changbok Ko (@kochangbok) | Unsplash | Unsplash License |
 | Corporate Training Centers | `training-centers.webp`, `training-centers-800.webp` | https://unsplash.com/photos/eWnSMfxvpF4 | RUT MIIT (@rutmiit) | Unsplash | Unsplash License |
-| Residential Home Theatres | `residential-home-theatres.webp`, `residential-home-theatres-800.webp` | https://unsplash.com/photos/vDHEF40AQb8 | Im3rd Media (@im3rdmedia) | Unsplash | Unsplash License |
+| Residential Home Theatres | `residential-home-theatres.webp`, `residential-home-theatres-800.webp` | — | Supplied by MixtCast (company-owned photo) | MixtCast | Company-owned — 2026-10-15 |
 | Podcast & Chroma Studios | `podcast-chroma-studios.webp`, `podcast-chroma-studios-800.webp` | https://unsplash.com/photos/zMC6LPgK8u4 | Luther Yonel (@lutheryonel) | Unsplash | Unsplash License |
 
 ## Service detail pages

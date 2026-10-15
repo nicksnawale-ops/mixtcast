@@ -1,12 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
-import { motion, AnimatePresence } from "motion/react";
-import { MapPin, X, ZoomIn, ArrowRight } from "lucide-react";
-import { CLIENT_PROJECTS, ClientProject } from "../data/clients";
-import { ImageWithFallback } from "../components/ui/ImageWithFallback";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { X } from "lucide-react";
+import { PROJECTS, ClientProject } from "../data/clients";
+import { TESTIMONIALS } from "../data/testimonials";
 import { Button } from "../components/ui/Button";
+import { Clapstick, ProductionSlate, SLATE, SLATE_CSS, takeNumber } from "../components/projects/production-slate/ProductionSlate";
+import { SprocketEdges } from "../components/projects/production-slate/SprocketEdges";
 
-type ProjectCategory = "All" | "Education & Institutional" | "Cinema & Entertainment" | "Real Estate & Infrastructure";
+type ProjectCategory = "All" | ClientProject["category"];
+
+// "The Production Slate": only confirmed content is displayed — name, category (sector), confirmed scope and a linked
+// client testimonial. Project descriptions and locations in the data are unconfirmed and are not rendered here.
+const testimonialFor = (p: ClientProject) => TESTIMONIALS.find((t) => t.organization === p.testimonialOrg);
+const takeOf = (p: ClientProject) => PROJECTS.indexOf(p) + 1; // fixed by the full list, not the filtered position
 
 export const ProjectsPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>("All");
@@ -39,20 +46,30 @@ export const ProjectsPage: React.FC = () => {
     };
   }, [selectedProject]);
 
-  const categories: ProjectCategory[] = [
-    "All",
-    "Education & Institutional",
-    "Cinema & Entertainment",
-    "Real Estate & Infrastructure",
-  ];
+  // Filter chips come from the categories present in the data (in first-appearance order).
+  const categories: ProjectCategory[] = ["All", ...Array.from(new Set(PROJECTS.map((p) => p.category)))];
 
   const filteredProjects =
     activeCategory === "All"
-      ? CLIENT_PROJECTS
-      : CLIENT_PROJECTS.filter((p) => p.category === activeCategory);
+      ? PROJECTS
+      : PROJECTS.filter((p) => p.category === activeCategory);
+
+  const reduced = !!useReducedMotion();
+  // Entrance cascade: slates entering together are queued in order, 120ms apart.
+  const nextSlot = useRef(0);
+  const claimDelay = useCallback(() => {
+    const now = performance.now();
+    const start = Math.max(now, nextSlot.current);
+    nextSlot.current = start + SLATE.stagger * 1000;
+    return (start - now) / 1000;
+  }, []);
+  const selectedTestimonial = selectedProject ? testimonialFor(selectedProject) : undefined;
 
   return (
-    <div className="space-y-16 pb-24">
+    <div className="relative space-y-16 pb-24">
+      <style>{SLATE_CSS}</style>
+      {/* Faint film-strip edges (desktop) */}
+      <SprocketEdges />
       {/* Header */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 text-center">
         <div className="inline-flex items-center gap-2 mb-3">
@@ -88,63 +105,25 @@ export const ProjectsPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Projects Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence mode="popLayout">
+      {/* Projects Grid — production slates */}
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+          <AnimatePresence mode="popLayout" initial={false}>
             {filteredProjects.map((project) => (
               <motion.div
                 key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.3 }}
-                onClick={() => setSelectedProject(project)}
-                className="group cursor-pointer rounded-3xl overflow-hidden bg-white border border-line shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col"
+                layout={!reduced}
+                exit={reduced ? { opacity: 0, transition: { duration: 0 } } : { opacity: 0, scale: 0.96 }}
+                transition={{ duration: reduced ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] }}
               >
-                {/* Image slot with hover zoom */}
-                <div className="overflow-hidden aspect-16/10 relative">
-                  <ImageWithFallback
-                    src={project.image}
-                    alt={project.name}
-                    fallbackTitle={project.name}
-                    category={project.category}
-                    className="group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-brand-navy/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="p-3 rounded-full bg-white/90 text-brand-navy shadow-md">
-                      <ZoomIn className="w-5 h-5" />
-                    </span>
-                  </div>
-                </div>
-
-                {/* Card Content */}
-                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                  <div>
-                    <span className="text-[11px] font-bold text-brand-navy block mb-1">
-                      {project.category}
-                    </span>
-                    <h3 className="text-xl font-bold text-ink font-heading group-hover:text-brand-orange transition-colors">
-                      {project.name}
-                    </h3>
-                    <p className="text-xs text-ink-muted mt-2 leading-relaxed">
-                      {project.descriptionPlaceholder}
-                    </p>
-                  </div>
-
-                  {/* Waveform Underline Motif on Hover */}
-                  <div className="pt-2">
-                    <div className="flex items-center gap-1 opacity-40 group-hover:opacity-100 transition-opacity">
-                      <span className="h-1.5 w-1 bg-brand-orange rounded-full group-hover:h-3 transition-all duration-300" />
-                      <span className="h-3 w-1 bg-brand-navy rounded-full group-hover:h-5 transition-all duration-300" />
-                      <span className="h-5 w-1 bg-brand-orange rounded-full group-hover:h-7 transition-all duration-300" />
-                      <span className="h-3 w-1 bg-brand-navy rounded-full group-hover:h-5 transition-all duration-300" />
-                      <span className="h-1.5 w-1 bg-brand-orange rounded-full group-hover:h-3 transition-all duration-300" />
-                      <span className="h-[1px] flex-1 bg-line group-hover:bg-brand-orange/40 transition-colors ml-2" />
-                    </div>
-                  </div>
-                </div>
+                <ProductionSlate
+                  project={project}
+                  take={takeOf(project)}
+                  testimonial={testimonialFor(project)}
+                  reduced={reduced}
+                  claimDelay={claimDelay}
+                  onOpen={() => setSelectedProject(project)}
+                />
               </motion.div>
             ))}
           </AnimatePresence>
@@ -179,40 +158,45 @@ export const ProjectsPage: React.FC = () => {
                     <X className="w-5 h-5" />
                   </button>
 
-                  <div className="aspect-video relative overflow-hidden">
-                    <ImageWithFallback
-                      src={selectedProject.image}
-                      alt={selectedProject.name}
-                      fallbackTitle={selectedProject.name}
-                      category={selectedProject.category}
-                    />
-                  </div>
-
-                  <div className="p-8 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold uppercase tracking-wider text-brand-orange">
-                        {selectedProject.category}
-                      </span>
-                      <div className="flex items-center gap-1 text-xs text-ink-muted">
-                        <MapPin className="w-3.5 h-3.5 text-brand-navy" />
-                        <span>{selectedProject.city}</span>
+                  {/* Slate header */}
+                  <div className="px-8 pt-16">
+                    <Clapstick />
+                    <div className="grid grid-cols-[auto_1fr] border border-[#E6E8EC] border-t-0">
+                      <div className="px-5 py-3 border-r border-[#E6E8EC]">
+                        <span className="slate-label block">Take</span>
+                        <span className="slate-num block text-[36px] leading-none mt-1">{takeNumber(takeOf(selectedProject))}</span>
+                      </div>
+                      <div className="px-5 py-3 min-w-0">
+                        <span className="slate-label block">Sector</span>
+                        <span className="block mt-1.5 font-heading font-semibold text-sm text-brand-navy">{selectedProject.category}</span>
                       </div>
                     </div>
+                  </div>
 
-                    <h3 className="text-2xl font-bold text-ink font-heading">
-                      {selectedProject.name}
-                    </h3>
-
-                    <p className="text-sm text-ink-muted leading-relaxed">
-                      {selectedProject.descriptionPlaceholder}
-                    </p>
-
-                    <div className="p-4 rounded-xl bg-surface-warm border border-line text-xs text-ink-muted">
-                      <span className="font-semibold text-brand-navy block mb-1">
-                        Installation Documentation Notice
-                      </span>
-                      Technical specs, line diagrams, and client sign-off records are archived under confidentiality agreements. Contact MixtCast for full case study presentations.
+                  <div className="p-8 space-y-5">
+                    <div>
+                      <span className="slate-label block">Client</span>
+                      <h3 className="mt-1.5 text-2xl font-bold text-ink font-heading">{selectedProject.name}</h3>
                     </div>
+
+                    {selectedProject.scope && (
+                      <div>
+                        <span className="slate-label block">Scope</span>
+                        <p className="mt-1.5 text-[15px] leading-relaxed text-[#4A5260]">{selectedProject.scope}</p>
+                      </div>
+                    )}
+
+                    {selectedTestimonial && (
+                      <figure className="border-l-2 border-brand-orange pl-4">
+                        <blockquote className="text-[15px] italic leading-relaxed text-ink-muted">“{selectedTestimonial.quote}”</blockquote>
+                        <figcaption className="mt-2 text-sm">
+                          <cite className="not-italic">
+                            <span className="font-heading font-semibold text-ink">{selectedTestimonial.author}</span>
+                            <span className="text-ink-muted"> — {selectedTestimonial.organization}</span>
+                          </cite>
+                        </figcaption>
+                      </figure>
+                    )}
 
                     <div className="pt-2 flex justify-end">
                       <Button

@@ -70,10 +70,10 @@ export const AboutPage: React.FC = () => {
 
           <div className="lg:col-span-7 space-y-6 text-base text-ink-muted leading-relaxed">
             <p className="text-lg text-ink font-medium leading-relaxed">
-              {COMPANY_INFO.aboutParagraphs[1]}
+              {COMPANY_INFO.aboutParagraphs[0]}
             </p>
             <p>
-              {COMPANY_INFO.aboutParagraphs[2]}
+              {COMPANY_INFO.aboutParagraphs[1]}
             </p>
           </div>
         </div>

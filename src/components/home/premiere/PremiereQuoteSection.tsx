@@ -81,18 +81,8 @@ export const PremiereQuoteSection: React.FC = () => {
   const spaced = (words: string[]) => words.flatMap((w, i) => (i ? [" ", word(w)] : [word(w)]));
 
   return (
-    <section ref={sectionRef} data-paused={running ? undefined : ""} className="relative overflow-x-clip">
+    <section ref={sectionRef} data-paused={running ? undefined : ""} className="relative overflow-x-clip bg-white">
       <style>{PREMIERE_CSS}</style>
-      {/* Soft "theatre" tone: lighter behind the quote, deeper toward the edges. It extends 80px into the page gaps
-          above and below, where it fades into the neighbours' white — no hard bands. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-20 -bottom-20"
-        style={{
-          background:
-            "linear-gradient(to bottom, #FFFFFF 0px, rgba(255,255,255,0) 80px, rgba(255,255,255,0) calc(100% - 80px), #FFFFFF 100%), radial-gradient(ellipse at 50% 45%, #F2F4F8 0%, #E7EAF2 55%, #DCE2EC 100%)",
-        }}
-      />
       <figure data-premiere={on ? "on" : undefined} className="relative max-w-[980px] mx-auto px-6 sm:px-10 text-center">
         {/* Projector beam from above the mark, with drifting dust (decorative) */}
         <div
@@ -100,7 +90,7 @@ export const PremiereQuoteSection: React.FC = () => {
           className="pm-beam pointer-events-none absolute left-1/2 -translate-x-1/2 -top-10 bottom-0 w-[115%] sm:w-[105%]"
           style={{
             clipPath: "polygon(44% 0, 56% 0, 100% 100%, 0 100%)",
-            background: "linear-gradient(to bottom, rgba(255,214,170,0.12), rgba(255,236,214,0.09) 55%, rgba(255,255,255,0))",
+            background: "linear-gradient(to bottom, rgba(255,214,170,0.08), rgba(255,236,214,0.05) 55%, rgba(255,255,255,0))",
           }}
         >
           {DUST.map((d, i) => (
@@ -112,7 +102,7 @@ export const PremiereQuoteSection: React.FC = () => {
                 top: `${d.y}%`,
                 width: d.size,
                 height: d.size,
-                background: d.orange ? "rgba(255,90,31,0.3)" : "rgba(14,59,140,0.28)",
+                background: d.orange ? "rgba(255,90,31,0.22)" : "rgba(14,59,140,0.18)",
                 ["--dur" as string]: `${d.dur}s`,
                 ["--delay" as string]: `${d.delay}s`,
                 ["--dx" as string]: `${d.dx}px`,
@@ -133,10 +123,10 @@ export const PremiereQuoteSection: React.FC = () => {
           <span aria-hidden="true" className="pm-letterbox-bottom pointer-events-none absolute inset-x-0 top-full h-10 bg-brand-navy/[0.06]" />
 
           {/* Typographic quote marks, outside the text block */}
-          <span aria-hidden="true" className="pointer-events-none absolute -left-1 sm:-left-6 -top-6 sm:-top-10 font-['Cormorant_Garamond',Georgia,serif] italic text-[4.5rem] sm:text-[7rem] leading-none text-brand-orange/32">
+          <span aria-hidden="true" className="pointer-events-none absolute -left-1 sm:-left-6 -top-6 sm:-top-10 font-['Cormorant_Garamond',Georgia,serif] italic text-[4.5rem] sm:text-[7rem] leading-none text-brand-orange/25">
             “
           </span>
-          <span aria-hidden="true" className="pointer-events-none absolute -right-1 sm:-right-6 -bottom-12 sm:-bottom-20 font-['Cormorant_Garamond',Georgia,serif] italic text-[4.5rem] sm:text-[7rem] leading-none text-brand-orange/32">
+          <span aria-hidden="true" className="pointer-events-none absolute -right-1 sm:-right-6 -bottom-12 sm:-bottom-20 font-['Cormorant_Garamond',Georgia,serif] italic text-[4.5rem] sm:text-[7rem] leading-none text-brand-orange/25">
             ”
           </span>
 
@@ -171,8 +161,7 @@ export const PremiereQuoteSection: React.FC = () => {
 
         <figcaption className="pm-attribution mt-10 flex items-center justify-center gap-3 sm:gap-4">
           <span aria-hidden="true" className="h-px w-6 sm:w-10 shrink-0 bg-brand-orange/50" />
-          {/* Darker orange than the brand #FF5A1F: keeps this small text WCAG AA (≥ 4.5:1) on the theatre tone */}
-          <span className="min-w-0 font-heading font-semibold text-xs leading-relaxed tracking-[0.3em] text-[#B83D0B]">{ATTRIBUTION}</span>
+          <span className="min-w-0 font-heading font-semibold text-xs leading-relaxed tracking-[0.3em] text-brand-orange">{ATTRIBUTION}</span>
           <span aria-hidden="true" className="h-px w-6 sm:w-10 shrink-0 bg-brand-orange/50" />
         </figcaption>
       </figure>

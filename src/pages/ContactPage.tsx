@@ -10,6 +10,7 @@ import {
   MessageSquare,
   Clock,
   Sparkles,
+  ExternalLink,
 } from "lucide-react";
 import { COMPANY_INFO } from "../data/company";
 import { SOLUTIONS } from "../data/solutions";
@@ -212,6 +213,15 @@ export const ContactPage: React.FC = () => {
                   loading="lazy"
                 />
               </div>
+              <a
+                href="https://maps.app.goo.gl/mLXp7kyoGByGLdAM6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-auto flex w-fit items-center gap-1.5 px-3 pt-2.5 pb-1.5 text-xs font-semibold text-brand-navy hover:text-brand-orange transition-colors"
+              >
+                Open in Maps
+                <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+              </a>
             </div>
           </div>
 

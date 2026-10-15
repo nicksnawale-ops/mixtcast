@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "motion/react";
-import { CLIENT_PROJECTS } from "../../../data/clients";
+// Same list and order as the Projects page (single source of truth); only names and sectors are shown here.
+import { PROJECTS } from "../../../data/clients";
 
 /**
  * Home "Client Trust": "Closing Credits" — the clients set like film end credits: category on the left, client name
@@ -15,7 +16,7 @@ const ROW_AT = 0.25; // s, first row
 const ROW_STAGGER = 0.11;
 const ROW_S = 0.7;
 const DOT_AFTER = 0.45; // s after its row starts
-const SWEEP_AT = ROW_AT + (CLIENT_PROJECTS.length - 1) * ROW_STAGGER + ROW_S; // after the last row settles
+const SWEEP_AT = ROW_AT + (PROJECTS.length - 1) * ROW_STAGGER + ROW_S; // after the last row settles
 
 const CSS = `
 .cc-line { transform: scaleY(0); transform-origin: top; }
@@ -125,7 +126,7 @@ export const ClientCreditsSection: React.FC = () => {
         )}
 
         <ul className="relative flex flex-col gap-7 md:gap-8 py-2">
-          {CLIENT_PROJECTS.map((client, i) => (
+          {PROJECTS.map((client, i) => (
             <motion.li key={client.id} className="cc-row relative" {...rowMotion(i)}>
               {i > 0 && !wide && <span aria-hidden="true" className="block mx-auto mb-7 h-px w-8" style={{ background: "rgba(14,59,140,0.2)" }} />}
               <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-12 items-center text-center">

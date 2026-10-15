@@ -29,7 +29,7 @@ Download date: 2026-10-12
 |---|---|---|---|---|---|
 | Auditoriums & Grand Assembly Halls | `auditoriums.webp`, `auditoriums-800.webp` | https://unsplash.com/photos/COWf-5ZtZ6w | ASIA CULTURECENTER (@asiaculturecenter) | Unsplash | Unsplash License |
 | Movie & Commercial Theatres | `commercial-theatres.webp`, `commercial-theatres-800.webp` | https://unsplash.com/photos/8CEXzDDc6RY | Declan Sun (@declansun) | Unsplash | Unsplash License |
-| Conference Rooms & Boardrooms | `conference-boardrooms.webp`, `conference-boardrooms-800.webp` | https://unsplash.com/photos/s-KphF10sWM | Craig Lovelidge (@craigology) | Unsplash | Unsplash License |
+| Conference Rooms & Boardrooms | `conference-boardrooms.webp`, `conference-boardrooms-800.webp` | — | Supplied by MixtCast (company-owned photo) | MixtCast | Company-owned — 2026-10-15 |
 | Educational Institutions & Smart Classrooms | `educational-institutions.webp`, `educational-institutions-800.webp` | https://unsplash.com/photos/F8t2VGnI47I | Changbok Ko (@kochangbok) | Unsplash | Unsplash License |
 | Corporate Training Centers | `training-centers.webp`, `training-centers-800.webp` | https://unsplash.com/photos/eWnSMfxvpF4 | RUT MIIT (@rutmiit) | Unsplash | Unsplash License |
 | Residential Home Theatres | `residential-home-theatres.webp`, `residential-home-theatres-800.webp` | https://unsplash.com/photos/vDHEF40AQb8 | Im3rd Media (@im3rdmedia) | Unsplash | Unsplash License |

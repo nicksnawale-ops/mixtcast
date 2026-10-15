@@ -79,7 +79,7 @@ export const SOLUTIONS: SolutionSpace[] = [
     ],
     image: "/images/solutions/boardroom.jpg",
     photo: "/images/solutions/conference-boardrooms.webp",
-    photoAlt: "Bright boardroom with a white conference table and a wall-mounted display screen",
+    photoAlt: "Boardroom with a long wooden conference table, white chairs and two wall-mounted display screens",
     outcomes: [
       "Zero-setup meeting launches via automated calendar synchronization",
       "Crystal-clear speech pickup regardless of where participants sit",

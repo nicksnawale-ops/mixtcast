@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="78 18 84 84">
+  <!-- MIXTCAST mark (from LogoMark): orange ring + navy play triangle; waveform bars dropped for small sizes, ring stroke 6 → 8 -->
+  <circle cx="120" cy="60" r="34" fill="#FFFFFF" stroke="#FF5A1F" stroke-width="8"/>
+  <polygon points="112,44 112,76 138,60" fill="#0E3B8C" stroke="#0E3B8C" stroke-width="2" stroke-linejoin="round"/>
+</svg>

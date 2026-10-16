@@ -370,7 +370,7 @@ export const SERVICES: ServiceItem[] = [
     idealFor: ["Restaurants and cafés", "Retail stores", "Hotels", "Showrooms", "Corporate offices"],
     image: "/images/services/background-music.webp",
     photo: "/images/services/background-music.webp",
-    photoAlt: "Café interior with rattan chairs, potted palms and warm globe lighting",
+    photoAlt: "Retail store with ceiling-mounted speakers, shown with a background music player, amplifier and two ceiling speakers",
   },
   {
     slug: "fire-alarm-public-addressing",
@@ -393,7 +393,7 @@ export const SERVICES: ServiceItem[] = [
     idealFor: ["Commercial buildings", "Educational institutions", "Hospitals", "Malls", "Industrial facilities"],
     image: "/images/services/fire-alarm-public-addressing.webp",
     photo: "/images/services/fire-alarm-public-addressing.webp",
-    photoAlt: "Red manual fire alarm call point with its safety sign on a concrete wall",
+    photoAlt: "Labelled overview of fire alarm and public address equipment: smoke and heat detectors, call point, control panel, sounder, fire bell, paging microphone, zone controller, amplifier and speakers",
   },
   {
     slug: "hardware-peripherals",
@@ -414,7 +414,7 @@ export const SERVICES: ServiceItem[] = [
     idealFor: ["Offices", "Educational institutions", "Healthcare facilities", "Enterprises"],
     image: "/images/services/hardware-peripherals.webp",
     photo: "/images/services/hardware-peripherals.webp",
-    photoAlt: "Server room aisle with rows of networked rack cabinets and a mobile workstation",
+    photoAlt: "Assorted IT hardware including desktops, laptops, a tower server, printers, monitors, a projector and networking devices",
   },
   {
     slug: "accessories-peripherals",
@@ -435,7 +435,7 @@ export const SERVICES: ServiceItem[] = [
     idealFor: ["Offices", "Educational institutions", "Training centers", "Enterprises"],
     image: "/images/services/accessories-peripherals.webp",
     photo: "/images/services/accessories-peripherals.webp",
-    photoAlt: "USB-C hub, power adapters and a travel plug laid out on a marble desk",
+    photoAlt: "HDMI splitters, video converters, USB-C adapters and cables laid out on a dark slate surface",
   },
 ];
 

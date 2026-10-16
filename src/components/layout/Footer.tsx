@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Globe, ArrowUpRight } from "lucide-react";
+import { Mail, MapPin, Globe, ArrowUpRight } from "lucide-react";
 import { LogoHorizontal } from "../brand/Logo";
 import { COMPANY_INFO } from "../../data/company";
 import { SERVICES } from "../../data/services";
@@ -100,16 +100,6 @@ export const Footer: React.FC = () => {
                   </span>
                   <span className="text-xs text-ink-muted/80">{COMPANY_INFO.contact.country}</span>
                 </div>
-              </div>
-
-              <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-brand-navy shrink-0" />
-                <a
-                  href={`tel:${COMPANY_INFO.contact.phoneRaw}`}
-                  className="hover:text-brand-orange transition-colors font-medium"
-                >
-                  {COMPANY_INFO.contact.phone}
-                </a>
               </div>
 
               <div className="flex items-center gap-2.5">

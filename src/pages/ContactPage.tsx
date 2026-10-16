@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  Phone,
   Mail,
   MapPin,
   Globe,
@@ -139,21 +138,6 @@ export const ContactPage: React.FC = () => {
 
               <div className="space-y-4">
                 <div className="space-y-3 text-sm">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-white border border-line text-brand-navy flex items-center justify-center shrink-0">
-                      <Phone className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-[11px] text-ink-muted block">Direct Line</span>
-                      <a
-                        href={`tel:${COMPANY_INFO.contact.phoneRaw}`}
-                        className="font-bold text-ink hover:text-brand-orange transition-colors"
-                      >
-                        {COMPANY_INFO.contact.phone}
-                      </a>
-                    </div>
-                  </div>
-
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-white border border-line text-brand-orange flex items-center justify-center shrink-0">
                       <Mail className="w-4 h-4" />
@@ -465,10 +449,6 @@ export const ContactPage: React.FC = () => {
                         WhatsApp
                       </a>{" "}
                       or at{" "}
-                      <a href={`tel:${COMPANY_INFO.contact.phoneRaw}`} className="font-semibold underline">
-                        {COMPANY_INFO.contact.phone}
-                      </a>{" "}
-                      /{" "}
                       <a href={`mailto:${COMPANY_INFO.contact.emailSales}`} className="font-semibold underline">
                         {COMPANY_INFO.contact.emailSales}
                       </a>

@@ -40,6 +40,7 @@ import { SpacesPortalSection } from "../components/home/spaces-portal/SpacesPort
 import { PremiereQuoteSection } from "../components/home/premiere/PremiereQuoteSection";
 import { TestimonialsSection } from "../components/home/testimonials/TestimonialsSection";
 import { ClientCreditsSection } from "../components/home/client-credits/ClientCreditsSection";
+import { FEATURES } from "../config/features";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -218,8 +219,9 @@ export const HomePage: React.FC = () => {
       {/* 8. TRUSTED BY — "Closing Credits": client names and categories set like film end credits */}
       <ClientCreditsSection />
 
-      {/* CLIENT VOICES — testimonials (verbatim from data/testimonials.ts) */}
-      <TestimonialsSection />
+      {/* CLIENT VOICES — testimonials (verbatim from data/testimonials.ts). Hidden via FEATURES.showTestimonials;
+          when off it isn't mounted at all, so Client Trust and the partners band keep a single section gap. */}
+      {FEATURES.showTestimonials && <TestimonialsSection />}
 
       {/* 9. TECHNOLOGY PARTNERS (MARQUEE) */}
       <section className="bg-surface-warm py-16 border-y border-line overflow-hidden">

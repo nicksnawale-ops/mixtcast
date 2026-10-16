@@ -31,7 +31,7 @@ export const ContactPage: React.FC = () => {
     company: "",
     email: "",
     phone: "",
-    city: "Pune",
+    city: "",
     spaceType: SOLUTIONS[0].title,
     services: [],
     timeline: "1-3 months",
@@ -279,14 +279,14 @@ export const ContactPage: React.FC = () => {
                   {/* Name & Company */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-ink mb-1.5">
+                      <label htmlFor="enquiry-name" className="block text-xs font-semibold text-ink mb-1.5">
                         Full Name <span className="text-brand-orange">*</span>
                       </label>
                       <input
+                        id="enquiry-name"
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="e.g. Rajveer Sharma"
                         className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none transition-colors ${
                           errors.name
                             ? "border-red-500 focus:border-red-600 bg-red-50/20"
@@ -297,14 +297,14 @@ export const ContactPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-ink mb-1.5">
+                      <label htmlFor="enquiry-company" className="block text-xs font-semibold text-ink mb-1.5">
                         Company / Organization
                       </label>
                       <input
+                        id="enquiry-company"
                         type="text"
                         value={formData.company}
                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        placeholder="e.g. City Pride Theatres"
                         className="w-full px-4 py-2.5 rounded-xl border border-line focus:border-brand-navy focus:ring-1 focus:ring-brand-navy bg-surface-warm/40 text-sm outline-none transition-colors"
                       />
                     </div>
@@ -313,14 +313,14 @@ export const ContactPage: React.FC = () => {
                   {/* Email & Phone */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-ink mb-1.5">
+                      <label htmlFor="enquiry-email" className="block text-xs font-semibold text-ink mb-1.5">
                         Work Email <span className="text-brand-orange">*</span>
                       </label>
                       <input
+                        id="enquiry-email"
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="name@organization.com"
                         className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none transition-colors ${
                           errors.email
                             ? "border-red-500 focus:border-red-600 bg-red-50/20"
@@ -331,14 +331,14 @@ export const ContactPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-ink mb-1.5">
+                      <label htmlFor="enquiry-phone" className="block text-xs font-semibold text-ink mb-1.5">
                         Contact Phone <span className="text-brand-orange">*</span>
                       </label>
                       <input
+                        id="enquiry-phone"
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="+91 90123 45678"
                         className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none transition-colors ${
                           errors.phone
                             ? "border-red-500 focus:border-red-600 bg-red-50/20"
@@ -352,14 +352,14 @@ export const ContactPage: React.FC = () => {
                   {/* City & Space Type */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-ink mb-1.5">
+                      <label htmlFor="enquiry-city" className="block text-xs font-semibold text-ink mb-1.5">
                         City / Location
                       </label>
                       <input
+                        id="enquiry-city"
                         type="text"
                         value={formData.city}
                         onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                        placeholder="e.g. Pune, Mumbai, Bangalore"
                         className="w-full px-4 py-2.5 rounded-xl border border-line focus:border-brand-navy bg-surface-warm/40 text-sm outline-none"
                       />
                     </div>

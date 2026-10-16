@@ -161,8 +161,8 @@ export const ServicesPage: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: SVC.hero.subAt, ease: EASE }}
         >
-          Explore our complete suite of {VISIBLE_SERVICES.length} specialized AV engineering disciplines, from electro-acoustics
-          and projection mapping to AI speech enhancement and turnkey studio design.
+          Explore our complete range of AV, IT and safety solutions — from audio engineering and auditorium design to
+          background music, fire alarm systems and IT hardware.
         </motion.p>
 
         {/* Filter Controls (Segmented Bar) */}

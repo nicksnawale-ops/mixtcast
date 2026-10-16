@@ -140,7 +140,7 @@ export const AboutPage: React.FC = () => {
             Ready to Plan Your Next AV Installation?
           </h3>
           <p className="text-sm text-ink-muted max-w-xl mx-auto">
-            Our engineers provide complete consultative blueprints, acoustic simulations, and hardware specifications.
+            Our engineers provide complete consultative blueprints, sound simulations, and hardware specifications.
           </p>
           <div className="pt-2">
             <Button to="/contact" variant="cta" size="md">

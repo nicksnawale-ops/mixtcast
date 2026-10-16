@@ -46,7 +46,7 @@ export const CLIENT_PROJECTS: ClientProject[] = [
     city: "Pune, Maharashtra",
     image: "/images/projects/ckb.jpg",
     descriptionPlaceholder:
-      "Commercial cinema projection, acoustic treatments, and professional audio integration [TODO: confirm project scope with client].",
+      "Commercial cinema projection, sound treatments, and professional audio integration [TODO: confirm project scope with client].",
     descriptionVerified: false,
     isConfirmed: true,
     confirmed: false,
@@ -58,7 +58,7 @@ export const CLIENT_PROJECTS: ClientProject[] = [
     city: "Pune, Maharashtra",
     image: "/images/projects/city-pride.jpg",
     descriptionPlaceholder:
-      "Multiplex audio-visual modernization, high-fidelity surround acoustics, and digital theatre signage [TODO: confirm project scope with client].",
+      "Multiplex audio-visual modernization, high-fidelity surround sound, and digital theatre signage [TODO: confirm project scope with client].",
     descriptionVerified: false,
     isConfirmed: true,
     confirmed: false,

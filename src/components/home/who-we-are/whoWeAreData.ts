@@ -15,7 +15,7 @@ export const BRAND_MEANING = {
 /** The single feature card in this section (copy unchanged from the original card). */
 export const CUSTOM_ENGINEERING_CARD = {
   title: "Custom Engineering",
-  text: "Every installation is acoustically simulated and calibrated for its architectural geometry.",
+  text: "Every installation is carefully designed and calibrated for its architectural geometry.",
 };
 
 /** Words in the tagline that carry the brand colours (the text itself is unchanged). */

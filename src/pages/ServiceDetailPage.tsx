@@ -169,7 +169,7 @@ export const ServiceDetailPage: React.FC = () => {
                 </div>
                 <h4 className="text-base font-bold text-ink font-heading">{app}</h4>
                 <p className="text-xs text-ink-muted">
-                  Custom acoustic and hardware configuration calibrated for this specific space type.
+                  Custom audio and hardware configuration calibrated for this specific space type.
                 </p>
               </div>
             ))}
@@ -255,7 +255,7 @@ export const ServiceDetailPage: React.FC = () => {
               Implement {service.title} with MixtCast
             </h3>
             <p className="text-xs text-white/80 max-w-lg">
-              Contact our engineering consultants in Pune for architectural blueprints, electro-acoustic modeling, and equipment specs.
+              Contact our engineering consultants in Pune for architectural blueprints, audio system modeling, and equipment specs.
             </p>
           </div>
           <Button to="/contact" variant="cta" size="lg" className="!bg-white !text-brand-navy font-semibold hover:!bg-brand-navy hover:!text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A1F] focus-visible:ring-offset-2">

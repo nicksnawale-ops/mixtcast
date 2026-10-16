@@ -16,7 +16,7 @@ export const ProcessHeader: React.FC<{ className?: string }> = ({ className = "m
     <span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2">Methodology</span>
     <h2 className="text-3xl sm:text-4xl font-bold text-ink font-heading">Our {COMPANY_INFO.process.length}-Stage Engineering Process</h2>
     <p className="mt-3 text-base text-ink-muted">
-      From the initial acoustic survey to long-term preventative care, we uphold rigorous quality standards.
+      From the initial site survey to long-term preventative care, we uphold rigorous quality standards.
     </p>
   </div>
 );

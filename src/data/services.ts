@@ -29,11 +29,11 @@ export const SERVICES: ServiceItem[] = [
     title: "Audio Designing",
     category: "Audio",
     icon: "Volume2",
-    shortLine: "High-fidelity acoustic architecture, speech intelligibility, and sound reinforcement.",
+    shortLine: "High-fidelity audio architecture, speech intelligibility, and sound reinforcement.",
     overview:
-      "We engineer customized audio ecosystems that guarantee pristine clarity, uniform sound pressure levels, and immersive depth. From electro-acoustic simulations to DSP matrix tuning, our designs eliminate dead zones and acoustic phase distortion across any volume or room geometry.",
+      "We engineer customized audio ecosystems that guarantee pristine clarity, uniform sound pressure levels, and immersive depth. From sound system simulations to DSP matrix tuning, our designs eliminate dead zones and phase distortion across any volume or room geometry.",
     deliverables: [
-      "Speech intelligibility & STIPA acoustic calculations",
+      "Speech intelligibility & STIPA calculations",
       "Line array and point-source speaker dispersion modeling",
       "Digital Signal Processing (DSP) routing & Dante audio networking",
       "Feedback suppression, gain-sharing automixing, and equalization",
@@ -48,7 +48,7 @@ export const SERVICES: ServiceItem[] = [
     image: "/images/services/audio-designing.jpg",
     photo: "/images/services/audio-designing.webp",
     photoAlt: "Analog audio mixing console with illuminated VU meters",
-    accentQuote: "Pristine acoustic dynamics where every spoken syllable is delivered with natural fidelity.",
+    accentQuote: "Pristine sound dynamics where every spoken syllable is delivered with natural fidelity.",
   },
   {
     slug: "video-designing",
@@ -88,10 +88,10 @@ export const SERVICES: ServiceItem[] = [
     icon: "Building2",
     shortLine: "Turnkey architectural AV integration for large-capacity assemblies and events.",
     overview:
-      "Auditoriums require complex coordination of acoustics, stage lighting, multi-camera broadcasting, and intuitive operator consoles. MixtCast provides end-to-end auditorium engineering that empowers speakers, performers, and audiences with world-class production values.",
+      "Auditoriums require complex coordination of sound, stage lighting, multi-camera broadcasting, and intuitive operator consoles. MixtCast provides end-to-end auditorium engineering that empowers speakers, performers, and audiences with world-class production values.",
     deliverables: [
       "Integrated line-array loudspeaker clusters with delayed surround fills",
-      "Motorized stage rigging, acoustic drapery, and safety interlocks",
+      "Motorized stage rigging, sound-absorbing drapery, and safety interlocks",
       "Automated PTZ multi-camera tracking for event recording and streaming",
       "Centralized master stage control touchpanels and podium integration",
       "Full ADA hearing loop and assistive listening compliance",
@@ -249,14 +249,14 @@ export const SERVICES: ServiceItem[] = [
     title: "Commercial Theatre",
     category: "Spaces",
     icon: "Film",
-    shortLine: "DCI-compliant projection, immersive Dolby Atmos sound, and cinema acoustics.",
+    shortLine: "DCI-compliant projection, immersive Dolby Atmos sound, and cinema sound treatment.",
     overview:
-      "Deliver cinematic spectacles that captivate moviegoers. We engineer complete commercial cinema complexes with DCI-certified laser projectors, multi-channel immersive audio arrays, perforated acoustically transparent screens, and automated cinema management.",
+      "Deliver cinematic spectacles that captivate moviegoers. We engineer complete commercial cinema complexes with DCI-certified laser projectors, multi-channel immersive audio arrays, perforated screens that let sound pass through, and automated cinema management.",
     deliverables: [
       "DCI-compliant high-contrast RGB laser cinema projection systems",
       "Dolby Atmos / 7.1 surround sound audio processor and loudspeaker arrays",
       "Precision perforated micro-perf screens with motorized masking",
-      "Acoustic wall panelling engineered for cinematic dynamic range",
+      "Sound-absorbing wall panelling engineered for cinematic dynamic range",
       "Automated cinema lobby signage, ticketing, and auditorium scheduling",
     ],
     idealFor: [
@@ -277,11 +277,11 @@ export const SERVICES: ServiceItem[] = [
     icon: "Home",
     shortLine: "Private bespoke cinema sanctuaries with reference-grade audiovisuals.",
     overview:
-      "Bring the ultimate cinematic experience into private residences. We design customized private screening rooms featuring acoustic wall fabrics, motorized leather recliners, 4K HDR laser projectors, and multi-subwoofer bass management.",
+      "Bring the ultimate cinematic experience into private residences. We design customized private screening rooms featuring sound-absorbing wall fabrics, motorized leather recliners, 4K HDR laser projectors, and multi-subwoofer bass management.",
     deliverables: [
       "Reference-grade 4K HDR home cinema projection and ambient-light screens",
       "Discrete architectural Dolby Atmos in-wall/in-ceiling speaker placement",
-      "Multi-subwoofer calibration eliminating room acoustic nulls and resonances",
+      "Multi-subwoofer calibration eliminating low-frequency nulls and resonances",
       "Integrated smart lighting scenes and motorized blackout drapery control",
       "Ultra-quiet isolated ventilation and dedicated AV equipment racks",
     ],
@@ -293,7 +293,7 @@ export const SERVICES: ServiceItem[] = [
     ],
     image: "/images/services/customized-home-theatre.jpg",
     photo: "/images/services/customized-home-theatre.webp",
-    photoAlt: "Dedicated home theatre room with a projection screen and acoustic wall finishes",
+    photoAlt: "Dedicated home theatre room with a projection screen and sound-absorbing wall finishes",
     accentQuote: "The intimacy of home paired with the uncompromised power of commercial cinema.",
   },
   {
@@ -332,11 +332,11 @@ export const SERVICES: ServiceItem[] = [
     icon: "Mic",
     shortLine: "Broadcast-quality multi-host podcast setups with multicam video switching.",
     overview:
-      "Launch professional audio and video podcast productions with bespoke studio architecture. We provide broadcast dynamic microphones, multi-camera switching, warm studio acoustic aesthetic backdrops, and one-touch recording workstations.",
+      "Launch professional audio and video podcast productions with bespoke studio architecture. We provide broadcast dynamic microphones, multi-camera switching, warm studio backdrops with sound-absorbing finishes, and one-touch recording workstations.",
     deliverables: [
       "Broadcast microphone suites with low-noise preamps and boom arms",
       "Multi-camera PTZ / cinema camera integration with automated video switching",
-      "Custom acoustic timber slats, neon branding, and ambient video backdrops",
+      "Custom sound-absorbing timber slats, neon branding, and ambient video backdrops",
       "Multi-track digital audio recording consoles and headphone distribution",
       "Live streaming encoders for YouTube, Spotify, and social syndication",
     ],

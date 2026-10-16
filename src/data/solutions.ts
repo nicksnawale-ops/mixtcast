@@ -18,11 +18,11 @@ export const SOLUTIONS: SolutionSpace[] = [
     id: "auditoriums",
     slug: "auditoriums",
     title: "Auditoriums & Grand Assembly Halls",
-    tagline: "Large-capacity acoustics, stage production, and commanding visual presence.",
+    tagline: "Room-filling sound, stage production, and commanding visual presence.",
     challenge:
-      "Large architectural spaces suffer from long reverberation times, uneven acoustic dead zones, poor sightlines from rear tiers, and complex stage operations that overwhelm non-technical staff.",
+      "Large architectural spaces suffer from long reverberation times, uneven sound coverage and dead zones, poor sightlines from rear tiers, and complex stage operations that overwhelm non-technical staff.",
     solution:
-      "We design custom electro-acoustic line arrays with delayed fills, high-gain laser projection or fine-pitch LED walls, automated motorized stage rigging, and single-touch master touchpanels that simplify complex auditorium operation.",
+      "We design custom line-array speaker systems with delayed fills, high-gain laser projection or fine-pitch LED walls, automated motorized stage rigging, and single-touch master touchpanels that simplify complex auditorium operation.",
     keySystems: [
       { label: "Auditorium Designing", serviceSlug: "auditorium-designing" },
       { label: "Audio Designing", serviceSlug: "audio-designing" },
@@ -31,7 +31,7 @@ export const SOLUTIONS: SolutionSpace[] = [
     ],
     image: "/images/solutions/auditorium.jpg",
     photo: "/images/solutions/auditoriums.webp",
-    photoAlt: "Modern auditorium with tiered seating, a wide stage and warm wood acoustic finishes",
+    photoAlt: "Modern auditorium with tiered seating, a wide stage and warm wood wall finishes",
     outcomes: [
       "100% speech intelligibility across all seating tiers",
       "Seamless single-operator touch controls for complex lighting and audio scenes",
@@ -46,7 +46,7 @@ export const SOLUTIONS: SolutionSpace[] = [
     challenge:
       "Modern audiences demand pristine picture contrast, razor-sharp high-frame-rate projection, and enveloping three-dimensional soundscapes that rival the best multiplex experiences in the world.",
     solution:
-      "MixtCast installs DCI-compliant laser projection, perforated acoustic screens, and multi-channel Dolby Atmos speaker arrays with specialized cinema acoustic wall drapery and isolation baffles.",
+      "MixtCast installs DCI-compliant laser projection, perforated sound-transparent screens, and multi-channel Dolby Atmos speaker arrays with specialized cinema wall drapery and isolation baffles.",
     keySystems: [
       { label: "Commercial Theatre", serviceSlug: "commercial-theatre" },
       { label: "Acoustic Solutions", serviceSlug: "acoustic-solutions" },
@@ -137,11 +137,11 @@ export const SOLUTIONS: SolutionSpace[] = [
     id: "home-theatres",
     slug: "residential-home-theatres",
     title: "Residential Home Theatres",
-    tagline: "Private cinema sanctuaries with bespoke architectural acoustic luxury.",
+    tagline: "Private cinema sanctuaries with bespoke, sound-tuned luxury.",
     challenge:
       "Standard residential rooms suffer from severe flutter echoes, poor sound isolation to adjacent bedrooms, and cluttered consumer electronics.",
     solution:
-      "We design discrete in-wall architectural Dolby Atmos speaker layouts, precision acoustic absorption fabrics, hidden rack equipment, and synchronized luxury lighting scenes.",
+      "We design discrete in-wall architectural Dolby Atmos speaker layouts, precision sound-absorbing fabrics, hidden rack equipment, and synchronized luxury lighting scenes.",
     keySystems: [
       { label: "Customized Home Theatre", serviceSlug: "customized-home-theatre" },
       { label: "Acoustic Solutions", serviceSlug: "acoustic-solutions" },
@@ -160,7 +160,7 @@ export const SOLUTIONS: SolutionSpace[] = [
     id: "studios",
     slug: "podcast-chroma-studios",
     title: "Podcast & Chroma Studios",
-    tagline: "Broadcast-ready acoustics, infinity green screens, and multi-cam streaming.",
+    tagline: "Broadcast-ready audio, branded backdrops, and multi-cam streaming.",
     challenge:
       "Creators and brands struggle with echoey rooms, uneven green screen lighting shadows that ruin keying, and messy cable setups that waste production hours.",
     solution:
@@ -173,7 +173,7 @@ export const SOLUTIONS: SolutionSpace[] = [
     ],
     image: "/images/solutions/podcast-studio.jpg",
     photo: "/images/solutions/podcast-chroma-studios.webp",
-    photoAlt: "Podcast studio with two microphones, headphones and backlit acoustic panels",
+    photoAlt: "Podcast studio with two microphones, headphones and backlit sound-absorbing panels",
     outcomes: [
       "Broadcast-fidelity vocals with zero background noise",
       "Shadowless even illumination for instant green-screen compositing",

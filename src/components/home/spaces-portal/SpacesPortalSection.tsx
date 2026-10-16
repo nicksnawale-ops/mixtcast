@@ -159,7 +159,7 @@ export const SpacesPortalSection: React.FC = () => {
           Spaces We Transform
         </motion.h2>
         <motion.p className="relative mt-3 text-base text-ink-muted" {...fadeUp(0.7)}>
-          Engineered architectural acoustic and visual integrations tailored for specific room dynamics.
+          Engineered architectural audio and visual integrations tailored for specific room dynamics.
         </motion.p>
       </div>
 

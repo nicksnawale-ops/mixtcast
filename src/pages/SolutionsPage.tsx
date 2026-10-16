@@ -183,7 +183,7 @@ export const SolutionsPage: React.FC = () => {
             </h1>
 
             <p className="text-base sm:text-lg text-ink-muted max-w-2xl lg:max-w-[36rem] leading-relaxed lg:mt-1 lg:col-start-1 lg:row-start-4">
-              Every room has unique physics. We resolve acoustic reflections, sightline constraints,
+              Every room has unique physics. We resolve sound reflections, sightline constraints,
               and operational complexity with tailored hardware and automation architecture.
             </p>
 
@@ -322,7 +322,7 @@ export const SolutionsPage: React.FC = () => {
             Have a Complex Venue or Multi-Room Requirement?
           </h3>
           <p className="text-xs sm:text-sm text-ink-muted max-w-xl mx-auto">
-            Our engineering team conducts detailed on-site acoustic and electrical audits to create tailored infrastructure proposals.
+            Our engineering team conducts detailed on-site sound and electrical audits to create tailored infrastructure proposals.
           </p>
           <div className="pt-2">
             <Button to="/contact" variant="cta" size="md">

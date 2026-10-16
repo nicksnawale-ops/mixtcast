@@ -50,7 +50,7 @@ export const COMPANY_INFO = {
       id: "quality",
       title: "Uncompromising Quality",
       description:
-        "Every acoustic calculation, display calibration, and cable run meets the highest global standards of engineering excellence.",
+        "Every sound calculation, display calibration, and cable run meets the highest global standards of engineering excellence.",
       icon: "ShieldCheck",
     },
     {
@@ -80,14 +80,14 @@ export const COMPANY_INFO = {
       id: "customized-solutions",
       title: "Customized Solutions",
       description:
-        "Tailored AV architecture engineered specifically for the architectural acoustics and functional requirements of your space.",
+        "Tailored AV architecture engineered specifically for the sound, layout and functional requirements of your space.",
       icon: "Sliders",
     },
     {
       id: "experienced-team",
       title: "Experienced Team",
       description:
-        "Certified acoustic and visual engineers with deep hands-on expertise across high-stakes corporate, academic, and theatrical venues.",
+        "Skilled audio-visual engineers with deep hands-on expertise across high-stakes corporate, academic, and theatrical venues.",
       icon: "Award",
     },
     {
@@ -116,7 +116,7 @@ export const COMPANY_INFO = {
     {
       name: "Yogesh Chaudhari",
       designation: "Executive Leadership [TODO: confirm title]",
-      bio: "Spearheading MixtCast's mission to engineer world-class acoustic and visual environments across institutional, cinema, and corporate sectors.",
+      bio: "Spearheading MixtCast's mission to engineer world-class audio and visual environments across institutional, cinema, and corporate sectors.",
       image: "/images/team/yogesh-chaudhari.jpg",
     },
   ] as LeadershipMember[],

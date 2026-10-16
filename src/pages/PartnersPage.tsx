@@ -124,7 +124,7 @@ export const PartnersPage: React.FC = () => {
           </h2>
           <p className="text-sm text-ink-muted leading-relaxed max-w-2xl mx-auto">
             While we partner with tier-1 global hardware leaders, our design recommendations are always
-            derived strictly from acoustic physics, room ergonomics, and your functional requirements.
+            derived strictly from the physics of sound, room ergonomics, and your functional requirements.
           </p>
           <div className="pt-2">
             <Button to="/contact" variant="primary" size="md">

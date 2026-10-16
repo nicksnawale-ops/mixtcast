@@ -426,7 +426,7 @@ export const ContactPage: React.FC = () => {
                       rows={3}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Tell us about room dimensions, seating capacity, existing infrastructure, or acoustic challenges..."
+                      placeholder="Tell us about room dimensions, seating capacity, existing infrastructure, or audio-visual challenges..."
                       className="w-full px-4 py-2.5 rounded-xl border border-line focus:border-brand-navy bg-surface-warm/40 text-sm outline-none transition-colors resize-none"
                     />
                   </div>

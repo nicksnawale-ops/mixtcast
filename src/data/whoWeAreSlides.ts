@@ -40,8 +40,8 @@ export const WHO_WE_ARE_SLIDES: WhoWeAreSlide[] = [
     image: "/images/home/who-we-are.webp",
     image800: "/images/home/who-we-are-800.webp",
     width: 1400,
-    alt: "Professional podcast studio with a boom-arm microphone, headphones and acoustic wall panels",
-    title: "Acoustic Studio & Podcast Suites",
+    alt: "Professional podcast studio with a boom-arm microphone, headphones and sound-absorbing wall panels",
+    title: "Recording Studio & Podcast Suites",
     eyebrow: EYEBROW,
     companyPhoto: false, // Pexels (stock)
   },

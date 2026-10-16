@@ -228,7 +228,7 @@ export const HomePage: React.FC = () => {
             Global Ecosystem
           </span>
           <h2 className="text-2xl sm:text-3xl font-bold text-ink font-heading">
-            Certified Technology Partners
+            Technology Partners
           </h2>
           <p className="text-xs text-ink-muted mt-1">
             We engineer with globally trusted, broadcast-tier hardware manufacturers.

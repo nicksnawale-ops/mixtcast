@@ -46,9 +46,6 @@ const PartnerGridCard: React.FC<{ partner: PartnerItem }> = ({ partner }) => {
           <ShieldCheck className="w-3.5 h-3.5" />
           <span>Authorized Integration</span>
         </span>
-        <span className="text-brand-orange opacity-0 group-hover:opacity-100 transition-opacity">
-          Certified Tier
-        </span>
       </div>
     </div>
   );
@@ -77,7 +74,7 @@ export const PartnersPage: React.FC = () => {
         <div className="inline-flex items-center gap-2 mb-3">
           <span className="h-[2px] w-4 bg-brand-orange" />
           <span className="text-xs font-bold uppercase tracking-widest text-brand-orange">
-            Certified Hardware Ecosystem
+            Hardware Ecosystem
           </span>
           <span className="h-[2px] w-4 bg-brand-orange" />
         </div>

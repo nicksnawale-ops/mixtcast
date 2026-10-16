@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { ArrowRight, CheckCircle2, AlertCircle, Sparkles } from "lucide-react";
 import { SOLUTIONS, SolutionSpace } from "../data/solutions";
+import { isServiceVisible } from "../data/services";
 import { CURTAIN_TIMING, CurtainReveal } from "../components/animations/CurtainReveal";
 import { SHOWCASE_TIMING, SpacesShowcase } from "../components/solutions/SpacesShowcase";
 import { AcousticBlueprint } from "../components/solutions/acoustic-blueprint/AcousticBlueprint";
@@ -267,7 +268,8 @@ export const SolutionsPage: React.FC = () => {
                       Key Integrated Systems
                     </span>
                     <div className="flex flex-wrap gap-2">
-                      {sol.keySystems.map((sys, idx) => (
+                      {/* Chips for hidden services are left out */}
+                      {sol.keySystems.filter((sys) => isServiceVisible(sys.serviceSlug)).map((sys, idx) => (
                         <Link
                           key={idx}
                           to={`/services/${sys.serviceSlug}`}

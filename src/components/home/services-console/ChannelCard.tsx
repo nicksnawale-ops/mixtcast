@@ -30,6 +30,8 @@ const CATEGORY_DOT: Record<ServiceItem["category"], string> = {
   Video: "#0E3B8C",
   Spaces: "#5B6470",
   Studios: "linear-gradient(135deg, #0E3B8C, #FF5A1F)",
+  "IT Infrastructure": "#1F2328",
+  "Safety & Security": "#B83D0B",
 };
 
 const smallPhoto = (photo: string) => photo.replace(/\.webp$/, "-800.webp");

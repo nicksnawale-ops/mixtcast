@@ -13,8 +13,12 @@ import {
   Home,
   Video,
   Mic,
+  Monitor,
+  Cable,
+  Music,
+  Siren,
 } from "lucide-react";
-import { SERVICES } from "../data/services";
+import { getVisibleServices } from "../data/services";
 import { Button } from "../components/ui/Button";
 // "Mixing Console" design: the Home console card styles are reused read-only; the rest is Services-specific.
 import { CONSOLE_CSS } from "../components/home/services-console/consoleStyles";
@@ -36,9 +40,20 @@ const iconMap: Record<string, React.ReactNode> = {
   Home: <Home className="w-6 h-6" />,
   Video: <Video className="w-6 h-6" />,
   Mic: <Mic className="w-6 h-6" />,
+  Monitor: <Monitor className="w-6 h-6" />,
+  Cable: <Cable className="w-6 h-6" />,
+  Music: <Music className="w-6 h-6" />,
+  Siren: <Siren className="w-6 h-6" />,
 };
 
-type CategoryFilter = "All" | "Audio" | "Video" | "Spaces" | "Studios";
+// Only visible services are listed; channel numbers (01, 02, …) are their fixed positions in this list.
+const VISIBLE_SERVICES = getVisibleServices();
+
+type CategoryFilter = "All" | (typeof VISIBLE_SERVICES)[number]["category"];
+
+// Filter chips, in this order; a category is shown only while it has visible services.
+const CATEGORY_ORDER: CategoryFilter[] = ["Audio", "Spaces", "Studios", "Video", "IT Infrastructure", "Safety & Security"];
+const CATEGORIES: CategoryFilter[] = ["All", ...CATEGORY_ORDER.filter((c) => VISIBLE_SERVICES.some((s) => s.category === c))];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const HEADLINE = "Comprehensive Audio-Visual Capabilities";
@@ -58,12 +73,12 @@ const useMedia = (query: string) => {
 export const ServicesPage: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<CategoryFilter>("All");
 
-  const categories: CategoryFilter[] = ["All", "Audio", "Video", "Spaces", "Studios"];
+  const categories = CATEGORIES;
 
   const filteredServices =
     activeFilter === "All"
-      ? SERVICES
-      : SERVICES.filter((s) => s.category === activeFilter);
+      ? VISIBLE_SERVICES
+      : VISIBLE_SERVICES.filter((s) => s.category === activeFilter);
 
   const reduced = !!useReducedMotion();
   const canHover = useMedia("(hover: hover) and (pointer: fine)");
@@ -146,7 +161,7 @@ export const ServicesPage: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: SVC.hero.subAt, ease: EASE }}
         >
-          Explore our complete suite of 12 specialized AV engineering disciplines, from electro-acoustics
+          Explore our complete suite of {VISIBLE_SERVICES.length} specialized AV engineering disciplines, from electro-acoustics
           and projection mapping to AI speech enhancement and turnkey studio design.
         </motion.p>
 
@@ -171,14 +186,14 @@ export const ServicesPage: React.FC = () => {
                   <span className="svc-led-halo absolute -inset-1.5 rounded-full" style={{ background: "radial-gradient(closest-side, rgba(255,90,31,0.65), rgba(255,90,31,0))" }} />
                   <span key={on ? "on" : "off"} className={`svc-led-flash relative block w-2 h-2 rounded-full ${on ? "bg-brand-orange" : "bg-[#E6E8EC]"}`} />
                 </span>
-                {cat} {cat === "All" ? `(${SERVICES.length})` : ""}
+                {cat} {cat === "All" ? `(${VISIBLE_SERVICES.length})` : ""}
               </button>
             );
           })}
         </div>
       </section>
 
-      {/* The full 12-channel console */}
+      {/* The full console: one channel per visible service */}
       <section ref={sectionRef} data-paused={running ? undefined : ""} className="svc-cards relative">
         <ServicesSignalField ref={fieldRef} sectionRef={sectionRef} gridRef={gridRef} running={running} reduced={reduced} wide={wide} canHover={canHover} />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -193,7 +208,7 @@ export const ServicesPage: React.FC = () => {
                 >
                   <ServiceChannelCard
                     service={service}
-                    channel={SERVICES.indexOf(service) + 1}
+                    channel={VISIBLE_SERVICES.indexOf(service) + 1}
                     icon={iconMap[service.icon] || <Volume2 className="w-6 h-6" />}
                     canHover={canHover}
                     reduced={reduced}

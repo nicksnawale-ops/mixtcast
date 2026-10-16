@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { usePatchIn } from "../patch-in/patchInContext";
 import { ArrowRight } from "lucide-react";
 import { useReducedMotion } from "motion/react";
-import { SERVICES } from "../../../data/services";
+import { getVisibleServices } from "../../../data/services";
 import { Button } from "../../ui/Button";
 import { ChannelCard } from "./ChannelCard";
 import { SignalMatrix, type SignalMatrixHandle } from "./SignalMatrix";
@@ -11,8 +11,9 @@ import { CONSOLE_CSS } from "./consoleStyles";
 const STAGGER = 0.07; // s between cards in the entrance cascade
 
 // Home shows only the featured services. To change the set or its order, edit `featured: true` and
-// `featuredOrder` in src/data/services.ts — the Services page always lists every service.
-const FEATURED_SERVICES = SERVICES.filter((s) => s.featured).sort((a, b) => (a.featuredOrder ?? 0) - (b.featuredOrder ?? 0));
+// `featuredOrder` in src/data/services.ts — the Services page lists every visible service. Hidden services never show.
+const VISIBLE_SERVICES = getVisibleServices();
+const FEATURED_SERVICES = VISIBLE_SERVICES.filter((s) => s.featured).sort((a, b) => (a.featuredOrder ?? 0) - (b.featuredOrder ?? 0));
 
 const useMedia = (query: string) => {
   const [matches, setMatches] = useState(() => typeof window !== "undefined" && window.matchMedia(query).matches);
@@ -104,7 +105,7 @@ export const ServicesConsoleSection: React.FC<{ iconFor: (name: string) => React
             </h2>
           </div>
           <Button to="/services" variant="secondary" size="sm" icon={<ArrowRight className="w-4 h-4" />}>
-            View All {SERVICES.length} Services
+            View All {VISIBLE_SERVICES.length} Services
           </Button>
         </div>
 
@@ -128,7 +129,7 @@ export const ServicesConsoleSection: React.FC<{ iconFor: (name: string) => React
         {/* The full list, one click away */}
         <div className="mt-10 flex justify-center">
           <Button to="/services" variant="secondary" size="sm" icon={<ArrowRight className="w-4 h-4" />}>
-            View All {SERVICES.length} Services
+            View All {VISIBLE_SERVICES.length} Services
           </Button>
         </div>
       </div>

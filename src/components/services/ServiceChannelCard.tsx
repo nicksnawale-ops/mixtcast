@@ -28,12 +28,14 @@ const CATEGORY_DOT: Record<ServiceItem["category"], string> = {
   Video: "#0E3B8C",
   Spaces: "#5B6470",
   Studios: "linear-gradient(135deg, #0E3B8C, #FF5A1F)",
+  "IT Infrastructure": "#1F2328",
+  "Safety & Security": "#B83D0B",
 };
 const smallPhoto = (photo: string) => photo.replace(/\.webp$/, "-800.webp");
 
 interface Props {
   service: ServiceItem;
-  /** Position in the full SERVICES list (fixed channel number). */
+  /** Position in the visible services list (fixed channel number). */
   channel: number;
   icon: React.ReactNode;
   canHover: boolean;

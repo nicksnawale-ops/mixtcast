@@ -39,7 +39,9 @@ Download date: 2026-10-12
 
 Hero photo for each `/services/:slug` page. Self-hosted in `public/images/services/` as WebP
 (`<slug>.webp` at 1400px wide and `<slug>-800.webp` at 800px wide). Stock photos — not MixtCast installations.
-Download date: 2026-10-12.
+Download date: 2026-10-12 (Background Music, Fire Alarm & Public Addressing, Hardware & Peripherals and
+Accessories & Peripherals: 2026-10-16). Video Designing, Lighting Solutions, Acoustic Solutions, AI in Audio Visual and
+Customized Chroma Studio are currently hidden on the site; their images are kept.
 
 | Service | Files | Photo page | Photographer | Source | License |
 |---|---|---|---|---|---|
@@ -55,6 +57,10 @@ Download date: 2026-10-12.
 | Customized Home Theatre | `customized-home-theatre.webp`, `customized-home-theatre-800.webp` | https://unsplash.com/photos/RBWK3YcwIOQ | IRa Kang (@lifeinkorea) | Unsplash | [Unsplash License](https://unsplash.com/license) |
 | Customized Chroma Studio | `customized-chroma-studio.webp`, `customized-chroma-studio-800.webp` | https://www.pexels.com/photo/6794933/ | Max Vakhtbovych (@artbovich) | Pexels | [Pexels License](https://www.pexels.com/license/) |
 | Podcasting Studio | `podcasting-studio.webp`, `podcasting-studio-800.webp` | https://www.pexels.com/photo/10321163/ | Ludvig Hedenborg (@ludvighedenborg) | Pexels | [Pexels License](https://www.pexels.com/license/) |
+| Background Music (cropped at the left to remove a shop name) | `background-music.webp`, `background-music-800.webp` | https://www.pexels.com/photo/18721982/ | Arda Kaykısız (@arda-kaykisiz-672105204) | Pexels | [Pexels License](https://www.pexels.com/license/) |
+| Fire Alarm & Public Addressing | `fire-alarm-public-addressing.webp`, `fire-alarm-public-addressing-800.webp` | https://www.pexels.com/photo/20614571/ | Jakub Zerdzicki (@jakubzerdzicki) | Pexels | [Pexels License](https://www.pexels.com/license/) |
+| Hardware & Peripherals | `hardware-peripherals.webp`, `hardware-peripherals-800.webp` | https://www.pexels.com/photo/4508751/ | Brett Sayles (@brett-sayles) | Pexels | [Pexels License](https://www.pexels.com/license/) |
+| Accessories & Peripherals | `accessories-peripherals.webp`, `accessories-peripherals-800.webp` | https://www.pexels.com/photo/3921703/ | ready made (@readymade) | Pexels | [Pexels License](https://www.pexels.com/license/) |
 
 ## Audio
 

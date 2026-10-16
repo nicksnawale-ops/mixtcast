@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { CheckCircle2, ArrowRight, ArrowLeft, Building2, Sparkles, Sliders } from "lucide-react";
-import { SERVICES } from "../data/services";
+import { getVisibleServices } from "../data/services";
 import { SOLUTIONS } from "../data/solutions";
 import { Button } from "../components/ui/Button";
 import { ImageWithFallback } from "../components/ui/ImageWithFallback";
@@ -10,14 +10,16 @@ import { WaveformDivider } from "../components/ui/WaveformDivider";
 export const ServiceDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
 
-  const service = SERVICES.find((s) => s.slug === slug);
+  const visibleServices = getVisibleServices();
+  const service = visibleServices.find((s) => s.slug === slug);
 
+  // Unknown or hidden service: back to the list (history entry replaced).
   if (!service) {
     return <Navigate to="/services" replace />;
   }
 
   // Find related services in same or complementary category
-  const relatedServices = SERVICES.filter(
+  const relatedServices = visibleServices.filter(
     (s) => s.slug !== service.slug && (s.category === service.category || s.category === "Spaces")
   ).slice(0, 3);
 

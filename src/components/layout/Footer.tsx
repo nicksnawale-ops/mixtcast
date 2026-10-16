@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { Mail, MapPin, Globe, ArrowUpRight } from "lucide-react";
 import { LogoHorizontal } from "../brand/Logo";
 import { COMPANY_INFO } from "../../data/company";
-import { SERVICES } from "../../data/services";
+import { getVisibleServices } from "../../data/services";
+
+const VISIBLE_SERVICES = getVisibleServices();
 import { FOOTER_QUICK_LINKS } from "../../data/navigation";
 
 export const Footer: React.FC = () => {
@@ -65,7 +67,7 @@ export const Footer: React.FC = () => {
               Specialized Services
             </h4>
             <ul className="space-y-2 text-sm">
-              {SERVICES.slice(0, 6).map((service) => (
+              {VISIBLE_SERVICES.slice(0, 6).map((service) => (
                 <li key={service.slug}>
                   <Link
                     to={`/services/${service.slug}`}
@@ -80,7 +82,7 @@ export const Footer: React.FC = () => {
                   to="/services"
                   className="text-xs font-semibold text-brand-orange hover:underline inline-block pt-1"
                 >
-                  View All 12 Services →
+                  View All {VISIBLE_SERVICES.length} Services →
                 </Link>
               </li>
             </ul>

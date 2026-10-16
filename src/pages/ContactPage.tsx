@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { COMPANY_INFO } from "../data/company";
 import { SOLUTIONS } from "../data/solutions";
-import { SERVICES } from "../data/services";
+import { getVisibleServices } from "../data/services";
 import { submitEnquiry, honeypotResponse, EnquiryPayload } from "../lib/api";
 import { Button } from "../components/ui/Button";
 import { PremiumSelect } from "../components/forms/PremiumSelect";
@@ -383,7 +383,7 @@ export const ContactPage: React.FC = () => {
                       Services Needed (Select all that apply)
                     </label>
                     <div className="flex flex-wrap gap-2">
-                      {SERVICES.map((srv) => {
+                      {getVisibleServices().map((srv) => {
                         const isSelected = formData.services.includes(srv.title);
                         return (
                           <button

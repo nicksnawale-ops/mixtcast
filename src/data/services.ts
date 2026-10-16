@@ -1,7 +1,7 @@
 export interface ServiceItem {
   slug: string;
   title: string;
-  category: "Audio" | "Video" | "Spaces" | "Studios";
+  category: "Audio" | "Video" | "Spaces" | "Studios" | "IT Infrastructure" | "Safety & Security";
   icon: string;
   shortLine: string;
   overview: string;
@@ -16,8 +16,11 @@ export interface ServiceItem {
   featured?: boolean;
   /** Position among the featured services on the Home page (1 = first). */
   featuredOrder?: number;
+  /** Hidden services stay in the data (and keep their pages/images) but are not listed or reachable anywhere. */
+  hidden?: boolean;
 }
 
+// Hidden services: set hidden to false to show again.
 export const SERVICES: ServiceItem[] = [
   {
     slug: "audio-designing",
@@ -49,6 +52,7 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     slug: "video-designing",
+    hidden: true,
     featured: true,
     featuredOrder: 2,
     title: "Video Designing",
@@ -105,6 +109,7 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     slug: "lighting-solutions",
+    hidden: true,
     title: "Lighting Solutions",
     category: "Spaces",
     icon: "Sun",
@@ -185,6 +190,7 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     slug: "acoustic-solutions",
+    hidden: true,
     title: "Acoustic Solutions",
     category: "Audio",
     icon: "Waves",
@@ -211,6 +217,7 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     slug: "ai-in-audio-visual",
+    hidden: true,
     title: "AI in Audio Visual",
     category: "Audio",
     icon: "Sparkles",
@@ -291,6 +298,7 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     slug: "customized-chroma-studio",
+    hidden: true,
     title: "Customized Chroma Studio",
     category: "Studios",
     icon: "Video",
@@ -343,4 +351,96 @@ export const SERVICES: ServiceItem[] = [
     photoAlt: "Studio microphone with pop filter on a boom arm",
     accentQuote: "Intimate, broadcast-grade studios built for captivating long-form conversation.",
   },
+  {
+    slug: "background-music",
+    title: "Background Music",
+    category: "Audio",
+    icon: "Music",
+    shortLine: "Smart background music solutions designed to enrich ambiance and elevate customer satisfaction.",
+    overview:
+      "We design and install background music systems that fill your space with clear, well-balanced sound — with simple control over music, zones and volume.",
+    deliverables: [
+      "Zone-based audio design",
+      "Ceiling and wall speaker installation",
+      "Music streaming and source integration",
+      "App and tablet-based control",
+      "Paging and announcement integration",
+      "Scheduled volume and playback",
+    ],
+    idealFor: ["Restaurants and cafés", "Retail stores", "Hotels", "Showrooms", "Corporate offices"],
+    image: "/images/services/background-music.webp",
+    photo: "/images/services/background-music.webp",
+    photoAlt: "Café interior with rattan chairs, potted palms and warm globe lighting",
+  },
+  {
+    slug: "fire-alarm-public-addressing",
+    featured: true,
+    featuredOrder: 2,
+    title: "Fire Alarm & Public Addressing",
+    category: "Safety & Security",
+    icon: "Siren",
+    shortLine: "Integrated fire alarm and public address systems that keep people informed and safe.",
+    overview:
+      "We design, install and commission fire alarm and public address systems that detect early, alert clearly and help guide people safely — integrated with your building's existing infrastructure.",
+    deliverables: [
+      "Smoke and heat detection",
+      "Manual call points, sounders and strobes",
+      "Fire alarm control panels",
+      "Public address and voice evacuation",
+      "Zone paging and announcements",
+      "Testing, commissioning and maintenance support",
+    ],
+    idealFor: ["Commercial buildings", "Educational institutions", "Hospitals", "Malls", "Industrial facilities"],
+    image: "/images/services/fire-alarm-public-addressing.webp",
+    photo: "/images/services/fire-alarm-public-addressing.webp",
+    photoAlt: "Red manual fire alarm call point with its safety sign on a concrete wall",
+  },
+  {
+    slug: "hardware-peripherals",
+    title: "Hardware & Peripherals",
+    category: "IT Infrastructure",
+    icon: "Monitor",
+    shortLine: "Providing genuine IT hardware and peripherals with expert guidance, competitive pricing, and timely delivery.",
+    overview:
+      "We supply genuine IT hardware for offices, institutions and enterprises — from desktops, laptops and servers to printers, networking and display devices — with guidance on choosing the right specification for your needs and budget.",
+    deliverables: [
+      "Desktops, laptops and workstations",
+      "Servers and storage",
+      "Printers, scanners and multifunction devices",
+      "Networking equipment",
+      "Displays and projectors",
+      "Requirement assessment and specification guidance",
+    ],
+    idealFor: ["Offices", "Educational institutions", "Healthcare facilities", "Enterprises"],
+    image: "/images/services/hardware-peripherals.webp",
+    photo: "/images/services/hardware-peripherals.webp",
+    photoAlt: "Server room aisle with rows of networked rack cabinets and a mobile workstation",
+  },
+  {
+    slug: "accessories-peripherals",
+    title: "Accessories & Peripherals",
+    category: "IT Infrastructure",
+    icon: "Cable",
+    shortLine: "Providing reliable computer accessories and peripherals to support seamless business operations.",
+    overview:
+      "We provide dependable computer accessories and peripherals that keep everyday work running smoothly — sourced from trusted brands and delivered on schedule.",
+    deliverables: [
+      "Keyboards, mice and input devices",
+      "Cables, adapters and converters",
+      "Docking stations and USB hubs",
+      "Headsets, webcams and conferencing peripherals",
+      "Storage drives and memory",
+      "Power accessories",
+    ],
+    idealFor: ["Offices", "Educational institutions", "Training centers", "Enterprises"],
+    image: "/images/services/accessories-peripherals.webp",
+    photo: "/images/services/accessories-peripherals.webp",
+    photoAlt: "USB-C hub, power adapters and a travel plug laid out on a marble desk",
+  },
 ];
+
+/** Services shown anywhere on the site (data order = channel order 01, 02, …). */
+export const getVisibleServices = (): ServiceItem[] => SERVICES.filter((s) => !s.hidden);
+
+/** True when the service exists and is not hidden. */
+export const isServiceVisible = (slug: string): boolean => SERVICES.some((s) => s.slug === slug && !s.hidden);

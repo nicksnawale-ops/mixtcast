@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { Phone, Mail, MessageSquare, Menu, X, ArrowUpRight } from "lucide-react";
+import { Mail, MessageSquare, Menu, X, ArrowUpRight } from "lucide-react";
 import { LogoHorizontal } from "../brand/Logo";
 import { MAIN_NAV_LINKS } from "../../data/navigation";
 import { COMPANY_INFO } from "../../data/company";
@@ -145,14 +145,7 @@ export const Header: React.FC = () => {
               <span className="text-xs font-semibold uppercase tracking-widest text-ink-muted">
                 Direct Contact
               </span>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <a
-                  href={`tel:${COMPANY_INFO.contact.phoneRaw}`}
-                  className="flex items-center gap-2 p-3 rounded-xl bg-surface-warm border border-line text-xs font-semibold text-ink hover:border-brand-navy"
-                >
-                  <Phone className="w-4 h-4 text-brand-navy" />
-                  <span>Call {COMPANY_INFO.contact.phone}</span>
-                </a>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <a
                   href={`mailto:${COMPANY_INFO.contact.emailSales}`}
                   className="flex items-center gap-2 p-3 rounded-xl bg-surface-warm border border-line text-xs font-semibold text-ink hover:border-brand-navy"

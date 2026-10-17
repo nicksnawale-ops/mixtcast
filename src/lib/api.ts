@@ -23,13 +23,14 @@ const SUCCESS_MESSAGE =
   "Thank you for reaching out to MixtCast Visual Solutions. Our AV engineering team will review your requirements and respond within 24 hours.";
 const SEND_FAILED = "We couldn't send your enquiry right now. Please try again.";
 
-/** Enquiry reference: "MXC-" + YYMMDD (India date) + "-" + 4 random uppercase alphanumerics, e.g. MXC-261015-K7Q2. */
-export function createReference(date = new Date()): string {
-  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: TIME_ZONE, year: "2-digit", month: "2-digit", day: "2-digit" }).formatToParts(date);
-  const get = (type: string) => parts.find((p) => p.type === type)?.value ?? "00";
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  const random = Array.from(crypto.getRandomValues(new Uint32Array(4)), (n) => chars[n % chars.length]).join("");
-  return `MXC-${get("year")}${get("month")}${get("day")}-${random}`;
+/** Enquiry reference: "MIXTCAST-" + 6 random digits (zero-padded), e.g. MIXTCAST-048213. */
+export function createReference(): string {
+  // Rejection sampling keeps every 6-digit value equally likely.
+  const LIMIT = 4_294_000_000; // largest multiple of 1,000,000 below 2^32
+  const buf = new Uint32Array(1);
+  do crypto.getRandomValues(buf);
+  while (buf[0] >= LIMIT);
+  return `MIXTCAST-${String(buf[0] % 1_000_000).padStart(6, "0")}`;
 }
 
 /**
@@ -48,7 +49,7 @@ export async function submitEnquiry(payload: EnquiryPayload, botcheck = false): 
   }
 
   const now = new Date();
-  const reference = createReference(now);
+  const reference = createReference();
   const company = payload.company?.trim() || "";
 
   const controller = new AbortController();
@@ -60,8 +61,7 @@ export async function submitEnquiry(payload: EnquiryPayload, botcheck = false): 
       signal: controller.signal,
       body: JSON.stringify({
         access_key: accessKey,
-        // Must start with "New Website Enquiry" (an inbox filter depends on it).
-        subject: `New Website Enquiry ${reference} — ${payload.name.trim()}, ${company || "Individual"}`,
+        subject: `New Enquiry from MIXTCAST Website - ${reference} - ${payload.name.trim()} & ${company || "Individual"}`,
         from_name: "MixtCast Website",
         replyto: payload.email.trim(),
         name: payload.name.trim(),
@@ -74,7 +74,6 @@ export async function submitEnquiry(payload: EnquiryPayload, botcheck = false): 
         timeline: payload.timeline,
         message: payload.message,
         reference,
-        page_url: window.location.href,
         submitted_at: now.toLocaleString("en-IN", { timeZone: TIME_ZONE, dateStyle: "medium", timeStyle: "short" }),
         botcheck,
       }),

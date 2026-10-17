@@ -22,7 +22,7 @@ export const ProcessSignalSection: React.FC = () => {
   const steps = COMPANY_INFO.process;
 
   return (
-    <section ref={sectionRef} data-paused={running ? undefined : ""} className="relative bg-surface-cool border-y border-line">
+    <section ref={sectionRef} data-tour-section="pinned" data-tour-stages={steps.length} data-paused={running ? undefined : ""} className="relative bg-surface-cool border-y border-line">
       <style>{SIGNAL_CSS + PICTOGRAM_CSS}</style>
       {reduced ? (
         <StaticSignalProcess steps={steps} />

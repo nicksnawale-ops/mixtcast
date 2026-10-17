@@ -101,7 +101,7 @@ export const ClientCreditsSection: React.FC = () => {
         };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section data-tour-section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <style>{CSS}</style>
       <div className="text-center max-w-2xl mx-auto mb-10">
         <span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2">

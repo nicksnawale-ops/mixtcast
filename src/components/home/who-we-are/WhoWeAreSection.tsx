@@ -164,6 +164,7 @@ export const WhoWeAreSection: React.FC = () => {
   return (
     <section
       ref={sectionRef}
+      data-tour-section
       className="wwa-root relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-x-clip"
       data-idle={onScreen && !pageHidden ? "running" : "paused"}
     >

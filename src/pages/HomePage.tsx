@@ -45,6 +45,7 @@ import { PremiereQuoteSection } from "../components/home/premiere/PremiereQuoteS
 import { TestimonialsSection } from "../components/home/testimonials/TestimonialsSection";
 import { ClientCreditsSection } from "../components/home/client-credits/ClientCreditsSection";
 import { FEATURES } from "../config/features";
+import { AutoTour } from "../components/home/auto-tour/AutoTour";
 
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
@@ -113,7 +114,7 @@ export const HomePage: React.FC = () => {
       {/* 1–2. HERO, then WHO WE ARE rising over it as a sheet (the Hero is pinned and recedes; content unchanged) */}
       <HeroSheetStack>
       <StackedHero>
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-12 pb-20">
+      <section data-tour-section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-12 pb-20">
         {/* Interactive canvas audio waveform background */}
         <div className="absolute inset-0 z-0 opacity-40">
           <WaveformCanvas lineCount={64} interactive={true} />
@@ -232,7 +233,7 @@ export const HomePage: React.FC = () => {
       {FEATURES.showTestimonials && <TestimonialsSection />}
 
       {/* 9. TECHNOLOGY PARTNERS (MARQUEE) */}
-      <section className="bg-surface-warm py-16 border-y border-line overflow-hidden">
+      <section data-tour-section className="bg-surface-warm py-16 border-y border-line overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-1">
             Global Ecosystem
@@ -257,7 +258,7 @@ export const HomePage: React.FC = () => {
       <PremiereQuoteSection />
 
       {/* 11. CTA BAND (SIGNATURE GRADIENT BACKGROUND) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+      <section data-tour-section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         <div className="relative rounded-3xl p-10 sm:p-16 bg-gradient-signature text-white shadow-2xl overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Ambient glow */}
           <div className="pointer-events-none absolute -right-24 -top-24 w-96 h-96 rounded-full bg-brand-orange/30 blur-3xl" />
@@ -287,6 +288,9 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Optional Auto Tour (fixed toggle; off by default) */}
+      <AutoTour />
     </div>
   );
 };

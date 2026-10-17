@@ -117,7 +117,7 @@ export const SpacesPortalSection: React.FC = () => {
         };
 
   return (
-    <section ref={sectionRef} data-paused={running ? undefined : ""} className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={sectionRef} data-tour-section data-paused={running ? undefined : ""} className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <style>{PORTAL_CSS}</style>
 
       {/* Soft seam from the Services section's warm off-white into white (overlay only; covers its 1px bottom border) */}

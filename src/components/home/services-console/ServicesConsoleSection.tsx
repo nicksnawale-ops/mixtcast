@@ -81,7 +81,7 @@ export const ServicesConsoleSection: React.FC<{ iconFor: (name: string) => React
   }, [patch?.registerPowerOn]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <section ref={sectionRef} data-paused={running ? undefined : ""} className="relative overflow-hidden bg-surface-warm py-20 border-y border-line">
+    <section ref={sectionRef} data-tour-section data-paused={running ? undefined : ""} className="relative overflow-hidden bg-surface-warm py-20 border-y border-line">
       <style>{CONSOLE_CSS}</style>
       <SignalMatrix
         ref={matrixRef}

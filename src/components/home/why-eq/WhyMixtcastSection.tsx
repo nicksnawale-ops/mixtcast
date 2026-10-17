@@ -313,7 +313,7 @@ export const WhyMixtcastSection: React.FC = () => {
         };
 
   return (
-    <div ref={wrapRef} className="relative">
+    <div ref={wrapRef} data-tour-section className="relative">
       {/* Soft seam from the Methodology tint into white — overlay only; covers the 1px bottom border */}
       {gap > 0 && (
         <div

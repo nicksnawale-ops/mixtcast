@@ -81,7 +81,7 @@ export const PremiereQuoteSection: React.FC = () => {
   const spaced = (words: string[]) => words.flatMap((w, i) => (i ? [" ", word(w)] : [word(w)]));
 
   return (
-    <section ref={sectionRef} data-paused={running ? undefined : ""} className="relative overflow-x-clip bg-white">
+    <section ref={sectionRef} data-tour-section data-paused={running ? undefined : ""} className="relative overflow-x-clip bg-white">
       <style>{PREMIERE_CSS}</style>
       <figure data-premiere={on ? "on" : undefined} className="relative max-w-[980px] mx-auto px-6 sm:px-10 text-center">
         {/* Projector beam from above the mark, with drifting dust (decorative) */}

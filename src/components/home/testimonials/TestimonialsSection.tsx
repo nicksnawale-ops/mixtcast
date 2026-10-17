@@ -195,7 +195,7 @@ export const TestimonialsSection: React.FC = () => {
     "w-10 h-10 rounded-full border border-brand-navy/40 text-brand-navy inline-flex items-center justify-center hover:border-brand-navy hover:bg-brand-navy hover:text-white transition-colors outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-orange";
 
   return (
-    <section ref={sectionRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={sectionRef} data-tour-section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <style>{CSS}</style>
       <div className="text-center max-w-2xl mx-auto mb-10">
         <motion.span className="text-xs font-bold uppercase tracking-widest text-brand-orange block mb-2" {...fadeUp(0)}>

@@ -88,7 +88,7 @@ export const SERVICES: ServiceItem[] = [
     icon: "Building2",
     shortLine: "Turnkey architectural AV integration for large-capacity assemblies and events.",
     overview:
-      "Auditoriums require complex coordination of sound, stage lighting, multi-camera broadcasting, and intuitive operator consoles. MixtCast provides end-to-end auditorium engineering that empowers speakers, performers, and audiences with world-class production values.",
+      "Auditoriums require complex coordination of sound, stage lighting, multi-camera broadcasting, and intuitive operator consoles. MixtCast provides end-to-end auditorium engineering that empowers speakers, performers, and audiences with professional production values.",
     deliverables: [
       "Integrated line-array loudspeaker clusters with delayed surround fills",
       "Motorized stage rigging, sound-absorbing drapery, and safety interlocks",

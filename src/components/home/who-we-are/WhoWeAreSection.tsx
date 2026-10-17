@@ -263,8 +263,7 @@ export const WhoWeAreSection: React.FC = () => {
           </h2>
 
           <motion.p data-narration-target="wwa-paragraph" className="order-3 lg:order-none text-base sm:text-lg text-ink-muted leading-relaxed" {...fadeUp(M.paragraphAt)}>
-            {/* Same paragraph as the About page, without "world-class" (Home only) */}
-            {COMPANY_INFO.aboutParagraphs[0].replace("world-class ", "")}
+            {COMPANY_INFO.aboutParagraphs[0]}
           </motion.p>
 
           <div className="order-5 lg:order-none">

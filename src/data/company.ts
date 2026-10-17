@@ -19,9 +19,9 @@ export const COMPANY_INFO = {
   philosophy: "Your vision, our technology — brought to life.",
   callToAction: "Let's create intelligent and immersive AV experiences.",
   shortDescription:
-    "A dynamic and innovative Audio-Video integration company committed to designing and delivering world-class AV environments.",
+    "A dynamic and innovative Audio-Video integration company committed to designing and delivering AV environments.",
   aboutParagraphs: [
-    "MixtCast Visual Solutions Private Limited is a dynamic and innovative Audio-Video integration company committed to designing and delivering world-class AV environments. We specialize in providing customized solutions for a wide range of spaces including auditoriums, movie theatres, conference rooms, boardrooms, educational institutions, training centers, and more.",
+    "MixtCast Visual Solutions Private Limited is a dynamic and innovative Audio-Video integration company committed to designing and delivering AV environments. We specialize in providing customized solutions for a wide range of spaces including auditoriums, movie theatres, conference rooms, boardrooms, educational institutions, training centers, and more.",
     "With a team of experienced professionals and a passion for technology, we integrate the latest in audio-visual systems to create seamless, immersive, and future-ready experiences. From high-fidelity sound systems and advanced projection setups to smart control systems and collaborative conferencing tools, we ensure every installation meets the highest standards of quality, usability, and aesthetics.",
     "At MixtCast, we believe in creating intelligent AV ecosystems that empower communication, enhance learning, and elevate entertainment. Whether it's a large-scale auditorium or an interactive classroom, our solutions are tailored to match the unique needs of each client.",
   ],
@@ -116,7 +116,7 @@ export const COMPANY_INFO = {
     {
       name: "Yogesh Chaudhari",
       designation: "Executive Leadership [TODO: confirm title]",
-      bio: "Spearheading MixtCast's mission to engineer world-class audio and visual environments across institutional, cinema, and corporate sectors.",
+      bio: "Spearheading MixtCast's mission to engineer audio and visual environments across institutional, cinema, and corporate sectors.",
       image: "/images/team/yogesh-chaudhari.jpg",
     },
   ] as LeadershipMember[],

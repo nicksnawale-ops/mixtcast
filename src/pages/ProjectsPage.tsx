@@ -1,50 +1,19 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { createPortal } from "react-dom";
 import { motion, AnimatePresence, useInView, useReducedMotion } from "motion/react";
-import { X } from "lucide-react";
 import { PROJECTS, ClientProject } from "../data/clients";
-import { TESTIMONIALS } from "../data/testimonials";
 import { Button } from "../components/ui/Button";
-import { INDEX, INDEX_CSS, ProjectIndexRow, SectorPill, indexNumber } from "../components/projects/project-index/ProjectIndexRow";
+import { INDEX, INDEX_CSS, ProjectIndexRow } from "../components/projects/project-index/ProjectIndexRow";
 
 type ProjectCategory = "All" | ClientProject["category"];
 
-// "Project Index": only confirmed content is displayed — name, category (sector), confirmed scope and a linked
-// client testimonial. Project descriptions and locations in the data are unconfirmed and are not rendered here.
-const testimonialFor = (p: ClientProject) => TESTIMONIALS.find((t) => t.organization === p.testimonialOrg);
+// "Project Index": only confirmed content is displayed — name, category (sector) and confirmed scope. Project
+// descriptions and locations in the data are unconfirmed, and the linked testimonials are kept in the data but not
+// rendered here.
 const indexOf = (p: ClientProject) => PROJECTS.indexOf(p) + 1; // fixed by the full list, not the filtered position
 const countOf = (cat: string) => (cat === "All" ? PROJECTS.length : PROJECTS.filter((p) => p.category === cat).length);
 
 export const ProjectsPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>("All");
-  const [selectedProject, setSelectedProject] = useState<ClientProject | null>(null);
-
-  useEffect(() => {
-    if (!selectedProject) return;
-
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    const originalOverflow = document.body.style.overflow;
-    const originalPaddingRight = document.body.style.paddingRight;
-
-    document.body.style.overflow = "hidden";
-    if (scrollbarWidth > 0) {
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-    }
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setSelectedProject(null);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-      document.body.style.paddingRight = originalPaddingRight;
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [selectedProject]);
 
   // Filter chips come from the categories present in the data (in first-appearance order).
   const categories: ProjectCategory[] = ["All", ...Array.from(new Set(PROJECTS.map((p) => p.category)))];
@@ -66,7 +35,6 @@ export const ProjectsPage: React.FC = () => {
     return () => window.clearTimeout(t);
   }, [listIn]);
   const rowDelay = useCallback((i: number) => (listIn ? (entranceDone.current || reduced ? 0 : i * INDEX.stagger) : null), [listIn, reduced]);
-  const selectedTestimonial = selectedProject ? testimonialFor(selectedProject) : undefined;
 
   return (
     <div className="space-y-16 pb-24">
@@ -134,10 +102,8 @@ export const ProjectsPage: React.FC = () => {
                   <ProjectIndexRow
                     project={project}
                     index={indexOf(project)}
-                    testimonial={testimonialFor(project)}
                     reduced={reduced}
                     delay={rowDelay(i)}
-                    onOpen={() => setSelectedProject(project)}
                   />
                 </motion.li>
               ))}
@@ -145,82 +111,6 @@ export const ProjectsPage: React.FC = () => {
           </ul>
         </div>
       </section>
-
-      {/* Lightbox Modal (Portaled to document.body) */}
-      {typeof document !== "undefined" &&
-        createPortal(
-          <AnimatePresence>
-            {selectedProject && (
-              <motion.div
-                key="lightbox-overlay"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setSelectedProject(null)}
-                className="fixed inset-0 top-0 right-0 bottom-0 left-0 w-[100vw] h-[100vh] h-[100dvh] z-[1000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-              >
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  onClick={(e) => e.stopPropagation()}
-                  className="relative w-full max-w-2xl bg-white rounded-3xl overflow-y-auto shadow-2xl border border-line max-h-[90vh] max-h-[90dvh]"
-                >
-                  <button
-                    onClick={() => setSelectedProject(null)}
-                    className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/90 text-ink hover:text-brand-orange shadow-md transition-colors"
-                    aria-label="Close details"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-
-                  {/* Header: project index + sector */}
-                  <div className="px-8 pt-8 pr-16 flex items-center gap-3">
-                    <span className="text-sm font-medium tabular-nums text-[#8A929E]">{indexNumber(indexOf(selectedProject))}</span>
-                    <SectorPill sector={selectedProject.category} />
-                  </div>
-
-                  <div className="p-8 space-y-5">
-                    <div>
-                      <span className="pi-label block">Client</span>
-                      <h3 className="mt-1.5 text-2xl font-bold text-ink font-heading">{selectedProject.name}</h3>
-                    </div>
-
-                    {selectedProject.scope && (
-                      <div>
-                        <span className="pi-label block">Scope</span>
-                        <p className="mt-1.5 text-[15px] leading-relaxed text-[#4A5260]">{selectedProject.scope}</p>
-                      </div>
-                    )}
-
-                    {selectedTestimonial && (
-                      <figure className="border-l-2 border-brand-orange pl-4">
-                        <blockquote className="text-[15px] italic leading-relaxed text-ink-muted">“{selectedTestimonial.quote}”</blockquote>
-                        <figcaption className="mt-2 text-sm">
-                          <cite className="not-italic">
-                            <span className="font-heading font-semibold text-ink">{selectedTestimonial.author}</span>
-                            <span className="text-ink-muted"> — {selectedTestimonial.organization}</span>
-                          </cite>
-                        </figcaption>
-                      </figure>
-                    )}
-
-                    <div className="pt-2 flex justify-end">
-                      <Button
-                        onClick={() => setSelectedProject(null)}
-                        variant="primary"
-                        size="sm"
-                      >
-                        Close Showcase
-                      </Button>
-                    </div>
-                  </div>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>,
-          document.body
-        )}
 
       {/* Bottom CTA */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

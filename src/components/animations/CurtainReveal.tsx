@@ -29,6 +29,10 @@ try {
   // Storage unavailable — nothing to clean up.
 }
 
+/** Curtain music playback volume (0–1, applied after the recording is normalised to near full scale).
+ *  Raise it (e.g. 0.2–0.3) for louder music, lower it for quieter; 0.15 is a soft background level. */
+const CURTAIN_MUSIC_VOLUME = 0.15;
+
 /** All curtain timings in one place (ms from mount unless noted). Tune here. */
 export const CURTAIN_TIMING = {
   cueAt: 600, // logo fades out, seam brightens
@@ -45,9 +49,10 @@ export const CURTAIN_TIMING = {
     at: 1100, // starts with the panels parting
     offset: 0, // s into the excerpt
     duration: 14, // s — fallback length when the page doesn't pass `soundEndsAt`; never looped
-    fadeIn: 1.2, // s
+    fadeIn: 2, // s — a gentle start
     fadeOut: 3, // s — ends exactly at the stop time
-    volume: 0.3,
+    volume: CURTAIN_MUSIC_VOLUME,
+    lowpassHz: 5000, // softens the tone (takes the brightness off); remove to play the recording unfiltered
     stopFadeMs: 400, // when the visitor skips, scrolls past the hero or leaves
   },
 };
@@ -170,6 +175,7 @@ export const CurtainReveal: React.FC<CurtainRevealProps> = ({
       fadeIn: T.sound.fadeIn,
       fadeOut: T.sound.fadeOut,
       volume: T.sound.volume,
+      lowpassHz: T.sound.lowpassHz,
       normalize: true,
     });
     if (!handle) {

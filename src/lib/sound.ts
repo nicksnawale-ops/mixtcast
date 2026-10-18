@@ -26,6 +26,8 @@ export interface PlayOptions {
   fadeOut?: number;
   /** Raise quiet recordings so their peak sits near full scale before `volume` is applied. */
   normalize?: boolean;
+  /** Optional low-pass filter cutoff (Hz) to soften bright recordings; omitted = no filter. */
+  lowpassHz?: number;
 }
 
 export interface SoundHandle {
@@ -147,7 +149,15 @@ export async function play(name: SoundName, options: PlayOptions = {}): Promise<
     const source = ctx.createBufferSource();
     const gain = ctx.createGain();
     source.buffer = buffer;
-    source.connect(gain).connect(ctx.destination);
+    if (options.lowpassHz) {
+      const lowpass = ctx.createBiquadFilter();
+      lowpass.type = "lowpass";
+      lowpass.frequency.value = options.lowpassHz;
+      lowpass.Q.value = Math.SQRT1_2; // flat (Butterworth) response, no resonant bump
+      source.connect(lowpass).connect(gain).connect(ctx.destination);
+    } else {
+      source.connect(gain).connect(ctx.destination);
+    }
 
     const start = ctx.currentTime;
     const end = start + length;

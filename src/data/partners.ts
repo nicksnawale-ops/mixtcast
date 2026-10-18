@@ -107,4 +107,12 @@ export const TECHNOLOGY_PARTNERS: PartnerItem[] = [
     imageSlot: "/images/partners/harman.svg",
     logo: "/images/partners/harman.svg",
   },
+  {
+    id: "l-acoustics",
+    name: "L-Acoustics",
+    category: "Audio",
+    specialty: "Professional line-array loudspeaker systems, amplified controllers & immersive sound technology",
+    imageSlot: "/images/partners/l-acoustics.svg",
+    logo: "/images/partners/l-acoustics.svg",
+  },
 ];

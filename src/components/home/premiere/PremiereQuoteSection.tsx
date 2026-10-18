@@ -6,13 +6,13 @@ import { PREMIERE_CSS, T } from "./premiereStyles";
 
 /**
  * Home philosophy quote: "The Premiere" — the quote as a cinematic title card. Cinema masking opens, a projector beam
- * fades in (with drifting dust), the words come into focus, a light sweep passes, "brought to life." is underlined,
+ * fades in (with drifting dust), the words come into focus, a light sweep passes, "Meets Innovations" is underlined,
  * and the MIXTCAST play mark comes to life. Plays once per page view (~2.75s); timings in premiereStyles.ts.
  */
 
 const ATTRIBUTION = "MIXTCAST VISUAL SOLUTIONS PVT. LTD.";
-const QUOTE = COMPANY_INFO.philosophy; // "Your vision, our technology — brought to life."
-const FINALE = "brought to life.";
+const QUOTE = COMPANY_INFO.philosophy; // "Where Expertise Meets Innovations"
+const FINALE = "Meets Innovations";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 // Dust: deterministic positions (% of the beam), sizes and drifts; the first 6 are kept on mobile.
@@ -21,13 +21,13 @@ const DUST = [
   [66, 38, 1, 0], [30, 80, 1.5, 1], [70, 74, 2, 0], [45, 88, 1, 1], [58, 92, 1.5, 0],
 ].map(([x, y, size, orange], i) => ({ x, y, size, orange: !!orange, dur: 6 + (i % 5) * 1.3, delay: -i * 0.9, dx: (i % 2 ? 8 : -8), dy: -10 - (i % 3) * 5 }));
 
-/** Colour the tokens without changing the wording: "vision" navy, "technology" orange. */
+/** Colour the tokens without changing the wording: "Expertise" navy, "Innovations" orange. */
 const Token: React.FC<{ word: string }> = ({ word }) => {
-  const m = word.match(/^(vision|technology)(.*)$/i);
+  const m = word.match(/^(expertise|innovations)(.*)$/i);
   if (!m) return <>{word}</>;
   return (
     <>
-      <span className={m[1].toLowerCase() === "vision" ? "text-brand-navy" : "text-brand-orange"}>{m[1]}</span>
+      <span className={m[1].toLowerCase() === "expertise" ? "text-brand-navy" : "text-brand-orange"}>{m[1]}</span>
       {m[2]}
     </>
   );
@@ -58,7 +58,7 @@ export const PremiereQuoteSection: React.FC = () => {
     };
   }, []);
 
-  // Split into words (wording unchanged); "brought to life." stays together under its underline.
+  // Split into words (wording unchanged); "Meets Innovations" stays together under its underline.
   const finaleAt = QUOTE.endsWith(FINALE) ? QUOTE.length - FINALE.length : -1;
   const lead = (finaleAt >= 0 ? QUOTE.slice(0, finaleAt) : QUOTE).trim().split(" ");
   const finale = finaleAt >= 0 ? FINALE.split(" ") : [];

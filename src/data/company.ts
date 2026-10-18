@@ -16,7 +16,7 @@ export const COMPANY_INFO = {
   legalName: "MixtCast Visual Solutions Private Limited",
   brandName: "MIXTCAST",
   tagline: "Where Expertise Meets Innovation",
-  philosophy: "Your vision, our technology — brought to life.",
+  philosophy: "Where Expertise Meets Innovations",
   callToAction: "Let's create intelligent and immersive AV experiences.",
   shortDescription:
     "A dynamic and innovative Audio-Video integration company committed to designing and delivering AV environments.",

@@ -11,7 +11,7 @@ export const T = {
   words: 0.35, // word-by-word reveal, 55ms apart (0.6s each)
   wordStagger: 0.055,
   sweep: 0.7, // light sweep across the text (0.9s)
-  underline: 1.3, // gradient underline under "brought to life." (0.6s)
+  underline: 1.3, // gradient underline under "Meets Innovations" (0.6s)
   bars: 1.6, // play mark: waveform bars pulse once (0.5s)
   circle: 1.75, // circle draws (0.6s)
   triangle: 2.2, // play triangle scales in with a flicker (0.35s)

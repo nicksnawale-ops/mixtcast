@@ -7,7 +7,7 @@ export const NARRATION_AUDIO_SRC = "/audio/who-we-are-narration.mp3";
 
 /** The narration script (exact wording). */
 export const NARRATION_SCRIPT =
-  "Welcome to MixtCast Visual Solutions. MixtCast is a fusion of diverse ideas, transformed into something meaningful — where ideas converge, and innovation takes shape. We are an audio-video integration company based in Pune, designing and delivering AV environments: auditoriums and movie theatres, conference rooms and boardrooms, educational institutions, training centres, home theatres and studios. Our experienced team brings together trusted global technologies — from high-fidelity sound and advanced projection, to smart control and collaborative conferencing — and engineers every space around its people and purpose. From the first consultation to installation, training and reliable after-sales support, we stay with you. Where expertise meets innovations.";
+  "Welcome to MixtCast Visual Solutions. MixtCast is a fusion of diverse ideas, transformed into something meaningful — where ideas converge, and innovation takes shape. We are an audio-video integration company based in Pune, designing and delivering AV environments: auditoriums and movie theatres, conference rooms and boardrooms, educational institutions, training centres, home theatres and studios. Our experienced team brings together trusted global technologies — from high-fidelity sound and advanced projection, to smart control and collaborative conferencing — and engineers every space around its people and purpose. From the first consultation to installation, training and reliable after-sales support, we stay with you. Our philosophy is simple: Where Expertise Meets Innovations.";
 
 /** Which piece of on-page text is highlighted while a part of the script is spoken (`data-narration-target` values). */
 export type NarrationTarget = "wwa-headline" | "wwa-paragraph" | "wwa-statement" | "wwa-tagline";
@@ -24,7 +24,7 @@ const SEGMENT_TARGETS: NarrationTarget[] = [
   "wwa-paragraph", // We are an audio-video integration company…
   "wwa-paragraph", // Our experienced team brings together…
   "wwa-paragraph", // From the first consultation…
-  "wwa-tagline", // Where expertise meets innovations.
+  "wwa-tagline", // Our philosophy is simple: Where Expertise Meets Innovations.
 ];
 
 export const NARRATION_SEGMENTS: { text: string; targetId: NarrationTarget }[] = (() => {
@@ -51,5 +51,5 @@ export const NARRATION_CUES: { start: number; targetId: NarrationTarget }[] = [
   { start: 11.2, targetId: "wwa-paragraph" }, // "We are an audio-video integration company based in Pune…"
   { start: 24.6, targetId: "wwa-paragraph" }, // "Our experienced team brings together…"
   { start: 38.0, targetId: "wwa-paragraph" }, // "From the first consultation…"
-  { start: 44.7, targetId: "wwa-tagline" }, // "Where expertise meets innovations."
+  { start: 44.7, targetId: "wwa-tagline" }, // "Our philosophy is simple: Where Expertise Meets Innovations."
 ];

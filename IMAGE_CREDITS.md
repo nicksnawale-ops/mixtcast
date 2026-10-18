@@ -66,10 +66,13 @@ Customized Chroma Studio are currently hidden on the site; their images are kept
 
 | Use | File | Asset page | Composer | Performer | Source | License | Date |
 |---|---|---|---|---|---|---|---|
-| Solutions curtain music | `public/audio/curtain-classical.webm`, `public/audio/curtain-classical.mp3` | https://commons.wikimedia.org/wiki/File:Erik_Satie_-_gymnopedies_-_la_1_ere._lent_et_douloureux.ogg | Erik Satie — Gymnopédie No. 1 ("Lent et douloureux") | Robin Alciatore | Musopen, via Wikimedia Commons | Public domain (released by the author; Musopen requests attribution) | 2026-10-12 |
+| Solutions curtain music | `public/audio/curtain-classical.webm`, `public/audio/curtain-classical.mp3` | https://commons.wikimedia.org/wiki/File:Grieg_-_Peer_Gynt_Suite_No._1,_Op._46_-_I._Morning_Mood_(Musopen_Symphony).flac | Edvard Grieg — "Morning Mood" (Peer Gynt Suite No. 1, Op. 46, I) | Musopen Symphony | Musopen, via Wikimedia Commons | Public domain (recording released into the public domain by Musopen; composition public domain) | 2026-10-18 |
 
-Excerpt 0:07.5–0:44.0 (36.5 s) of the same recording — long enough for one full cycle of the Solutions spaces showcase.
-- `curtain-classical.webm`: primary — mono Opus, ~64 kbps, 289 KB, with a 1 s fade baked into the end (encoded in Chrome from the excerpt below).
-- `curtain-classical.mp3`: fallback for browsers that can't decode Opus — cut losslessly (whole MP3 frames) from Wikimedia Commons' MP3 transcode; stereo, ~189 kbps VBR, 838 KB. Only downloaded if the WebM fails to decode.
+Excerpt 0:00.0–0:36.5 (36.5 s) of the same recording — the opening flute/oboe theme, long enough for one full cycle of the
+Solutions spaces showcase.
+- `curtain-classical.webm`: primary — mono Opus, ~64 kbps, 288 KB, with 1 s fades baked into the start and end (encoded in
+  Chrome from the excerpt below).
+- `curtain-classical.mp3`: fallback for browsers that can't decode Opus — cut losslessly (whole MP3 frames) from Wikimedia
+  Commons' MP3 transcode of the FLAC; stereo, ~209 kbps VBR, 931 KB, no baked fades. Only downloaded if the WebM fails to decode.
 
 Level, fades and volume are applied at playback (`src/lib/sound.ts`, `CURTAIN_TIMING.sound`).

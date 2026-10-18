@@ -82,14 +82,13 @@ export const TECHNOLOGY_PARTNERS: PartnerItem[] = [
     imageSlot: "/images/partners/viewsonic.png",
     logo: "/images/partners/viewsonic.png",
   },
-  // Logo pending: the supplied file reads "Optima", not Optoma. Empty → the card shows the initial/name fallback.
   {
     id: "optoma",
     name: "Optoma",
     category: "Video",
     specialty: "Business, education and home cinema projectors",
-    imageSlot: "",
-    logo: "",
+    imageSlot: "/images/partners/optoma.png",
+    logo: "/images/partners/optoma.png",
   },
   {
     id: "benq",

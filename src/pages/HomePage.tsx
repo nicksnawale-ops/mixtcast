@@ -47,6 +47,10 @@ import { ClientCreditsSection } from "../components/home/client-credits/ClientCr
 import { FEATURES } from "../config/features";
 import { AutoTour } from "../components/home/auto-tour/AutoTour";
 
+// Partner marquee pace: a constant speed regardless of how many partners there are (the original 32s loop was
+// tuned for 12 partners). The loop duration grows with the track, so more logos don't make it scroll faster.
+const MARQUEE_SECONDS_PER_PARTNER = 32 / 12;
+
 // Icon mapping helper
 const iconMap: Record<string, React.ReactNode> = {
   Volume2: <Volume2 className="w-5 h-5" />,
@@ -246,12 +250,18 @@ export const HomePage: React.FC = () => {
           </p>
         </div>
 
-        {/* Infinite Marquee */}
-        <Marquee speed="normal" pauseOnHover={true}>
-          {TECHNOLOGY_PARTNERS.map((partner) => (
-            <PartnerMarqueeCard key={partner.id} partner={partner} />
-          ))}
-        </Marquee>
+        {/* Infinite Marquee (duration scales with the number of partners → constant pixels per second). The duration
+            is !important because the base .animate-marquee rule in index.css is unlayered and would otherwise win. */}
+        <div
+          className="[&_.animate-marquee]:[animation-duration:var(--marquee-duration)]!"
+          style={{ "--marquee-duration": `${(TECHNOLOGY_PARTNERS.length * MARQUEE_SECONDS_PER_PARTNER).toFixed(1)}s` } as React.CSSProperties}
+        >
+          <Marquee speed="normal" pauseOnHover={true}>
+            {TECHNOLOGY_PARTNERS.map((partner) => (
+              <PartnerMarqueeCard key={partner.id} partner={partner} />
+            ))}
+          </Marquee>
+        </div>
       </section>
 
       {/* 10. PHILOSOPHY QUOTE — "The Premiere": a cinematic title card revealed by a projector beam */}

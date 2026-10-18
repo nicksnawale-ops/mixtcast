@@ -1,7 +1,7 @@
 export interface PartnerItem {
   id: string;
   name: string;
-  category: "Audio" | "Video" | "Control System" | "Microphones" | "AV Accessories";
+  category: "Audio" | "Video" | "Control System" | "Microphones" | "AV Accessories" | "IT Peripherals";
   specialty: string;
   imageSlot: string;
   logo: string;
@@ -178,5 +178,94 @@ export const TECHNOLOGY_PARTNERS: PartnerItem[] = [
     specialty: "Professional line-array loudspeaker systems, amplified controllers & immersive sound technology",
     imageSlot: "/images/partners/l-acoustics.svg",
     logo: "/images/partners/l-acoustics.svg",
+  },
+  {
+    id: "dell",
+    name: "Dell",
+    category: "IT Peripherals",
+    specialty: "Laptops, desktops, monitors and servers",
+    imageSlot: "/images/partners/dell.svg",
+    logo: "/images/partners/dell.svg",
+  },
+  {
+    id: "hp",
+    name: "HP",
+    category: "IT Peripherals",
+    specialty: "Laptops, desktops, printers and workstations",
+    imageSlot: "/images/partners/hp.svg",
+    logo: "/images/partners/hp.svg",
+  },
+  {
+    id: "lenovo",
+    name: "Lenovo",
+    category: "IT Peripherals",
+    specialty: "Laptops, desktops, servers and workstations",
+    imageSlot: "/images/partners/lenovo.svg",
+    logo: "/images/partners/lenovo.svg",
+  },
+  {
+    id: "asus",
+    name: "ASUS",
+    category: "IT Peripherals",
+    specialty: "Laptops, desktops, monitors and networking",
+    imageSlot: "/images/partners/asus.svg",
+    logo: "/images/partners/asus.svg",
+  },
+  {
+    id: "canon",
+    name: "Canon",
+    category: "IT Peripherals",
+    specialty: "Printers, scanners and imaging devices",
+    imageSlot: "/images/partners/canon.svg",
+    logo: "/images/partners/canon.svg",
+  },
+  {
+    id: "epson",
+    name: "Epson",
+    category: "IT Peripherals",
+    specialty: "Printers, scanners and projectors",
+    imageSlot: "/images/partners/epson.png",
+    logo: "/images/partners/epson.png",
+  },
+  {
+    id: "brother",
+    name: "Brother",
+    category: "IT Peripherals",
+    specialty: "Printers, scanners and labelling solutions",
+    imageSlot: "/images/partners/brother.svg",
+    logo: "/images/partners/brother.svg",
+    logoBg: "dark", // the supplied Brother logo is white
+  },
+  {
+    id: "kyocera",
+    name: "Kyocera",
+    category: "IT Peripherals",
+    specialty: "Multifunction printers and document solutions",
+    imageSlot: "/images/partners/kyocera.svg",
+    logo: "/images/partners/kyocera.svg",
+  },
+  {
+    id: "logitech",
+    name: "Logitech",
+    category: "IT Peripherals",
+    specialty: "Keyboards, mice, webcams and conferencing peripherals",
+    imageSlot: "/images/partners/logitech.svg",
+    logo: "/images/partners/logitech.svg",
+  },
+  {
+    id: "tp-link",
+    name: "TP-Link",
+    category: "IT Peripherals",
+    specialty: "Routers, switches and Wi-Fi networking",
+    imageSlot: "/images/partners/tp-link.png",
+    logo: "/images/partners/tp-link.png",
+  },
+  {
+    id: "iball",
+    name: "iBall",
+    category: "IT Peripherals",
+    specialty: "Computer peripherals and accessories",
+    imageSlot: "/images/partners/iball.png",
+    logo: "/images/partners/iball.png",
   },
 ];

@@ -3,7 +3,7 @@ import { TECHNOLOGY_PARTNERS, PartnerItem } from "../data/partners";
 import { Button } from "../components/ui/Button";
 import { ShieldCheck, ArrowRight } from "lucide-react";
 
-type PartnerFilter = "All" | "Audio" | "Display" | "Control & Switching" | "Microphones";
+type PartnerFilter = "All" | "Audio" | "Video" | "Control & Switching" | "Microphones";
 
 const PartnerGridCard: React.FC<{ partner: PartnerItem }> = ({ partner }) => {
   const [imgError, setImgError] = useState(false);
@@ -57,7 +57,7 @@ export const PartnersPage: React.FC = () => {
   const categories: PartnerFilter[] = [
     "All",
     "Audio",
-    "Display",
+    "Video",
     "Control & Switching",
     "Microphones",
   ];

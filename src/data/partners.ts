@@ -1,7 +1,7 @@
 export interface PartnerItem {
   id: string;
   name: string;
-  category: "Audio" | "Display" | "Control & Switching" | "Microphones";
+  category: "Audio" | "Video" | "Control & Switching" | "Microphones";
   specialty: string;
   imageSlot: string;
   logo: string;
@@ -53,7 +53,7 @@ export const TECHNOLOGY_PARTNERS: PartnerItem[] = [
   {
     id: "samsung",
     name: "Samsung",
-    category: "Display",
+    category: "Video",
     specialty: "The Wall MicroLED, commercial 4K SMART signage & interactive e-boards",
     imageSlot: "/images/partners/samsung.svg",
     logo: "/images/partners/samsung.svg",
@@ -61,10 +61,43 @@ export const TECHNOLOGY_PARTNERS: PartnerItem[] = [
   {
     id: "lg",
     name: "LG Commercial Displays",
-    category: "Display",
+    category: "Video",
     specialty: "Transparent OLED, ultra-stretch digital signage & high-brightness outdoor displays",
     imageSlot: "/images/partners/lg.svg",
     logo: "/images/partners/lg.svg",
+  },
+  {
+    id: "newline",
+    name: "Newline",
+    category: "Video",
+    specialty: "Interactive flat panels and collaboration displays for classrooms and meeting rooms",
+    imageSlot: "/images/partners/newline.png",
+    logo: "/images/partners/newline.png",
+  },
+  {
+    id: "viewsonic",
+    name: "ViewSonic",
+    category: "Video",
+    specialty: "Projectors, interactive displays and commercial monitors",
+    imageSlot: "/images/partners/viewsonic.png",
+    logo: "/images/partners/viewsonic.png",
+  },
+  // Logo pending: the supplied file reads "Optima", not Optoma. Empty → the card shows the initial/name fallback.
+  {
+    id: "optoma",
+    name: "Optoma",
+    category: "Video",
+    specialty: "Business, education and home cinema projectors",
+    imageSlot: "",
+    logo: "",
+  },
+  {
+    id: "benq",
+    name: "BenQ",
+    category: "Video",
+    specialty: "Projectors, interactive displays and professional monitors",
+    imageSlot: "/images/partners/benq.png",
+    logo: "/images/partners/benq.png",
   },
   {
     id: "sennheiser",

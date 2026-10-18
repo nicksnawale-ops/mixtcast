@@ -56,12 +56,12 @@ export const PartnersPage: React.FC = () => {
 
   const categories: PartnerFilter[] = [
     "All",
+    "IT Peripherals",
     "Audio",
     "Video",
     "Control System",
     "Microphones",
     "AV Accessories",
-    "IT Peripherals",
   ];
 
   const filteredPartners =

@@ -1,7 +1,7 @@
 export interface PartnerItem {
   id: string;
   name: string;
-  category: "Audio" | "Video" | "Control & Switching" | "Microphones";
+  category: "Audio" | "Video" | "Control System" | "Microphones" | "AV Accessories";
   specialty: string;
   imageSlot: string;
   logo: string;
@@ -110,18 +110,50 @@ export const TECHNOLOGY_PARTNERS: PartnerItem[] = [
   {
     id: "qsc",
     name: "QSC / Q-SYS",
-    category: "Control & Switching",
+    category: "Control System",
     specialty: "Cloud-manageable audio, video and control (AV&C) platform ecosystem",
     imageSlot: "/images/partners/qsc.svg",
     logo: "/images/partners/qsc.svg",
   },
   {
+    id: "crestron",
+    name: "Crestron",
+    category: "Control System",
+    specialty: "Room control systems, touch panels and AV-over-IP distribution",
+    imageSlot: "/images/partners/crestron.png",
+    logo: "/images/partners/crestron.png",
+  },
+  {
+    id: "xilica",
+    name: "Xilica",
+    category: "Control System",
+    specialty: "Networked DSP audio processors and control interfaces",
+    imageSlot: "/images/partners/xilica.png",
+    logo: "/images/partners/xilica.png",
+  },
+  {
     id: "kramer",
     name: "Kramer Electronics",
-    category: "Control & Switching",
+    category: "AV Accessories",
     specialty: "AV-over-IP streaming, matrix switchers & room automation controllers",
     imageSlot: "/images/partners/kramer.svg",
     logo: "/images/partners/kramer.svg",
+  },
+  {
+    id: "cadyce",
+    name: "Cadyce",
+    category: "AV Accessories",
+    specialty: "Cables, adapters, connectors and AV accessories",
+    imageSlot: "/images/partners/cadyce.png",
+    logo: "/images/partners/cadyce.png",
+  },
+  {
+    id: "liberty",
+    name: "Liberty",
+    category: "AV Accessories",
+    specialty: "AV cables, connectivity and signal distribution solutions",
+    imageSlot: "/images/partners/liberty.png",
+    logo: "/images/partners/liberty.png",
   },
   {
     id: "audac",
